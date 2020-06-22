@@ -12,11 +12,18 @@ export const theme = {
   colorExtraTertiary: 'hsl(66, 59%, 43%)',
   colorExtraQuatenary: 'hsl(194, 54%, 42%)',
   fontSize: {
-    xxs: '1rem',
+    xxs: '.8rem',
     xs: '1.2rem',
-    s: '1.6rem',
-    m: '2.rem',
-    l: '2.4rem',
-    xl: '4rem',
+    s: '1.8rem',
+    m: '2rem',
+    l: '2.6rem',
+    xl: '3rem',
+    xxl: '4rem',
   },
+  fontWeight: {
+    light: 100,
+    regular: 300,
+    bold: 700,
+    extraBold: 900,
+  }
 };

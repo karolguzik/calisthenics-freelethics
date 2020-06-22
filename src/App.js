@@ -1,10 +1,11 @@
 import React from 'react';
 import MainTemplate from './templates/MainTemplate';
+import Header from './components/Header/Header';
 
 const App = () => {
   return (
     <MainTemplate>
-      <h1>Hello React</h1>
+      <Header />
     </MainTemplate>
   );
 }
