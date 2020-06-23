@@ -1,8 +1,12 @@
 import styled from 'styled-components';
 
-const Paragraph = styled.p`
-  color: ${({theme}) => theme.fontColorDark};
-  font-size: ${({theme}) => theme.fontSize.xxs};
-`
+export const Paragraph = styled.p`
+  color: ${({ theme }) => theme.fontColorDark};
+  font-size: ${({ theme }) => theme.fontSize.xxs};
+`;
 
-export default Paragraph;
+export const ParagraphYellow = styled.span`
+  display: inline-block;
+  color: ${({ theme }) => theme.colorExtraPrimary};
+  text-transform: uppercase;
+`

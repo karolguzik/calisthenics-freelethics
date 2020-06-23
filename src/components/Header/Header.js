@@ -1,15 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Logo from '../Logo/Logo';
-import Heading from '../Heading/Heading';
+import { H1, H2 } from '../Heading/Heading';
 import Button from '../Button/Button';
-import Paragraph from '../Paragraph/Paragraph';
+import { Paragraph, ParagraphYellow } from '../Paragraph/Paragraph';
 import bgcImage from '../../assets/images/bgc-1.png';
 
-const StyledHeader = styled.header`
-  width: 80vw;
-  height: 85vh;
-  margin: 7.5vh auto;
+const StyledWrapper = styled.header`
+  width: 90vw;
+  height: 90vh;
+  margin: 5vh auto;
   background: ${({ theme }) => theme.bgcLightPrimary};
   box-shadow: 0 10px 30px -10px #000;
 `;
@@ -22,6 +23,7 @@ const StyledInnerWrapper = styled.div`
   align-items:center;
   height: 80%;
   background: ${({theme}) => theme.bgcLightSecondary};
+  z-index:10;
 
   &::before {
     content: '';
@@ -35,6 +37,7 @@ const StyledInnerWrapper = styled.div`
     background-position:30% 100%;
     background-size: 120%;
     opacity: .1;
+    z-index:-1;
   }
 `;
 
@@ -56,19 +59,19 @@ const StyledBottomAside = styled.aside`
 
 const Header = () => {
   return (
-    <StyledHeader>
+    <StyledWrapper>
       <StyledLogoContainer>
         <Logo>CaF.</Logo>
       </StyledLogoContainer>
       <StyledInnerWrapper>
-        <Heading>Calisthenics</Heading>
-        <Heading secondary>Freelethics</Heading>
-        <Button>start now</Button>
+        <H1>Calisthenics</H1>
+        <H2 secondary>Freelethics</H2>
+        <Button as={Link} to="/login">start now</Button>
       </StyledInnerWrapper>
       <StyledBottomAside>
-        <Paragraph>your future is created by what you do now not tomorrow</Paragraph>
+        <Paragraph>your <ParagraphYellow>future</ParagraphYellow> is created by what you do <ParagraphYellow>now</ParagraphYellow> not tomorrow</Paragraph>
       </StyledBottomAside>
-    </StyledHeader>
+    </StyledWrapper>
   );
 };
 

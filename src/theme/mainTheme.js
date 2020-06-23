@@ -12,8 +12,8 @@ export const theme = {
   colorExtraTertiary: 'hsl(66, 59%, 43%)',
   colorExtraQuatenary: 'hsl(194, 54%, 42%)',
   fontSize: {
-    xxs: '.8rem',
-    xs: '1.2rem',
+    xxs: '1rem',
+    xs: '1.4rem',
     s: '1.8rem',
     m: '2rem',
     l: '2.6rem',
