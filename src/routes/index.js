@@ -4,7 +4,7 @@ export const routes = {
   training: '/trainings/details/:id',
   myTrainings: '/mytrainings',
   myTraining: '/mytraining',
-  createTraining: '/createtraining',
+  createTrainings: '/createtraining',
   progress: '/progress',
   statistics: '/statistics',
   appPanel: '/apppanel',
