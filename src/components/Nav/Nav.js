@@ -6,13 +6,14 @@ export const Nav = styled.nav`
   left:50%;
   transform: translateX(-50%);
   width: 85%;
-  height: 15%;
+  height: 10%;
   display:flex;
-  align-items: center;
-  justify-content: space-evenly;
+  align-items:stretch;
+  justify-content: space-around;
   background: ${({theme}) => theme.bgcLightPrimary};
   border-radius: 10px 10px 0 0;
   overflow: hidden;
+  z-index:10;
 
   ${({navTop}) => navTop && css`
     top:0;

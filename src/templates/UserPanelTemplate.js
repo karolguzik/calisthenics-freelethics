@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { css } from 'react';
 import { NavLink } from 'react-router-dom'; 
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
@@ -13,16 +13,22 @@ import IconLogout from '../assets/icons/logout.png';
 
 
 const StyledWrapper = styled.div`
-  padding:7.5vh 7.5% 15vh;
-  height:100vh;
+  margin:7.5vh 7.5% 15vh;
+  padding: 2rem 0;
+  min-height: calc(100vh - (7.5vh + 15vh));
+
 `;
 
 const activeClassName = 'active';
 
-const StyledNavLink = styled(NavLink).attrs({activeClassName: activeClassName})`
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+  color: ${({theme}) => theme.fontColorLight};
+`;
+
+const StyledActiveNavLink = styled(StyledNavLink).attrs({activeClassName: activeClassName})`
   &.${activeClassName} {
-    box-shadow: inset .7rem .7rem 2rem rgba(0,0,0,.1),
-                inset -.7rem -.7rem 2rem rgba(255,255,255, .5);
+    border-color: ${({theme}) => theme.colorExtraQuatenary};
   }
 `;
 
@@ -30,16 +36,16 @@ const UserPanelTemplate = ({children}) => {
   return(
     <StyledWrapper>
       <Nav navTop>
-        <NavItem>Trainings</NavItem>
-        <NavItem>My Trainings</NavItem>
+        <NavItem as={StyledActiveNavLink} to="/trainings">Trainings</NavItem>
+        <NavItem as={StyledActiveNavLink} to="/mytrainings">My trainings</NavItem>
       </Nav>
       {children}
       <Nav>
-        <NavItem as={StyledNavLink} to="/trainings"  icon={IconTraining} />
-        <NavItem as={StyledNavLink} to="/createTraining" icon={IconAdd} />
-        <NavItem as={StyledNavLink} to="/progress" icon={IconProgress} />
-        <NavItem as={StyledNavLink} to="/statistics" icon={IconStatistics} />
-        <NavItem exact as={StyledNavLink} to="/" icon={IconLogout} />
+        <NavItem as={StyledActiveNavLink} to="/trainings"  icon={IconTraining} />
+        <NavItem as={StyledActiveNavLink} to="/createTraining" icon={IconAdd} />
+        <NavItem as={StyledActiveNavLink} to="/progress" icon={IconProgress} />
+        <NavItem as={StyledActiveNavLink} to="/statistics" icon={IconStatistics} />
+        <NavItem exact as={StyledActiveNavLink} to="/" icon={IconLogout} />
       </Nav>
     </StyledWrapper>
   )

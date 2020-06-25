@@ -3,15 +3,13 @@ import UserPanelTemplate from '../templates/UserPanelTemplate';
 import GridTemplate from '../templates/GridTemplate';
 import CardTraining from '../components/CardTraining/CardTraining';
 
-const TrainingsPage = () => (
+const MyTrainingsPage = () => (
   <UserPanelTemplate>
     <GridTemplate>
-      <CardTraining />
-      <CardTraining />
       <CardTraining />
       <CardTraining />
     </GridTemplate>
   </UserPanelTemplate>
 );
 
-export default TrainingsPage;
+export default MyTrainingsPage;

@@ -12,6 +12,7 @@ const Button = styled.button`
   border: 1px solid ${({theme}) => theme.fontColorDark};
   transition: .2s ease-in-out;
   cursor: pointer;
+  outline: none;
 
   :hover {
     color: ${({theme}) => theme.fontColorLight};
@@ -29,6 +30,11 @@ const Button = styled.button`
       color: ${({theme}) => theme.fontColorDark};
       transform: scale(1.05);
       box-shadow: 0 5px 10px -5px #000;
+    }
+
+    :active {
+      transform: scale(1.02);
+      box-shadow: 0 4px 10px -5px #000;
     }
   `}
 `

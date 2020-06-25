@@ -6,6 +6,7 @@ import WelcomePage from './views/WelcomePage';
 import LoginPage from './views/LoginPage';
 import RegistrationPage from './views/RegistrationPage';
 import TrainingsPage from './views/TrainingsPage';
+import MyTrainingsPage from './views/MyTrainingsPage';
 import CreateTrainingsPage from './views/CreateTrainingsPage';
 import ProgressPage from './views/ProgressPage';
 import StatisticsPage from './views/StatisticsPage';
@@ -19,6 +20,7 @@ const App = () => {
           <Route path={routes.login} component={LoginPage} />
           <Route path={routes.registration} component={RegistrationPage} />
           <Route path={routes.trainings} component={TrainingsPage} />
+          <Route path={routes.myTrainings} component={MyTrainingsPage} />
           <Route path={routes.createTrainings} component={CreateTrainingsPage} />
           <Route path={routes.progress} component={ProgressPage} />
           <Route path={routes.statistics} component={StatisticsPage} />
