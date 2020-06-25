@@ -2,7 +2,7 @@ import React from 'react'
 import UserPanelTemplate from '../templates/UserPanelTemplate';
 
 const StatisticsPage = () => (
-  <UserPanelTemplate>
+  <UserPanelTemplate pageTitle="statistics">
     <h1>Statistics page</h1>
   </UserPanelTemplate>
 )

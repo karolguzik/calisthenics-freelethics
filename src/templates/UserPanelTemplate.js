@@ -9,14 +9,17 @@ import IconAdd from '../assets/icons/add.png';
 import IconProgress from '../assets/icons/progress.png';
 import IconStatistics from '../assets/icons/statistics.png';
 import IconLogout from '../assets/icons/logout.png';
+import IconStart from '../assets/icons/start.png';
+import IconStop from '../assets/icons/stop.png';
+import IconPause from '../assets/icons/pause.png';
+import IconGoBack from '../assets/icons/goback.png';
 
 
 
 const StyledWrapper = styled.div`
-  margin:7.5vh 7.5% 15vh;
+  margin:7.5vh 7.5% 10vh;
   padding: 2rem 0;
-  min-height: calc(100vh - (7.5vh + 15vh));
-
+  min-height: calc(100vh - (7.5vh + 10vh));
 `;
 
 const activeClassName = 'active';
@@ -32,20 +35,47 @@ const StyledActiveNavLink = styled(StyledNavLink).attrs({activeClassName: active
   }
 `;
 
-const UserPanelTemplate = ({children}) => {
+const StyledPageTitle = styled.p`
+  display:flex;
+  align-items:center;
+  text-transform: uppercase;
+  font-size: ${({theme}) => theme.fontSize.xs};
+`;
+
+const UserPanelTemplate = ({children, activeTopNav, pageTitle, activeAppPanelNav}) => {
+  const renderTopNav = activeTopNav ? (
+    <>
+      <NavItem as={StyledActiveNavLink} to="/trainings">Trainings</NavItem>
+      <NavItem as={StyledActiveNavLink} to="/mytrainings">My trainings</NavItem>
+    </>
+  ) : (
+    <StyledPageTitle>{pageTitle}</StyledPageTitle>  
+  );
+
+  const renderBottomNav = activeAppPanelNav ? (
+    <>
+      <NavItem icon={IconStart} />
+      <NavItem icon={IconStop} />
+      <NavItem icon={IconPause} />
+      <NavItem as={StyledActiveNavLink} exact to="/trainings" icon={IconGoBack} />
+    </>
+  ) : (
+    <>
+      <NavItem as={StyledActiveNavLink} to="/trainings"  icon={IconTraining} />
+      <NavItem as={StyledActiveNavLink} to="/createTraining" icon={IconAdd} />
+      <NavItem as={StyledActiveNavLink} to="/progress" icon={IconProgress} />
+      <NavItem as={StyledActiveNavLink} to="/statistics" icon={IconStatistics} />
+      <NavItem as={StyledActiveNavLink} exact to="/" icon={IconLogout} />
+    </>
+  )
   return(
     <StyledWrapper>
       <Nav navTop>
-        <NavItem as={StyledActiveNavLink} to="/trainings">Trainings</NavItem>
-        <NavItem as={StyledActiveNavLink} to="/mytrainings">My trainings</NavItem>
+        {renderTopNav}
       </Nav>
       {children}
       <Nav>
-        <NavItem as={StyledActiveNavLink} to="/trainings"  icon={IconTraining} />
-        <NavItem as={StyledActiveNavLink} to="/createTraining" icon={IconAdd} />
-        <NavItem as={StyledActiveNavLink} to="/progress" icon={IconProgress} />
-        <NavItem as={StyledActiveNavLink} to="/statistics" icon={IconStatistics} />
-        <NavItem exact as={StyledActiveNavLink} to="/" icon={IconLogout} />
+        {renderBottomNav}
       </Nav>
     </StyledWrapper>
   )

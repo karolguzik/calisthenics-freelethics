@@ -1,11 +1,12 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 const StyledWrapper = styled.div`
-  position:relative;
-  display:flex;
-  flex-direction:column;
-  background: ${({theme}) => theme.bgcDarkTertiary};
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: ${({ theme }) => theme.bgcDarkTertiary};
   padding: 1rem;
   box-shadow: 0 10px 30px -10px #000;
   border-radius: 20px;
@@ -14,33 +15,33 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledViewTraining = styled.div`
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   padding: 0 3rem;
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
   justify-content: flex-end;
-  background: rgba(0,0,0,.7);
+  background: rgba(0, 0, 0, 0.75);
   transform: skew(10deg) translateX(-110%);
-  transition: .2s ease-in-out;
-  border-right: 1px solid ${({theme}) => theme.bgcLightPrimary};
-  z-index:10;
+  transition: 0.2s ease-in-out;
+  border-right: 1px solid ${({ theme }) => theme.bgcLightTertiary};
+  z-index: 10;
 
   ${StyledWrapper}:hover & {
     transform: skew(10deg) translateX(-50%);
   }
 
   &:hover {
-    background: rgba(0,0,0,.9);
-    color: ${({theme}) => theme.colorExtraTertiary};
+    background: rgba(0, 0, 0, 0.9);
+    color: ${({ theme }) => theme.colorExtraTertiary};
   }
-`; 
+`;
 
 const StyledStartTraining = styled(StyledViewTraining)`
-  right:0;
+  right: 0;
   justify-content: flex-start;
   transform: skew(10deg) translateX(110%);
 
@@ -49,58 +50,67 @@ const StyledStartTraining = styled(StyledViewTraining)`
   }
 
   &:hover {
-    color: ${({theme}) => theme.colorExtraSecondary};
+    color: ${({ theme }) => theme.colorExtraSecondary};
   }
 `;
 
 const StyledLevelTag = styled.span`
-  position:absolute;
-  top:5%;
-  left:5%;
-  padding: .1rem;
-  color: ${({theme}) => theme.fontColorGray};
-  font-size: ${({theme}) => theme.fontSize.xxs};
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  padding: 0.1rem;
+  color: ${({ theme }) => theme.fontColorGray};
+  font-size: ${({ theme }) => theme.fontSize.xxs};
 `;
 
 const StyledInnerWrapper = styled.div`
-  flex-grow:1;
-  display:flex;
-  flex-direction:column;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
   align-items: flex-end;
   justify-content: center;
 `;
 
-const StyledTotalTime = styled.p`
-font-size: ${({theme}) => theme.fontSize.m};
+const StyledTotalTime = styled.span`
+  font-size: ${({ theme }) => theme.fontSize.s};
 `;
 
 const StyledExercises = styled.p`
-  color: ${({theme}) => theme.fontColorLight}
+  color: ${({ theme }) => theme.fontColorLight};
+  font-size: ${({ theme }) => theme.fontSize.xs};
 `;
 
 const StyledReps = styled.p`
-  color: ${({theme}) => theme.colorExtraPrimary};
-  font-size: ${({theme}) => theme.fontSize.xxs};
+  color: ${({ theme }) => theme.colorExtraPrimary};
+  font-size: ${({ theme }) => theme.fontSize.xs};
 `;
 
 const StyledRest = styled.p`
-  color: ${({theme}) => theme.colorExtraQuatenary};
-  font-size: ${({theme}) => theme.fontSize.xxs};
+  color: ${({ theme }) => theme.colorExtraQuatenary};
+  font-size: ${({ theme }) => theme.fontSize.xs};
 `;
 
 const StyledTrainingTitle = styled.span`
-  color: ${({theme}) => theme.fontColorGray};
-  font-size: ${({theme}) => theme.fontSize.xxs};
+  color: ${({ theme }) => theme.fontColorGray};
+  font-size: ${({ theme }) => theme.fontSize.xxs};
   text-transform: uppercase;
-  text-align:center;
+  text-align: center;
 `;
 
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+  color:${({theme}) => theme.fontColorLight};
+`;
 
 const CardTraining = () => (
   <StyledWrapper>
-  <StyledViewTraining>Watch</StyledViewTraining>
-  <StyledStartTraining>Start now</StyledStartTraining>
-    <StyledLevelTag>Difficult</StyledLevelTag> 
+    <StyledViewTraining as={StyledNavLink} to='/trainings/details/5'>
+      Watch
+    </StyledViewTraining>
+    <StyledStartTraining as={StyledNavLink} to='/app'>
+      Start now
+    </StyledStartTraining>
+    <StyledLevelTag>Difficult</StyledLevelTag>
     <StyledInnerWrapper>
       <StyledTotalTime>Total time: 120 minutes</StyledTotalTime>
       <StyledExercises>Exercises: x12</StyledExercises>
@@ -110,6 +120,5 @@ const CardTraining = () => (
     <StyledTrainingTitle>full body workout</StyledTrainingTitle>
   </StyledWrapper>
 );
-
 
 export default CardTraining;

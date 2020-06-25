@@ -3,11 +3,10 @@ export const routes = {
   trainings: '/trainings',
   training: '/trainings/details/:id',
   myTrainings: '/mytrainings',
-  myTraining: '/mytraining',
   createTrainings: '/createtraining',
   progress: '/progress',
   statistics: '/statistics',
-  appPanel: '/apppanel',
+  appPanel: '/app',
   login: '/login',
   registration: '/registration'
 }

@@ -4,7 +4,7 @@ import GridTemplate from '../templates/GridTemplate';
 import CardTraining from '../components/CardTraining/CardTraining';
 
 const TrainingsPage = () => (
-  <UserPanelTemplate>
+  <UserPanelTemplate activeTopNav>
     <GridTemplate>
       <CardTraining />
       <CardTraining />
