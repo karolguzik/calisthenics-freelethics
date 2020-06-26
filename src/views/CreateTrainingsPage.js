@@ -10,7 +10,7 @@ import Button from '../components/Button/Button';
 // TODO think about separate this form into components form
 
 const StyledWrapper = styled.div`
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
 `;
 

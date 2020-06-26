@@ -4,31 +4,27 @@ import UserPanelTemplate from '../templates/UserPanelTemplate';
 import SummaryTraining from '../components/SummaryTraining/SummaryTraining';
 
 const StyledWrapper = styled.div`
-  width: 80%;
+  width: 90%;
   height:100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
 `;
 
 const StyledActiveExerciseTitle = styled.div`
-  margin-top: 3rem;
+  margin-top: 2rem;
   padding: 2rem;
   background: rgba(0, 0, 0, 0.3);
   color: ${({ theme }) => theme.colorExtraSecondary};
-  font-size: ${({ theme }) => theme.fontSize.l};
-  border: 3px solid ${({ theme }) => theme.fontColorDark};
+  font-size: ${({ theme }) => theme.fontSize.s};
   text-transform: uppercase;
   text-align: center;
   letter-spacing: 10px;
 `;
 
 const StyledTimeWrapper = styled.div`
-margin-top:3rem;
-  /* color: ${(theme) => theme.fontColorLight};  */
-  /* font-size: ${({ theme }) => theme.fontSize.xxl}; */
-  font-size: 6rem;
+  margin-top:2rem;
+  font-size: ${({ theme }) => theme.fontSize.xxxl};
   font-weight:${({ theme }) => theme.fontWeight.extraBold};
   text-transform: uppercase;
   text-align:center;
@@ -36,14 +32,14 @@ margin-top:3rem;
 `;
 
 const StyledNextExerciseTitle = styled.p`
-  margin-top: 3rem;
+  margin-top: 2rem;
   color: ${({ theme }) => theme.colorExtraTertiary};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   text-align: right;
 `;
 
 const StyledSummaryTrainingWrapper = styled.div`
-  margin: 20rem 0 0 auto;
+  margin: 4rem 0 0 auto;
 `;
 
 const StyledSummaryTrainingTitle = styled.h3`

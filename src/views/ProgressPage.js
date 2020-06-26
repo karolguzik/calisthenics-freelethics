@@ -5,7 +5,7 @@ import UserPanelTemplate from '../templates/UserPanelTemplate';
 import GridTemplate from '../templates/GridTemplate';
 
 const StyledWrapper = styled.div`
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
 `;
 
@@ -51,8 +51,7 @@ const StyledTraining = styled.div`
   justify-content: center;
   align-self: stretch;
   padding: .5rem;
-  /* font-size: ${({ theme }) => theme.fontSize.xxs}; */
-  font-size: .7rem;
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
   color: ${({ theme }) => theme.fontColorDark};
   background: ${({ theme, done }) =>
     done ? theme.colorExtraTertiary : theme.colorExtraSecondary};

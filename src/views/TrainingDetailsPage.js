@@ -8,10 +8,11 @@ import SummaryTraining from '../components/SummaryTraining/SummaryTraining';
 const StyledGridTemplate = styled(GridTemplate)`
   grid-auto-rows: auto;
   margin-top:2rem;
+  grid-template-columns: 90%;
 `;
 
 const StyledInnerWrapper = styled.div`
-  width:80%;
+  width:90%;
   margin:0 auto 2rem;
 
   & > *{
