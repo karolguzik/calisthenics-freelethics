@@ -54,12 +54,12 @@ const StyledStartTraining = styled(StyledViewTraining)`
   }
 `;
 
-const StyledLevelTag = styled.span`
+const StyledCategoryTag = styled.span`
   position: absolute;
   top: 5%;
   left: 5%;
   padding: 0.1rem;
-  color: ${({ theme }) => theme.fontColorGray};
+  color: ${({ theme }) => theme.colorExtraQuatenary};
   font-size: ${({ theme }) => theme.fontSize.xxs};
 `;
 
@@ -71,27 +71,32 @@ const StyledInnerWrapper = styled.div`
   justify-content: center;
 `;
 
-const StyledTotalTime = styled.span`
+export const StyledTotalTime = styled.span`
   font-size: ${({ theme }) => theme.fontSize.s};
 `;
 
-const StyledExercises = styled.p`
+export const StyledExercises = styled.p`
   color: ${({ theme }) => theme.fontColorLight};
   font-size: ${({ theme }) => theme.fontSize.xs};
 `;
 
-const StyledReps = styled.p`
+export const StyledReps = styled.p`
   color: ${({ theme }) => theme.colorExtraPrimary};
   font-size: ${({ theme }) => theme.fontSize.xs};
 `;
 
-const StyledRest = styled.p`
-  color: ${({ theme }) => theme.colorExtraQuatenary};
+export const StyledExercisesRest = styled.p`
+  color: ${({ theme }) => theme.fontColorGray};
+  font-size: ${({ theme }) => theme.fontSize.xs};
+`;
+
+export const StyledRepsRest = styled.p`
+  color: ${({ theme }) => theme.fontColorGray};
   font-size: ${({ theme }) => theme.fontSize.xs};
 `;
 
 const StyledTrainingTitle = styled.span`
-  color: ${({ theme }) => theme.fontColorGray};
+  color: ${({ theme }) => theme.colorExtraSecondary};
   font-size: ${({ theme }) => theme.fontSize.xxs};
   text-transform: uppercase;
   text-align: center;
@@ -102,7 +107,7 @@ const StyledNavLink = styled(NavLink)`
   color:${({theme}) => theme.fontColorLight};
 `;
 
-const CardTraining = () => (
+export const CardTraining = () => (
   <StyledWrapper>
     <StyledViewTraining as={StyledNavLink} to='/trainings/details/5'>
       Watch
@@ -110,15 +115,14 @@ const CardTraining = () => (
     <StyledStartTraining as={StyledNavLink} to='/app'>
       Start now
     </StyledStartTraining>
-    <StyledLevelTag>Difficult</StyledLevelTag>
+    <StyledCategoryTag>Calisthenics</StyledCategoryTag>
     <StyledInnerWrapper>
       <StyledTotalTime>Total time: 120 minutes</StyledTotalTime>
       <StyledExercises>Exercises: x12</StyledExercises>
       <StyledReps>Reps: x4</StyledReps>
-      <StyledRest>Rest: 30 seconds</StyledRest>
+      <StyledExercisesRest>Exercise rest: 30 seconds</StyledExercisesRest>
+      <StyledRepsRest>Reps rest: 2 minutes</StyledRepsRest>
     </StyledInnerWrapper>
     <StyledTrainingTitle>full body workout</StyledTrainingTitle>
   </StyledWrapper>
 );
-
-export default CardTraining;

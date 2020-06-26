@@ -37,6 +37,30 @@ const Button = styled.button`
       box-shadow: 0 4px 10px -5px #000;
     }
   `}
+
+  ${({tertiary}) => tertiary && css`
+    background: none;
+    color: ${({theme}) => theme.colorExtraSecondary};
+    border: 1px solid ${({theme}) => theme.colorExtraSecondary};
+    border-radius:15px;
+
+    :hover {
+      color: ${({theme}) => theme.fontColorDark};
+      background: ${({theme}) => theme.colorExtraSecondary};
+    }
+  `}
+
+  ${({quatenary}) => quatenary && css`
+    background: none;
+    color: ${({theme}) => theme.colorExtraQuatenary};
+    border: 1px solid ${({theme}) => theme.colorExtraQuatenary};
+    border-radius:15px;
+
+    :hover {
+      color: ${({theme}) => theme.fontColorDark};
+      background: ${({theme}) => theme.colorExtraQuatenary};
+    }
+  `}
 `
 
 export default Button;
