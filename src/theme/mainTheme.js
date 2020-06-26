@@ -10,7 +10,7 @@ export const theme = {
   fontColorGray: '#898989;',
   colorExtraPrimary: 'hsl(47, 92%, 74%)',
   colorExtraSecondary: 'hsl(0, 85%, 58%)',
-  colorExtraTertiary: 'hsl(66, 59%, 43%)',
+  colorExtraTertiary: '#A6C184',
   colorExtraQuatenary: 'hsl(194, 54%, 42%)',
   fontSize: {
     xxs: '1rem',
