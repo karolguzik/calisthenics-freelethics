@@ -15,7 +15,7 @@ import StatisticsPage from './views/StatisticsPage';
 
 const App = () => {
   return (
-    <Router basename={process.env.PUBLIC_URL}>
+    <Router>
       <MainTemplate>
         <Switch>
           <Route exact path={routes.home} component={WelcomePage} />
