@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
+import { device } from '../mediaQueries/mediaQueries';
 import UserPanelTemplate from '../templates/UserPanelTemplate';
 import GridTemplate from '../templates/GridTemplate';
 import SummaryTraining from '../components/SummaryTraining/SummaryTraining';
@@ -12,6 +13,14 @@ import Button from '../components/Button/Button';
 const StyledWrapper = styled.div`
   width: 90%;
   margin: 0 auto;
+
+  @media ${device.mobileL} {
+    width: 80%;
+  }
+
+  @media ${device.tablet} {
+    width:70%;
+  }
 `;
 
 const StyledForm = styled.form`
@@ -34,6 +43,14 @@ const StyledGridTemplate = styled(GridTemplate)`
   grid-auto-rows: auto;
   grid-template-columns: 100%;
   margin:2rem 0;
+
+  @media ${device.mobileL} {
+    grid-template-columns: 100%;
+  }
+
+  @media ${device.tablet} {
+    grid-auto-rows: auto;
+  }
 `;
 
 const StyledSummaryWrapper = styled.div`

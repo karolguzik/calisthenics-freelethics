@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import { device } from '../mediaQueries/mediaQueries';
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;700;900&display=swap');
@@ -13,6 +14,10 @@ const GlobalStyle = createGlobalStyle`
 
   html {
     font-size: 62.5%;
+
+    @media ${device.tablet} {
+      font-size: 80%;
+    }
   }
 
   body {

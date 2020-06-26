@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { device } from '../../mediaQueries/mediaQueries';
 
 const Button = styled.button`
   width: 100px;
@@ -13,6 +14,10 @@ const Button = styled.button`
   transition: .2s ease-in-out;
   cursor: pointer;
   outline: none;
+
+  @media ${device.tablet} {
+    width:120px;
+  }
 
   :hover {
     color: ${({theme}) => theme.fontColorLight};
@@ -44,6 +49,10 @@ const Button = styled.button`
     border: 1px solid ${({theme}) => theme.colorExtraSecondary};
     border-radius:15px;
 
+    @media ${device.tablet} {
+      border-radius: 30px;
+    }
+
     :hover {
       color: ${({theme}) => theme.fontColorDark};
       background: ${({theme}) => theme.colorExtraSecondary};
@@ -55,6 +64,10 @@ const Button = styled.button`
     color: ${({theme}) => theme.colorExtraQuatenary};
     border: 1px solid ${({theme}) => theme.colorExtraQuatenary};
     border-radius:15px;
+
+    @media ${device.tablet} {
+      border-radius: 30px;
+    }
 
     :hover {
       color: ${({theme}) => theme.fontColorDark};

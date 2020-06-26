@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { device } from '../mediaQueries/mediaQueries';
 import { Link } from 'react-router-dom';
 import bgcImage from '../assets/images/bgc-1.png';
 import { H2 } from '../components/Heading/Heading';
@@ -27,6 +28,11 @@ const StyledWrapper = styled.div`
     background-size: 120%;
     opacity: 0.1;
     z-index: -1;
+
+    @media ${device.tablet} {
+      background-size: 80%;
+      background-position: 100% 100%;
+    }
   }
 `;
 
@@ -34,6 +40,11 @@ const StyledInnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+
+  @media ${device.tablet} {
+    width: 60%;
+    margin:0 auto;
+  }
 `;
 
 const StyledHeadingWrapper = styled.div`

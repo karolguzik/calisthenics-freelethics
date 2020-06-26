@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { device } from '../../mediaQueries/mediaQueries';
 
 const NavItem = styled.li`
   list-style: none;
@@ -14,6 +15,10 @@ const NavItem = styled.li`
   background-repeat: no-repeat;
   background-size: 60%;
   background-position:center;
+
+  @media ${device.tablet} {
+    background-size: 80%;
+  }
   `};
 `;
 

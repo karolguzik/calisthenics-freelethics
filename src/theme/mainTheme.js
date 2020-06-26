@@ -28,5 +28,5 @@ export const theme = {
     regular: 300,
     bold: 700,
     extraBold: 900,
-  }
+  },
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { device } from '../mediaQueries/mediaQueries';
 import UserPanelTemplate from '../templates/UserPanelTemplate';
 import GridTemplate from '../templates/GridTemplate';
 import Button from '../components/Button/Button';
@@ -9,6 +10,11 @@ const StyledGridTemplate = styled(GridTemplate)`
   grid-auto-rows: auto;
   margin-top:2rem;
   grid-template-columns: 90%;
+
+  @media ${device.tablet} {
+    grid-auto-rows: auto;
+    grid-template-columns: 70%;
+  }
 `;
 
 const StyledInnerWrapper = styled.div`
@@ -17,6 +23,14 @@ const StyledInnerWrapper = styled.div`
 
   & > *{
     margin: 1rem 0;
+  }
+
+  @media ${device.mobileL} {
+    width:80%;  
+  }
+
+  @media ${device.tablet} {
+    width:70%;
   }
 `;
 

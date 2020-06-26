@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { device } from '../../mediaQueries/mediaQueries';
 import { NavLink } from 'react-router-dom';
 import SummaryTraining from '../SummaryTraining/SummaryTraining';
 

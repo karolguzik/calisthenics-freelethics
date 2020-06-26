@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { device } from '../mediaQueries/mediaQueries';
 import UserPanelTemplate from '../templates/UserPanelTemplate';
 import SummaryTraining from '../components/SummaryTraining/SummaryTraining';
 
@@ -16,10 +17,19 @@ const StyledActiveExerciseTitle = styled.div`
   padding: 2rem;
   background: rgba(0, 0, 0, 0.3);
   color: ${({ theme }) => theme.colorExtraSecondary};
-  font-size: ${({ theme }) => theme.fontSize.s};
+  font-size: ${({ theme }) => theme.fontSize.xs};
   text-transform: uppercase;
   text-align: center;
   letter-spacing: 10px;
+
+  @media ${device.mobileS} {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
+
+  @media ${device.tablet} {
+    font-size: ${({ theme }) => theme.fontSize.l};
+    margin-top: 5rem;
+  }
 `;
 
 const StyledTimeWrapper = styled.div`
@@ -29,6 +39,11 @@ const StyledTimeWrapper = styled.div`
   text-transform: uppercase;
   text-align:center;
   letter-spacing: 10px;
+
+  @media ${device.tablet} {
+    margin-top: 5rem;
+    margin-bottom: 2rem;
+  }
 `;
 
 const StyledNextExerciseTitle = styled.p`
@@ -39,7 +54,19 @@ const StyledNextExerciseTitle = styled.p`
 `;
 
 const StyledSummaryTrainingWrapper = styled.div`
-  margin: 4rem 0 0 auto;
+  margin: 7rem 0 0 auto;
+
+  @media ${device.mobileS} {
+    margin: 12rem 0 0 auto;
+  }
+
+  @media ${device.mobileL} {
+    margin: 20rem 0 0 auto;
+  }
+
+  @media ${device.tablet} {
+    margin: 17rem 0 0 auto;
+  }
 `;
 
 const StyledSummaryTrainingTitle = styled.h3`

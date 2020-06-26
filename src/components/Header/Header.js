@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { device } from '../../mediaQueries/mediaQueries';
 import Logo from '../Logo/Logo';
 import { H1, H2 } from '../Heading/Heading';
 import Button from '../Button/Button';
@@ -38,6 +39,11 @@ const StyledInnerWrapper = styled.div`
     background-size: 120%;
     opacity: .1;
     z-index:-1;
+
+    @media ${device.tablet} {
+      background-size: 80%;
+      background-position: 100% 100%;
+    }
   }
 `;
 

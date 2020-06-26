@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { device } from '../../mediaQueries/mediaQueries';
 
 const Input = styled.input`
   width:100%;
@@ -6,6 +7,11 @@ const Input = styled.input`
   background: rgba(65,65,68, .5);
   color: ${({theme}) => theme.fontColorDark};
   border: none;
+
+  @media ${device.tablet} {
+    padding: 1.3rem;
+    font-size: ${({theme}) => theme.fontSize.xs};
+  }
 `;
 
 export default Input;
