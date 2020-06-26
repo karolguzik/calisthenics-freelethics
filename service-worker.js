@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/calisthenics-freelethics/precache-manifest.3aab3450fcb7b6d8200fde4fc4a40275.js"
+  "/calisthenics-freelethics/precache-manifest.abb8ded7f1a1f071c88a8530c5bf4fa5.js"
 );
 
 self.addEventListener('message', (event) => {
