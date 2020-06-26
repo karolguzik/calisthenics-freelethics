@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "5c26da8d6cc1c1c630f59f1b18be9650",
+    "revision": "21042e5c12292815fadfb32d9e5e480f",
     "url": "/calisthenics-freelethics/index.html"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/calisthenics-freelethics/static/js/2.0cfb0bc4.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "8e8792e5297df2f798e3",
-    "url": "/calisthenics-freelethics/static/js/main.828d1146.chunk.js"
+    "revision": "944fbc2c52520a69ffea",
+    "url": "/calisthenics-freelethics/static/js/main.7e75906d.chunk.js"
   },
   {
     "revision": "0dfb9d49f1d55fb43db4",
