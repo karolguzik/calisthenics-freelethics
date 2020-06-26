@@ -3,13 +3,7 @@ import styled from 'styled-components';
 import UserPanelTemplate from '../templates/UserPanelTemplate';
 import GridTemplate from '../templates/GridTemplate';
 import Button from '../components/Button/Button';
-import {
-  StyledTotalTime,
-  StyledExercises,
-  StyledReps,
-  StyledExercisesRest,
-  StyledRepsRest
-} from '../components/CardTraining/CardTraining';
+import SummaryTraining from '../components/SummaryTraining/SummaryTraining';
 
 const StyledGridTemplate = styled(GridTemplate)`
   grid-auto-rows: auto;
@@ -38,11 +32,7 @@ const TrainingDetailsPage = () => (
   <UserPanelTemplate pageTitle='example training'>
     <>
       <StyledInnerWrapper>
-        <StyledTotalTime>Total time: 100 minutes</StyledTotalTime>
-        <StyledExercises>Exercises: 6x</StyledExercises>
-        <StyledReps>Reps: 3x</StyledReps>
-        <StyledExercisesRest>Exercise rest: 45 seconds</StyledExercisesRest>
-        <StyledRepsRest>Reps rest: 2 minutes</StyledRepsRest>
+        <SummaryTraining />
         <StyledButton quatenary>Start in app</StyledButton>
         <StyledButton tertiary>Delete</StyledButton>
       </StyledInnerWrapper>
