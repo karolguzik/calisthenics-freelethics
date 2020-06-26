@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { routes } from './routes';
 import MainTemplate from './templates/MainTemplate';
 import WelcomePage from './views/WelcomePage';
@@ -15,7 +15,7 @@ import StatisticsPage from './views/StatisticsPage';
 
 const App = () => {
   return (
-    <HashRouter basename={process.env.PUBLIC_URL}>
+    <Router basename={process.env.PUBLIC_URL}>
       <MainTemplate>
         <Switch>
           <Route exact path={routes.home} component={WelcomePage} />
@@ -30,7 +30,7 @@ const App = () => {
           <Route path={routes.appPanel} component={AppPanelPage} />
         </Switch>
       </MainTemplate>
-    </HashRouter>
+    </Router>
   );
 }
 
