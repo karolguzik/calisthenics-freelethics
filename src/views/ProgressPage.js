@@ -1,4 +1,4 @@
-import React, { css } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import UserPanelTemplate from '../templates/UserPanelTemplate';
@@ -73,7 +73,7 @@ const StyledCheck = styled.div`
   align-items: center;
   background: ${({ theme }) => theme.colorExtraTertiary};
   font-size: ${({ theme }) => theme.fontSize.xs};
-  font-weight: ${({theme}) => theme.fontWeight.bold};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   transform: translateY(100%);
   transition: 0.2s ease-in-out;
 
@@ -107,7 +107,31 @@ const ProgressPage = () => (
         <StyledProgressWrapper>
           <StyledDate>Monday 28/06/2020</StyledDate>
           <StyledHr></StyledHr>
-          <StyledTraining done>full body workout</StyledTraining>
+          <StyledTraining done>
+            full body workout
+            <StyledCheck>Check</StyledCheck>
+          </StyledTraining>
+        </StyledProgressWrapper>
+        <StyledProgressWrapper>
+          <StyledDate>Monday 28/06/2020</StyledDate>
+          <StyledHr></StyledHr>
+          <StyledTraining>rest</StyledTraining>
+        </StyledProgressWrapper>
+        <StyledProgressWrapper>
+          <StyledDate>Monday 28/06/2020</StyledDate>
+          <StyledHr></StyledHr>
+          <StyledTraining done>
+            full body workout
+            <StyledCheck>Check</StyledCheck>
+          </StyledTraining>
+        </StyledProgressWrapper>
+        <StyledProgressWrapper>
+          <StyledDate>Monday 28/06/2020</StyledDate>
+          <StyledHr></StyledHr>
+          <StyledTraining done>
+            full body workout
+            <StyledCheck>Check</StyledCheck>
+          </StyledTraining>
         </StyledProgressWrapper>
       </StyledGridTemplate>
     </StyledWrapper>
