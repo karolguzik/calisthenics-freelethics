@@ -9,6 +9,10 @@ const NavItem = styled.li`
   align-items:center;
   justify-content:center;
 
+  @media ${device.tablet} {
+    border-bottom: 5px solid transparent;
+  }
+
   ${({icon}) => icon && css`
   width: 45px;
   background-image: url(${({icon}) => icon});
@@ -18,6 +22,14 @@ const NavItem = styled.li`
 
   @media ${device.tablet} {
     background-size: 80%;
+  }
+
+  @media ${device.laptop} {
+    background-size: 90%;
+  }
+
+  @media ${device.laptopL} {
+    background-size: 70%;
   }
   `};
 `;

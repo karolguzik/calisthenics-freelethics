@@ -19,6 +19,10 @@ const Button = styled.button`
     width:120px;
   }
 
+  @media ${device.laptop} {
+    width: 150px;
+  }
+
   :hover {
     color: ${({theme}) => theme.fontColorLight};
     background: ${({theme}) => theme.bgcDarkPrimary};
@@ -29,6 +33,14 @@ const Button = styled.button`
     border-radius: 15px;
     border: none;
     box-shadow: 0 3px 10px -5px #000;
+
+    @media ${device.tablet} {
+      border-radius: 30px;
+    }
+
+    @media ${device.laptop} {
+      border-radius: 50px;
+    }
 
     :hover {
       background: ${({theme}) => theme.colorExtraPrimary};
@@ -53,6 +65,10 @@ const Button = styled.button`
       border-radius: 30px;
     }
 
+    @media ${device.laptop} {
+      border-radius: 50px;
+    }
+
     :hover {
       color: ${({theme}) => theme.fontColorDark};
       background: ${({theme}) => theme.colorExtraSecondary};
@@ -67,6 +83,10 @@ const Button = styled.button`
 
     @media ${device.tablet} {
       border-radius: 30px;
+    }
+
+    @media ${device.laptop} {
+      border-radius: 50px;
     }
 
     :hover {

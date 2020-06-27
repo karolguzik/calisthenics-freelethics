@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { device } from '../mediaQueries/mediaQueries';
 import { Formik } from 'formik';
 import AuthTemplate from '../templates/AuthTemplate';
 import Form from '../components/Form/Form';
@@ -13,7 +14,7 @@ const StyledButtonContainer = styled.div`
 
 const StyledInput = styled(Input)`
   margin: 1rem 0;
-  padding: 1rem;
+  padding: .9rem;
   border: ${(props) => props.border || 'none'};
 `;
 

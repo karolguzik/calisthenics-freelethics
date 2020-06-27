@@ -20,6 +20,10 @@ export const Nav = styled.nav`
     width:70%;
   }
 
+  @media ${device.laptop} {
+    width:65%;
+  }
+
   ${({navTop}) => navTop && css`
     top:0;
     height:7.5%;
@@ -29,8 +33,8 @@ export const Nav = styled.nav`
     border-radius: 0 0 10px 10px;
 
     @media ${device.tablet} {
-    width:80%;
-  }
+      width:80%;
+    }
   `}
 `;
 

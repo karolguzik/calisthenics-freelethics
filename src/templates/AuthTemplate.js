@@ -15,6 +15,12 @@ const StyledWrapper = styled.div`
   box-shadow: 0 10px 30px -10px #000;
   z-index: 10;
 
+  @media ${device.laptop} {
+    margin: 15vh auto;
+    width: 60%;
+    height: 70vh;
+  }
+
   &::before {
     content: '';
     position: absolute;
@@ -33,6 +39,16 @@ const StyledWrapper = styled.div`
       background-size: 80%;
       background-position: 100% 100%;
     }
+
+    @media ${device.laptop} {
+      background-size: 90%;
+      background-position: 100% 100%;
+    }
+
+    @media ${device.laptopL} {
+      background-size: 60%;
+      background-position: 100% 100%;
+    }
   }
 `;
 
@@ -43,6 +59,11 @@ const StyledInnerWrapper = styled.div`
 
   @media ${device.tablet} {
     width: 60%;
+    margin:0 auto;
+  }
+
+  @media ${device.laptop} {
+    width: 90%;
     margin:0 auto;
   }
 `;
@@ -58,7 +79,6 @@ const StyledFormWrapper = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-  margin-top: 1rem;
   color: ${({theme}) => theme.fontColorDark};
   font-size: ${({theme}) => theme.fontSize.xxs};
   text-transform: uppercase;

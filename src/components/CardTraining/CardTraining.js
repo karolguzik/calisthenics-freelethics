@@ -70,6 +70,7 @@ const StyledInnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+
   justify-content: center;
 `;
 
@@ -85,6 +86,7 @@ const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color:${({theme}) => theme.fontColorLight};
 `;
+
 
 export const CardTraining = () => (
   <StyledWrapper>

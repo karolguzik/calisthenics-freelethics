@@ -1,9 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
+import { device } from '../../mediaQueries/mediaQueries';
 
 
 const StyledTotalTime = styled.span`
   font-size: ${({ theme }) => theme.fontSize.s};
+
+  @media ${device.tablet} {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+  }
 `;
 
 const StyledExercises = styled.p`
@@ -19,11 +24,19 @@ const StyledReps = styled.p`
 const StyledExercisesRest = styled.p`
   color: ${({ theme }) => theme.fontColorGray};
   font-size: ${({ theme }) => theme.fontSize.xs};
+
+  @media ${device.tablet} {
+    font-size: ${({ theme }) => theme.fontSize.xxs};
+  }
 `;
 
 const StyledRepsRest = styled.p`
   color: ${({ theme }) => theme.fontColorGray};
   font-size: ${({ theme }) => theme.fontSize.xs};
+
+  @media ${device.tablet} {
+    font-size: ${({ theme }) => theme.fontSize.xxs};
+  }
 `;
 
 const SummaryTraining = () => (

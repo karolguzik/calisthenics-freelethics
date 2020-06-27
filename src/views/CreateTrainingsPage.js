@@ -8,8 +8,6 @@ import Input from '../components/Input/Input';
 import Button from '../components/Button/Button';
 
 
-// TODO think about separate this form into components form
-
 const StyledWrapper = styled.div`
   width: 90%;
   margin: 0 auto;
@@ -25,6 +23,12 @@ const StyledWrapper = styled.div`
 
 const StyledForm = styled.form`
   width:100%;
+
+  @media ${device.laptopL} {
+    width:60%;
+    margin: 0 auto;
+    text-align:center;
+  }
 `;
 
 const StyledInput = styled(Input)`
@@ -33,6 +37,16 @@ const StyledInput = styled(Input)`
   background: ${({theme}) => theme.bgcDarkSecondary};
   border: 1px solid ${({theme}) => theme.bgcDarkTertiary};
   border-radius: 20px;
+
+  @media ${device.tablet} {
+    padding: .8rem;
+    border-radius:30px;
+  }
+
+  @media ${device.laptopL} {
+    padding: .6rem;
+    font-size: ${({theme}) => theme.fontSize.xxs}
+  }
 `;
 
 const StyledButton = styled(Button)`
@@ -51,10 +65,21 @@ const StyledGridTemplate = styled(GridTemplate)`
   @media ${device.tablet} {
     grid-auto-rows: auto;
   }
+
+  @media ${device.laptopL} {
+    grid-template-columns: 60%;
+    justify-content: center;
+    grid-gap: 2rem;
+  }
 `;
 
 const StyledSummaryWrapper = styled.div`
   margin: 3rem 0;
+
+  @media ${device.laptopL} {
+    display:flex;
+    justify-content: space-between;
+  }
 
   & > *{
     margin: 1rem 0;
@@ -70,11 +95,11 @@ const CreateTrainingsPage = () => (
     <StyledWrapper>
       <StyledForm>
         <StyledInput type='text' name='training-name' placeholder='training name' />
-        <StyledInput type='text' name='exercise-name' placeholder='exercise name' />
         <StyledInput type='number' name='reps-number' placeholder='reps number' />
-        <StyledInput type='number' name='exercise-time' placeholder='exercise time' />
+        <StyledInput type='number' name='reps-rest-time' placeholder='reps rest time' />
         <StyledInput type='number' name='exercise-rest-time' placeholder='exercise rest time' />
-        <StyledInput type='number' name='exercise-rest-time' placeholder='reps rest time' />
+        <StyledInput type='text' name='exercise-name' placeholder='exercise name' />
+        <StyledInput type='number' name='exercise-time' placeholder='exercise time' />
         <StyledButton type='submit' quatenary>Add</StyledButton>
         <StyledButton tertiary>Clear</StyledButton>
       </StyledForm>

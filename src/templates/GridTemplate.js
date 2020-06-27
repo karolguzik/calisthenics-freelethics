@@ -16,6 +16,15 @@ const GridTemplate = styled.div`
     grid-template-columns: 60%;
     grid-auto-rows: 200px;
   }
+
+  @media ${device.laptop} {
+    grid-template-columns: 40% 40%;
+  }
+
+  @media ${device.laptopL} {
+    grid-template-columns: 25% 25%;
+    gap: 3rem;
+  }
 `;
 
 export default GridTemplate;

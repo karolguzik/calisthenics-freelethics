@@ -18,6 +18,10 @@ const GlobalStyle = createGlobalStyle`
     @media ${device.tablet} {
       font-size: 80%;
     }
+
+    @media ${device.tablet} {
+      font-size: 95%;
+    }
   }
 
   body {

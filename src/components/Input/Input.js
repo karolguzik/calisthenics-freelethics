@@ -9,6 +9,11 @@ const Input = styled.input`
   border: none;
 
   @media ${device.tablet} {
+    padding: .8rem;
+    font-size: ${({theme}) => theme.fontSize.xs};
+  }
+
+  @media ${device.laptop} {
     padding: 1.3rem;
     font-size: ${({theme}) => theme.fontSize.xs};
   }

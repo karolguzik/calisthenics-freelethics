@@ -8,48 +8,69 @@ import SummaryTraining from '../components/SummaryTraining/SummaryTraining';
 
 const StyledGridTemplate = styled(GridTemplate)`
   grid-auto-rows: auto;
-  margin-top:2rem;
+  margin-top: 2rem;
   grid-template-columns: 90%;
 
   @media ${device.tablet} {
     grid-auto-rows: auto;
     grid-template-columns: 70%;
   }
+
+  @media ${device.laptopL} {
+    grid-template-columns: repeat(2, 25%);
+    justify-content: center;
+    grid-gap: 2rem;
+  }
 `;
 
 const StyledInnerWrapper = styled.div`
-  width:90%;
-  margin:0 auto 2rem;
+  width: 90%;
+  margin: 0 auto 2rem;
 
-  & > *{
+  & > * {
     margin: 1rem 0;
   }
 
   @media ${device.mobileL} {
-    width:80%;  
+    width: 80%;
   }
 
   @media ${device.tablet} {
-    width:70%;
+    width: 70%;
+  }
+
+  @media ${device.laptopL} {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+`;
+
+const StyledButtonWrapper = styled.div`
+  @media ${device.laptopL} {
+    align-self: flex-start;
+    flex-basis: 100%;
+    text-align:center;
   }
 `;
 
 const StyledButton = styled(Button)`
-  margin: .5rem .5rem .5rem 0;
+  margin: 0.5rem 0.5rem 0.5rem 0;
 `;
 
 const StyledHr = styled.hr`
-  border: 1px solid ${({theme}) => theme.bgcDarkSecondary};
+  border: 1px solid ${({ theme }) => theme.bgcDarkSecondary};
 `;
-
 
 const TrainingDetailsPage = () => (
   <UserPanelTemplate pageTitle='example training'>
     <>
       <StyledInnerWrapper>
         <SummaryTraining />
-        <StyledButton quatenary>Start in app</StyledButton>
-        <StyledButton tertiary>Delete</StyledButton>
+        <StyledButtonWrapper>
+          <StyledButton quatenary>Start in app</StyledButton>
+          <StyledButton tertiary>Delete</StyledButton>
+        </StyledButtonWrapper>
       </StyledInnerWrapper>
       <StyledHr></StyledHr>
       <StyledGridTemplate>

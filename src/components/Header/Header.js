@@ -44,6 +44,16 @@ const StyledInnerWrapper = styled.div`
       background-size: 80%;
       background-position: 100% 100%;
     }
+
+    @media ${device.laptop} {
+      background-size: 70%;
+      background-position: 100% 100%;
+    }
+
+    @media ${device.laptopL} {
+      background-size: 50%;
+      background-position: 100% 100%;
+    }
   }
 `;
 

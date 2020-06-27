@@ -13,7 +13,7 @@ const StyledButtonContainer = styled.div`
 
 const StyledInput = styled(Input)`
   margin: 1rem 0;
-  padding: 1rem;
+  padding: .9rem;
   border: ${(props) => props.border || 'none'};
 `;
 

@@ -10,6 +10,10 @@ const StyledWrapper = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+
+  @media ${device.laptopL} {
+    width: 70%;
+  }
 `;
 
 const StyledActiveExerciseTitle = styled.div`
@@ -65,11 +69,24 @@ const StyledSummaryTrainingWrapper = styled.div`
   }
 
   @media ${device.tablet} {
-    margin: 17rem 0 0 auto;
+    margin: 6rem 0 0 auto;
+  }
+
+  @media ${device.laptopL} {
+    margin-top: 10rem;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    width:100%;
+  }
+
+  @media ${device.desktop} {
+    margin: 10rem 0 0 auto;
   }
 `;
 
 const StyledSummaryTrainingTitle = styled.h3`
+  flex-basis:100%;
   text-transform: uppercase;
   margin-bottom: 1rem;
 `

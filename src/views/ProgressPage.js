@@ -27,6 +27,11 @@ const StyledGridTemplate = styled(GridTemplate)`
     grid-auto-rows: auto;
     grid-template-columns: 90%;
   }
+
+  @media ${device.laptopL} {
+    grid-template-columns: 40% 40%;
+    grid-gap:2rem;
+  }
 `;
 
 const StyledMonthName = styled.p`
@@ -40,6 +45,10 @@ const StyledProgressWrapper = styled.div`
   background: rgba(0, 0, 0, 0.3);
   border-radius: 20px;
 
+  @media ${device.tablet} {
+    border-radius:30px;    
+  }
+
   & > * {
     flex-basis: 45%;
   }
@@ -51,6 +60,14 @@ const StyledDate = styled.p`
   align-items: center;
   padding: 1rem 0;
   font-size: ${({ theme }) => theme.fontSize.xxs};
+
+  @media ${device.laptop} {
+    font-size: ${({ theme }) => theme.fontSize.xs};  
+  }
+
+  @media ${device.laptopL} {
+    font-size: ${({ theme }) => theme.fontSize.xxs}; 
+  }
 `;
 
 const StyledHr = styled.hr`
@@ -73,6 +90,19 @@ const StyledTraining = styled.div`
   text-transform: uppercase;
   overflow: hidden;
   cursor: pointer;
+
+  @media ${device.tablet} {
+    border-radius:30px;
+  }
+
+  @media ${device.laptop} {
+    border-radius:30px;
+    font-size: ${({ theme }) => theme.fontSize.xxs};    
+  }
+
+  @media ${device.laptopL} {
+    font-size: ${({ theme }) => theme.fontSize.xxxs}; 
+  }
 `;
 
 const StyledCheck = styled.div`
