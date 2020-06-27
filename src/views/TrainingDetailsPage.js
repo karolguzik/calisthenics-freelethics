@@ -6,6 +6,7 @@ import GridTemplate from '../templates/GridTemplate';
 import Button from '../components/Button/Button';
 import SummaryTraining from '../components/SummaryTraining/SummaryTraining';
 
+
 const StyledGridTemplate = styled(GridTemplate)`
   grid-auto-rows: auto;
   margin-top: 2rem;
@@ -62,31 +63,33 @@ const StyledHr = styled.hr`
   border: 1px solid ${({ theme }) => theme.bgcDarkSecondary};
 `;
 
-const TrainingDetailsPage = () => (
-  <UserPanelTemplate pageTitle='example training'>
-    <>
-      <StyledInnerWrapper>
-        <SummaryTraining />
-        <StyledButtonWrapper>
-          <StyledButton quatenary>Start in app</StyledButton>
-          <StyledButton tertiary>Delete</StyledButton>
-        </StyledButtonWrapper>
-      </StyledInnerWrapper>
-      <StyledHr></StyledHr>
-      <StyledGridTemplate>
-        <p>Push up's - 60 seconds</p>
-        <p>Pull up's - 60 seconds</p>
-        <p>Burpees - 60 seconds</p>
-        <p>Sprawls - 45 seconds</p>
-        <p>Jumps - 60 seconds</p>
-        <p>Dip's - 60 seconds</p>
-        <p>Dip's - 60 seconds</p>
-        <p>Dip's - 60 seconds</p>
-        <p>Dip's - 60 seconds</p>
-        <p>Dip's - 60 seconds</p>
-      </StyledGridTemplate>
-    </>
-  </UserPanelTemplate>
-);
+const TrainingDetailsPage = () => {
+  return (
+    <UserPanelTemplate pageTitle='example training'>
+      <>
+        <StyledInnerWrapper>
+          <SummaryTraining />
+          <StyledButtonWrapper>
+            <StyledButton quatenary>Start in app</StyledButton>
+            <StyledButton tertiary>Delete</StyledButton>
+          </StyledButtonWrapper>
+        </StyledInnerWrapper>
+        <StyledHr></StyledHr>
+        <StyledGridTemplate>
+          <p>Push up's - 60 seconds</p>
+          <p>Pull up's - 60 seconds</p>
+          <p>Burpees - 60 seconds</p>
+          <p>Sprawls - 45 seconds</p>
+          <p>Jumps - 60 seconds</p>
+          <p>Dip's - 60 seconds</p>
+          <p>Dip's - 60 seconds</p>
+          <p>Dip's - 60 seconds</p>
+          <p>Dip's - 60 seconds</p>
+          <p>Dip's - 60 seconds</p>
+        </StyledGridTemplate>
+      </>
+    </UserPanelTemplate>  
+  )
+};
 
 export default TrainingDetailsPage;

@@ -88,18 +88,27 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 
-export const CardTraining = () => (
+const CardTraining = ({id ,title, totalTime, repsNumber, exercisesNumber, repsRestTime, exerciseRestTime}) => (
   <StyledWrapper>
-    <StyledViewTraining as={StyledNavLink} to='/trainings/details/5'>
+    <StyledViewTraining as={StyledNavLink} to={`/trainings/details/${id}`} >
       Watch
     </StyledViewTraining>
     <StyledStartTraining as={StyledNavLink} to='/app'>
       Start now
     </StyledStartTraining>
-    <StyledCategoryTag>Calisthenics</StyledCategoryTag>
+    <StyledCategoryTag>CaF</StyledCategoryTag>
     <StyledInnerWrapper>
-      <SummaryTraining />
+      <SummaryTraining 
+        totalTime={totalTime}
+        repsNumber={repsNumber}
+        exercisesNumber={exercisesNumber}
+        repsRestTime={repsRestTime}
+        exerciseRestTime={exerciseRestTime}
+      />
     </StyledInnerWrapper>
-    <StyledTrainingTitle>full body workout</StyledTrainingTitle>
+    <StyledTrainingTitle>{title}</StyledTrainingTitle>
   </StyledWrapper>
 );
+
+
+export default CardTraining;

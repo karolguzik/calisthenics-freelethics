@@ -20,6 +20,12 @@ const StyledWrapper = styled.div`
     width: 60%;
     height: 70vh;
   }
+  
+  @media ${device.laptopL} {
+    margin: 15vh auto;
+    width: 40%;
+    height: 70vh;
+  }
 
   &::before {
     content: '';
@@ -64,7 +70,10 @@ const StyledInnerWrapper = styled.div`
 
   @media ${device.laptop} {
     width: 90%;
-    margin:0 auto;
+  }
+
+  @media ${device.laptopL} {
+    width: 60%;
   }
 `;
 

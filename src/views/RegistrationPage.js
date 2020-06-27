@@ -19,7 +19,7 @@ const StyledInput = styled(Input)`
 
 const TextError = styled.p`
   color: ${({ theme }) => theme.colorExtraSecondary};
-  font-size: ${({ theme }) => theme.fontSize.xxs};
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
 `;
 
 const RegistrationPage = () => (

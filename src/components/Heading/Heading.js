@@ -22,6 +22,10 @@ export const H2 = styled.h2`
     font-size: ${({ theme }) => theme.fontSize.xxl};
   }
 
+  @media ${device.laptopL} {
+    font-size: ${({ theme }) => theme.fontSize.xl};
+    }
+
   ${({secondary}) => secondary && css`
     margin: 1rem 0;
     padding: .5rem 1rem;
@@ -32,6 +36,6 @@ export const H2 = styled.h2`
 
     @media ${device.tablet} {
     font-size: ${({ theme }) => theme.fontSize.l};
-  }
+    }
   `}
 `;

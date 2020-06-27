@@ -14,9 +14,13 @@ const Input = styled.input`
   }
 
   @media ${device.laptop} {
-    padding: 1.3rem;
-    font-size: ${({theme}) => theme.fontSize.xs};
+    padding: 1.2rem;
+    font-size: ${({theme}) => theme.fontSize.xxs};
   }
+
+  @media ${device.laptopL} {
+    padding: .9rem;  
+    }
 `;
 
 export default Input;

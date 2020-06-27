@@ -12,26 +12,33 @@ import TrainingDetailsPage from './views/TrainingDetailsPage';
 import AppPanelPage from './views/AppPanelPage';
 import ProgressPage from './views/ProgressPage';
 import StatisticsPage from './views/StatisticsPage';
+import { Provider } from 'react-redux';
+import store from './store';
 
 const App = () => {
   return (
-    <Router>
-      <MainTemplate>
-        <Switch>
-          <Route exact path={routes.home} component={WelcomePage} />
-          <Route path={routes.login} component={LoginPage} />
-          <Route path={routes.registration} component={RegistrationPage} />
-          <Route exact path={routes.trainings} component={TrainingsPage} />
-          <Route path={routes.training} component={TrainingDetailsPage} />
-          <Route path={routes.myTrainings} component={MyTrainingsPage} />
-          <Route path={routes.createTrainings} component={CreateTrainingsPage} />
-          <Route path={routes.progress} component={ProgressPage} />
-          <Route path={routes.statistics} component={StatisticsPage} />
-          <Route path={routes.appPanel} component={AppPanelPage} />
-        </Switch>
-      </MainTemplate>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <MainTemplate>
+          <Switch>
+            <Route exact path={routes.home} component={WelcomePage} />
+            <Route path={routes.login} component={LoginPage} />
+            <Route path={routes.registration} component={RegistrationPage} />
+            <Route exact path={routes.trainings} component={TrainingsPage} />
+            <Route path={routes.training} component={TrainingDetailsPage} />
+            <Route path={routes.myTrainings} component={MyTrainingsPage} />
+            <Route
+              path={routes.createTrainings}
+              component={CreateTrainingsPage}
+            />
+            <Route path={routes.progress} component={ProgressPage} />
+            <Route path={routes.statistics} component={StatisticsPage} />
+            <Route path={routes.appPanel} component={AppPanelPage} />
+          </Switch>
+        </MainTemplate>
+      </Router>
+    </Provider>
   );
-}
+};
 
 export default App;

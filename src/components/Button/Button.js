@@ -23,6 +23,11 @@ const Button = styled.button`
     width: 150px;
   }
 
+  @media ${device.laptopL} {
+    padding: .4rem;
+    width: 130px;
+  }
+
   :hover {
     color: ${({theme}) => theme.fontColorLight};
     background: ${({theme}) => theme.bgcDarkPrimary};
