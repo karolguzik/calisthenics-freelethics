@@ -8,13 +8,25 @@ const connectDB = require('./config/db');
 
 const app = express();
 
+// mongoose.Promise = global.Promise;
+
 connectDB();
 
-app.use(express.json({extended: false}))
+// console.log(mongoose.connect(
+//     'mongodb+srv://guzik1234:guzik1234@works-37oky.mongodb.net/test?retryWrites=true&w=majority',
+//     { useNewUrlParser: true,
+//       useCreateIndex: true, 
+//       useUnifiedTopology: true 
+//     }
+//   )
+//   .then(() => console.log('MongoDB is connected'))
+//   .catch((err) => console.log(err)));
+
+app.use(express.json({ extended: false }));
 
 app.get('/', (req, res) => res.send('API running'));
 
-app.use('/api/user', userRoutes); 
+app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/trainings', trainingRoutes);
 
