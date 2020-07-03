@@ -1,3 +1,4 @@
 {
-  "mongoURI": "mongodb+srv://guzik1234:guzik1234@works-37oky.mongodb.net/test?retryWrites=true&w=majority"
+  "mongoURI": "mongodb://localhost/caf",
+  "TOKEN_SECRET": "mysecrettoken"
 }
