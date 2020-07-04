@@ -4,7 +4,10 @@ const { validationResult, check } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
+const auth = require('../middleware/auth');
 const User = require('../models/User');
+const Training = require('../models/Training');
+const Progress = require('../models/Progress');
 
 // @route    api/users/registration
 // @desc     Registration user
@@ -112,5 +115,28 @@ router.post(
     }
   }
 );
+
+
+
+// @route    api/users/:id
+// @desc     Login user
+// @access   Public
+router.delete('/', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+ 
+    if(!user) {
+      res.status(404).json({msg: 'No user exists'})
+    }
+ 
+    await Training.deleteMany({user: req.user.id})
+    await Progress.deleteMany({user: req.user.id})
+    await User.findOneAndRemove({_id: req.user.id})
+
+    res.json({msg: 'User deleted'})
+  } catch (error) {
+    res.status(500).send('Server error');
+  }
+})
 
 module.exports = router;

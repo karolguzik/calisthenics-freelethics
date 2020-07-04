@@ -6,7 +6,6 @@ import GridTemplate from '../templates/GridTemplate';
 import SummaryTraining from '../components/SummaryTraining/SummaryTraining';
 import Input from '../components/Input/Input';
 import Button from '../components/Button/Button';
-import { addTraining } from '../actions';
 
 const StyledWrapper = styled.div`
   width: 90%;
