@@ -4,11 +4,13 @@ const userRoutes = require('./routes/users');
 const trainingRoutes = require('./routes/trainings');
 const progressRoutes = require('./routes/progress');
 const connectDB = require('./config/db');
+const cors = require('cors');
 
 const app = express();
 
 connectDB();
 
+app.use(cors());
 app.use(express.json({ extended: false }));
 
 app.use('/api/users', userRoutes);

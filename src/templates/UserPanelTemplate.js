@@ -1,4 +1,4 @@
-import React, { css } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom'; 
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
@@ -13,6 +13,8 @@ import IconStart from '../assets/icons/start.png';
 import IconStop from '../assets/icons/stop.png';
 import IconPause from '../assets/icons/pause.png';
 import IconGoBack from '../assets/icons/goback.png';
+import { connect } from 'react-redux';
+import { logout } from '../actions/auth';
 
 
 
@@ -42,7 +44,7 @@ const StyledPageTitle = styled.p`
   font-size: ${({theme}) => theme.fontSize.xs};
 `;
 
-const UserPanelTemplate = ({children, activeTopNav, pageTitle, activeAppPanelNav}) => {
+const UserPanelTemplate = ({children, activeTopNav, pageTitle, activeAppPanelNav, logout}) => {
   const renderTopNav = activeTopNav ? (
     <>
       <NavItem as={StyledActiveNavLink} to="/trainings">Trainings</NavItem>
@@ -65,7 +67,7 @@ const UserPanelTemplate = ({children, activeTopNav, pageTitle, activeAppPanelNav
       <NavItem as={StyledActiveNavLink} to="/createTraining" icon={IconAdd} />
       <NavItem as={StyledActiveNavLink} to="/progress" icon={IconProgress} />
       <NavItem as={StyledActiveNavLink} to="/statistics" icon={IconStatistics} />
-      <NavItem as={StyledActiveNavLink} exact to="/" icon={IconLogout} />
+      <NavItem as={StyledActiveNavLink} exact to="/" icon={IconLogout} onClick={logout} />
     </>
   )
   return(
@@ -85,4 +87,4 @@ UserPanelTemplate.propTypes = {
   children: PropTypes.element.isRequired,
 }
 
-export default UserPanelTemplate;
+export default connect(null, { logout })(UserPanelTemplate);

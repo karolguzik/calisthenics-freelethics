@@ -5,7 +5,7 @@ import GridTemplate from '../templates/GridTemplate';
 import CardTraining from '../components/CardTraining/CardTraining';
 import { connect } from 'react-redux';
 
-const TrainingsPage = ({ trainings }) => {
+const TrainingsPage = ({ trainings, authUser }) => {
   const calcTrainingTotalTime = (exercises, repsNumber) => {
     let total = 0;
     exercises.reduce((counter, exercise) => {
@@ -54,6 +54,9 @@ CardTraining.propTypes = {
   }))
 }
 
-const mapStateToProps = ({ trainings }) => ({ trainings });
+// const mapStateToProps = ({training: { trainings }}) => ({ trainings });
+const mapStateToProps = (state) => ({
+  trainings: state.training.trainings
+})
 
 export default connect(mapStateToProps)(TrainingsPage);

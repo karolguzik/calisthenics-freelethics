@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { routes } from './routes';
 import MainTemplate from './templates/MainTemplate';
@@ -14,8 +14,18 @@ import ProgressPage from './views/ProgressPage';
 import StatisticsPage from './views/StatisticsPage';
 import { Provider } from 'react-redux';
 import store from './store';
+import { authUser } from './actions/auth';
+import setAuthToken from './setAuthToken/setAuthToken';
+
+if(localStorage.token) {
+  setAuthToken(localStorage.token);
+}
 
 const App = () => {
+  useEffect(() => {
+    store.dispatch(authUser())
+  }, []);
+
   return (
     <Provider store={store}>
       <Router>

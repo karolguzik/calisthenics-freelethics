@@ -1,11 +1,14 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import { device } from '../mediaQueries/mediaQueries';
+import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import AuthTemplate from '../templates/AuthTemplate';
 import Form from '../components/Form/Form';
 import Input from '../components/Input/Input';
 import Button from '../components/Button/Button';
+import { login } from '../actions/auth';
+// import { authUser } from '../actions/auth'
 
 const StyledButtonContainer = styled.div`
   margin-top: auto;
@@ -14,63 +17,79 @@ const StyledButtonContainer = styled.div`
 
 const StyledInput = styled(Input)`
   margin: 1rem 0;
-  padding: .9rem;
+  padding: 0.9rem;
   border: ${(props) => props.border || 'none'};
 `;
 
 const TextError = styled.p`
-  color: ${({theme}) => theme.colorExtraSecondary};
-  font-size: ${({theme}) => theme.fontSize.xxxs};
+  color: ${({ theme }) => theme.colorExtraSecondary};
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
 `;
 
-const LoginPage = () => (
-  <AuthTemplate
-    title='sign in'
-    linkPath='/registration'
-    linkText='Ï want to register account!'
-  >
-    <Formik
-      initialValues={{ login: '', password: '' }}
-      validate={values => {
-        let errors = {};
+const LoginPage = ({ login, alert, isAuthenticated, authUser }) => {
+  const alertMsg = alert
+    ? alert.map((alert) => <TextError>{alert.msg}</TextError>)
+    : null;
 
-        if(!values.login) {
-          errors.login = "Login is required"
-        } else if (values.login.length < 5) {
-          errors.login = "Login must not be shorter then 5 letters";
-        }
+  if(isAuthenticated) {
+    // authUser();
+    return <Redirect to="/trainings" />
+  }
 
-        if(!values.password) {
-          errors.password = "Password is required"
-        } else if (values.password.length < 5) {
-          errors.password = "Password must not be shorter then 5 letters"
-        }
+  return (
+    <AuthTemplate
+      title='sign in'
+      linkPath='/registration'
+      linkText='Ï want to register account!'
+    >
+      <Formik
+        initialValues={{ email: '', password: '' }}
+        validate={(values) => {
+          let errors = {};
 
-        return errors;
-      }}
-      onSubmit={(values) => {
-        console.log(values);
-      }}
-      render={({
-        touched,
-        errors,
-        values,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-      }) => (
-        <Form onSubmit={handleSubmit}>
-            {touched.login && errors.login && <TextError>{errors.login}</TextError>}
+          if (!values.email) {
+            errors.email = 'email is required';
+          } else if (values.email.length < 5) {
+            errors.email = 'Invalid email';
+          }
+
+          if (!values.password) {
+            errors.password = 'Password is required';
+          } else if (values.password.length < 5) {
+            errors.password = 'Password must not be shorter then 5 letters';
+          }
+
+          return errors;
+        }}
+        onSubmit={({email, password}) => {
+          login(email, password);
+        }}
+        render={({
+          touched,
+          errors,
+          values,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+        }) => (
+          <Form onSubmit={handleSubmit}>
+            {touched.email && errors.email && (
+              <TextError>{errors.email}</TextError>
+            )}
+            {alertMsg}
             <StyledInput
-              type='text'
-              name='login'
-              placeholder='login'
-              border={touched.login && errors.login && '1px solid red'}
+              type='email'
+              name='email'
+              placeholder='email'
+              border={touched.email && errors.email && '1px solid red'}
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.login}
+              value={values.email}
+              autoComplete='off'
             />
-            {touched.password && errors.password && <TextError>{errors.password}</TextError>}
+            {touched.password && errors.password && (
+              <TextError>{errors.password}</TextError>
+            )}
             <StyledInput
               type='password'
               name='password'
@@ -80,15 +99,21 @@ const LoginPage = () => (
               onBlur={handleBlur}
               value={values.password}
             />
-          <StyledButtonContainer>
-            <Button type='submit' secondary>
-              Login
-            </Button>
-          </StyledButtonContainer>
-        </Form>
-      )}
-    />
-  </AuthTemplate>
-);
+            <StyledButtonContainer>
+              <Button type='submit' secondary>
+                Login
+              </Button>
+            </StyledButtonContainer>
+          </Form>
+        )}
+      />
+    </AuthTemplate>
+  );
+};
 
-export default LoginPage;
+const mapStateToProps = (state) => ({
+  alert: state.alert,
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, { login })(LoginPage);

@@ -95,13 +95,13 @@ router.post(
       const user = await User.findOne({email});
 
       if(!user) {
-        res.status(400).json({msg: 'Account with this email is not exist'})
+        return res.status(400).json({errors: [{msg: 'Account with this email is not exist'}]})
       } 
 
       const isMatch = await bcrypt.compare(password, user.password);
 
       if(!isMatch) {
-        res.status(400).json({msg: 'Incorrect password'});
+        return res.status(400).json({errors: [{msg: 'Incorrect password'}]});
       }
 
       const payload = { user : { id: user.id }}
@@ -118,9 +118,9 @@ router.post(
 
 
 
-// @route    api/users/:id
-// @desc     Login user
-// @access   Public
+// @route    DELETE api/users/:id
+// @desc     delete user
+// @access   PRIVATE
 router.delete('/', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);

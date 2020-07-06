@@ -97,7 +97,7 @@ router.post(
       const user = await User.findById(req.user.id);
 
       if(!user) {
-        res.status(400).json({msg:'nie znalazlo usera'})
+        res.status(400).json({msg: 'User not exist'})
       }
 
       const training = new Training({
