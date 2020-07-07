@@ -7,8 +7,8 @@ import {
   AUTH_SUCCESS,
   AUTH_FAILURE,
   FINISH_INITIALIZE_ACCOUNT,
-  DELETE_ACCOUNT_SCCESS,
-  DELETE_ACCOUNT_FAILURE,
+  // DELETE_ACCOUNT_SUCCESS,
+  // DELETE_ACCOUNT_FAILURE,
 } from '../actions/types';
 
 const initialState = {
@@ -34,6 +34,13 @@ const auth = (state = initialState, action) => {
         ...payload,
         initializeAccount: true,
       };
+    case LOGIN_SUCCESS:
+      localStorage.setItem('token', payload.token);
+      return {
+        ...state,
+        ...payload,
+        isAuthenticated: true,
+      };
     case REGISTER_FAILURE:
     case AUTH_FAILURE:
     case LOGIN_FAILURE:
@@ -44,13 +51,6 @@ const auth = (state = initialState, action) => {
         isAuthenticated: false,
         user: null,
         initializeAccount: false,
-      };
-    case LOGIN_SUCCESS:
-      localStorage.setItem('token', payload.token)
-      return {
-        ...state,
-        ...payload,
-        isAuthenticated: true,
       };
     case FINISH_INITIALIZE_ACCOUNT:
       return {

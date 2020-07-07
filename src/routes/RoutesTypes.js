@@ -1,4 +1,4 @@
-export const routes = {
+export const RoutesTypes = {
   home: '/',
   trainings: '/trainings',
   training: '/trainings/details/:id',

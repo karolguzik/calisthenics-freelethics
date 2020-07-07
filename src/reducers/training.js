@@ -64,7 +64,7 @@ const initialState = {
 };
 
 const training = (state = initialState, action) => {
-  const { type, payload } = action;
+  // const { type, payload } = action;
 
   return state;
 };
