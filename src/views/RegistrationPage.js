@@ -106,13 +106,13 @@ const RegistrationPage = ({ register, alert, initializeAccount, isAuthenticated,
           handleBlur,
           handleSubmit,
         }) => (
-          <Form onSubmit={handleSubmit} autoComplete='off'>
+          <Form onSubmit={handleSubmit}>
             {touched.email && errors.email && (
               <TextError>{errors.email}</TextError>
             )}
             {alertMsg}
             <StyledInput
-              type='text'
+              type='email'
               name='email'
               placeholder='email'
               border={touched.email && errors.email && '1px solid red'}
@@ -132,7 +132,6 @@ const RegistrationPage = ({ register, alert, initializeAccount, isAuthenticated,
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.username}
-              autoComplete='off'
             />
             {touched.password && errors.password && (
               <TextError>{errors.password}</TextError>

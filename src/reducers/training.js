@@ -1,72 +1,134 @@
+import { CREATE_TRAINING, DELETE_TRAINING, GET_TRAININGS, GET_TRAINING, TRAINING_ERROR } from '../actions/types';
+
 const initialState = {
   trainings: [
     {
-      id: 1,
-      title: 'Full Body Workout',
-      repsNumber: 4,
-      repsRestTime: 120,
-      exerciseRestTime: 30,
-      exercises: [
+      "exercises": [
         {
-          name: 'push ups',
-          time: 30,
+          "exerciseName": "push ups",
+          "exerciseTime": "60",
+          "exerciseId": "713c0863-469f-4847-86a6-4572b7272483"
         },
         {
-          name: 'pull ups',
-          time: 45,
+          "exerciseName": "pull ups",
+          "exerciseTime": "60",
+          "exerciseId": "713c0863-469f-4847-86a6-4572b7272444"
         },
         {
-          name: 'burpees',
-          time: 30,
+          "exerciseName": "dips",
+          "exerciseTime": "60",
+          "exerciseId": "713c0863-469f-4847-86a6-4572b7222583"
         },
         {
-          name: 'sprawls',
-          time: 60,
+          "exerciseName": "squats",
+          "exerciseTime": "60",
+          "exerciseId": "713c0863-469f-4847-86a6-4442b7272483"
         },
         {
-          name: 'knee jumps',
-          time: 60,
+          "exerciseName": "burbees",
+          "exerciseTime": "60",
+          "exerciseId": "713c0863-469f-4847-86a6-4572b7271242"
         },
+        {
+          "exerciseName": "stomach",
+          "exerciseTime": "60",
+          "exerciseId": "713c0863-469f-4847-86a6-4572b7272347"
+        }
       ],
+      "_id": "5f064e2ae4f60d1f84c2d7ef",
+      "name": "Full Body Workout",
+      "reps": 5,
+      "repsRestTime": 60,
+      "exerciseRestTime": 30,
+      "totalTime": 100,
+      "__v": 0
     },
     {
-      id: 2,
-      title: 'Cardio',
-      repsNumber: 5,
-      repsRestTime: 90,
-      exerciseRestTime: 30,
-      exercises: [
+      "exercises": [
         {
-          name: 'jumps',
-          time: 45,
+          "exerciseName": "jumps",
+          "exerciseTime": "60",
+          "exerciseId": "713c0863-469f-4847-86a6-4527248372b7"
         },
         {
-          name: 'planks',
-          time: 60,
+          "exerciseName": "burbees",
+          "exerciseTime": "60",
+          "exerciseId": "713c0863-469f-4847-86a6-457442b72724"
         },
         {
-          name: 'dips',
-          time: 60,
+          "exerciseName": "starjumps",
+          "exerciseTime": "60",
+          "exerciseId": "713c0863-469f-4847-86a6-4572b713c086"
         },
         {
-          name: 'running',
-          time: 60,
+          "exerciseName": "squats",
+          "exerciseTime": "60",
+          "exerciseId": "713c0863-469f-4847-86a6-4442b7272483"
         },
         {
-          name: 'squats',
-          time: 45,
+          "exerciseName": "push up's",
+          "exerciseTime": "60",
+          "exerciseId": "713c0863-469f-4847-4847-4572b7271242"
+        },
+        {
+          "exerciseName": "stomach",
+          "exerciseTime": "60",
+          "exerciseId": "713c0863-469f-4847-86a6-4572b7242423"
+        },
+        {
+          "exerciseName": "squats + jumps",
+          "exerciseTime": "60",
+          "exerciseId": "713c0863-469f-4847-86a6-4572b72713c7"
         },
       ],
-    },
+      "_id": "5f064e2ae4f60d1f84c2dfe7",
+      "name": "Cardio",
+      "reps": 4,
+      "repsRestTime": 120,
+      "exerciseRestTime": 30,
+      "totalTime": 120,
+      "__v": 0
+    }
   ],
   myTrainings: [],
   doneTrainings: [],
+  activeTraining: null,
+  error: {}
 };
 
 const training = (state = initialState, action) => {
-  // const { type, payload } = action;
+  const { type, payload } = action;
 
-  return state;
+  switch(type) {
+    case CREATE_TRAINING:
+      return {
+        ...state,
+        myTrainings: [payload, ...state.myTrainings]
+      };
+    case DELETE_TRAINING:
+      return {
+        ...state,
+        trainings: state.trainings.filter(training => training._id !== payload),
+        myTrainings: state.myTrainings.filter(training => training._id !== payload),
+      }
+    case GET_TRAININGS:
+      return {
+        ...state,
+        myTrainings: payload
+      }
+    case GET_TRAINING: 
+      return {
+        ...state,
+        activeTraining: payload,
+      }
+      case TRAINING_ERROR:
+        return {
+          ...state,
+          error: payload,
+        }
+    default:
+      return state;
+  }
 };
 
 

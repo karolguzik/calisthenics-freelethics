@@ -137,7 +137,7 @@ const ProgressPage = () => (
         <StyledProgressWrapper>
           <StyledDate>Monday 28/06/2020</StyledDate>
           <StyledHr></StyledHr>
-          <StyledTraining done={true} as={StyledLink} to='/trainings/details/5'>
+          <StyledTraining done as={StyledLink} to='/trainings/details/5'>
             full body workout
             <StyledCheck>Check</StyledCheck>
           </StyledTraining>

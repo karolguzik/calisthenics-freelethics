@@ -8,7 +8,6 @@ import Form from '../components/Form/Form';
 import Input from '../components/Input/Input';
 import Button from '../components/Button/Button';
 import { login } from '../actions/auth';
-// import { authUser } from '../actions/auth'
 
 const StyledButtonContainer = styled.div`
   margin-top: auto;
@@ -32,7 +31,6 @@ const LoginPage = ({ login, alert, isAuthenticated, authUser }) => {
     : null;
 
   if(isAuthenticated) {
-    // authUser();
     return <Redirect to="/trainings" />
   }
 

@@ -39,11 +39,11 @@ const StyledRepsRest = styled.p`
   }
 `;
 
-const SummaryTraining = ({totalTime, repsNumber, exercisesNumber, repsRestTime, exerciseRestTime, }) => (
+const SummaryTraining = ({totalTime, reps, exercises, repsRestTime, exerciseRestTime }) => (
   <>
     <StyledTotalTime>Time: {totalTime} minutes</StyledTotalTime>
-    <StyledReps>Reps: {repsNumber}x</StyledReps>
-    <StyledExercises>Exercises: {exercisesNumber}x</StyledExercises>
+    <StyledReps>Reps: {reps}</StyledReps>
+    <StyledExercises>Exercises: {exercises}</StyledExercises>
     <StyledExercisesRest>Exercise rest: {exerciseRestTime} seconds</StyledExercisesRest>
     <StyledRepsRest>Reps rest: {repsRestTime} seconds</StyledRepsRest>
   </>

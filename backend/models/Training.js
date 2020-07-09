@@ -24,7 +24,11 @@ const TrainingSchema = new mongoose.Schema({
   exercises: {
     type: Array,
     required: true,
-  } 
+  },
+  totalTime: {
+    type: Number,
+    required: true,
+  }
 });
 
 const Training = mongoose.model('training', TrainingSchema);

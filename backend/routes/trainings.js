@@ -60,9 +60,9 @@ router.post(
       check('exerciseRestTime', 'Exerciste rest time is required')
         .not()
         .isEmpty(),
-      // check('exercises', 'Exercises are required').not().isEmpty(),
-      check('exerciseName', 'Exercise name is required').not().isEmpty(),
-      check('exerciseTime', 'Exercise time is required').not().isEmpty(),
+      check('exercises', 'Exercises are required').not().isEmpty(),
+      // check('exerciseName', 'Exercise name is required').not().isEmpty(),
+      // check('exerciseTime', 'Exercise time is required').not().isEmpty(),
     ],
   ],
   async (req, res) => {
@@ -77,21 +77,10 @@ router.post(
       reps,
       repsRestTime,
       exerciseRestTime,
-      exerciseName,
-      exerciseTime,
+      exercises,
+      totalTime,
     } = req.body;
 
-    
-    const exercises = {
-      exerciseFirst: {
-        name: exerciseName,
-        time: exerciseTime,
-      },
-      exerciseSecond: {
-        name: exerciseName,
-        time: exerciseTime,
-      }
-    }
 
     try {
       const user = await User.findById(req.user.id);
@@ -106,7 +95,9 @@ router.post(
         reps,
         repsRestTime,
         exerciseRestTime,
-        exercises: exercises,
+        exercises,
+        totalTime,
+        // exercises: exercises,
       });
 
       await training.save();

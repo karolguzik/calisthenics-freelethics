@@ -1,11 +1,17 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import styled, { css } from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
+import PropTypes from 'prop-types';
 import { device } from '../mediaQueries/mediaQueries';
 import UserPanelTemplate from '../templates/UserPanelTemplate';
 import GridTemplate from '../templates/GridTemplate';
 import SummaryTraining from '../components/SummaryTraining/SummaryTraining';
+import Alert from '../components/Alert/Alert';
 import Input from '../components/Input/Input';
 import Button from '../components/Button/Button';
+
+import { connect } from 'react-redux';
+import { createTraining } from '../actions/training';
 
 const StyledWrapper = styled.div`
   width: 90%;
@@ -22,6 +28,7 @@ const StyledWrapper = styled.div`
 
 const StyledForm = styled.form`
   width: 100%;
+  text-align: center;
 
   @media ${device.laptopL} {
     width: 60%;
@@ -49,7 +56,18 @@ const StyledInput = styled(Input)`
 `;
 
 const StyledButton = styled(Button)`
-  margin: 1rem 1rem 1rem 0;
+  margin: 1rem;
+
+  ${({ big }) =>
+    big &&
+    css`
+      width: 80%;
+
+      :hover {
+        transform: scale(1);
+        box-shadow: none;
+      }
+    `}
 `;
 
 const StyledGridTemplate = styled(GridTemplate)`
@@ -72,6 +90,20 @@ const StyledGridTemplate = styled(GridTemplate)`
   }
 `;
 
+const StyledExercise = styled.p`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: ${({ theme }) => theme.fontSize.s};
+  animation: slideIn 0.3s ease-in-out;
+
+  i:hover {
+    transition: 0.2s;
+    color: ${({ theme }) => theme.colorExtraSecondary};
+    cursor: pointer;
+  }
+`;
+
 const StyledSummaryWrapper = styled.div`
   margin: 3rem 0;
 
@@ -89,65 +121,178 @@ const StyledHr = styled.hr`
   border: 1px solid ${({ theme }) => theme.bgcDarkSecondary};
 `;
 
-const CreateTrainingsPage = () => {
+const TextError = styled.p`
+  color: ${({ theme }) => theme.colorExtraSecondary};
+  margin: 0.5rem;
+`;
+
+const CreateTrainingsPage = ({ createTraining, history }) => {
+  const [training, setTraining] = useState({
+    name: '',
+    reps: '',
+    repsRestTime: '',
+    exerciseRestTime: '',
+    exercises: [],
+    totalTime: 0,
+  });
+  
+  console.log(training)
+  const [exercise, setExercise] = useState({
+    exerciseName: '',
+    exerciseTime: '',
+    exerciseId: uuidv4(),
+  });
+  
+  const [exerciseValidationError, setExerciseValidationError] = useState({
+    msgError: '',
+  });
+  
+  const { name, reps, repsRestTime, exerciseRestTime, exercises, totalTime } = training;
+  
+  const { exerciseName, exerciseTime } = exercise;
+  
+  const { textError } = exerciseValidationError;
+
+
+  const handleInputChange = (e) => {
+    if (e.target.name === 'exerciseName' || e.target.name === 'exerciseTime') {
+      setExercise({ ...exercise, [e.target.name]: e.target.value });
+    } else {
+      setTraining({ ...training, [e.target.name]: e.target.value});
+    }
+  };
+  
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    createTraining(training, history);
+  };
+
+  const addExercise = (e) => {
+    e.preventDefault();
+
+    if (!exerciseName || !exerciseTime) {
+      setExerciseValidationError({
+        textError: 'Exercise name and time are empty',
+      });
+      setTimeout(() => {
+        setExerciseValidationError({ textError: '' });
+      }, 3000);
+    } else {
+      setTraining({ ...training, exercises: [...exercises, exercise]});
+      setExercise({ exerciseName: '', exerciseTime: '', exerciseId: uuidv4() });
+    }
+  };
+
+
+  const removeExercise = (e) => {
+    const targetExercise = e.target.parentNode;
+
+    const newExercises = exercises.filter(
+      (exercise) => exercise.exerciseId !== targetExercise.id
+    );
+
+    setTraining({ ...training, exercises: [...newExercises] });
+  };
+
+  const clearTraining = e => {
+    e.preventDefault();
+    setTraining({
+      name: '',
+      reps: '',
+      repsRestTime: '',
+      exerciseRestTime: '',
+      exercises: [],
+    });
+
+    setExercise({ exerciseName: '', exerciseTime: '', exerciseId: uuidv4() });
+  };
+
+  console.log(totalTime)
+
   return (
     <UserPanelTemplate pageTitle='create your training'>
       <StyledWrapper>
-        <StyledForm>
+        <Alert />
+        <TextError>{textError}</TextError>
+        <StyledForm onSubmit={(e) => handleOnSubmit(e)}>
           <StyledInput
             type='text'
-            name='training-name'
+            name='name'
             placeholder='training name'
+            onChange={handleInputChange}
+            value={name}
           />
           <StyledInput
             type='number'
-            name='reps-number'
+            name='reps'
             placeholder='reps number'
+            onChange={handleInputChange}
+            value={reps}
           />
           <StyledInput
             type='number'
-            name='reps-rest-time'
+            name='repsRestTime'
             placeholder='reps rest time'
+            onChange={handleInputChange}
+            value={repsRestTime}
           />
           <StyledInput
             type='number'
-            name='exercise-rest-time'
+            name='exerciseRestTime'
             placeholder='exercise rest time'
+            onChange={handleInputChange}
+            value={exerciseRestTime}
           />
           <StyledInput
             type='text'
-            name='exercise-name'
+            name='exerciseName'
             placeholder='exercise name'
+            onChange={handleInputChange}
+            value={exerciseName}
           />
           <StyledInput
             type='number'
-            name='exercise-time'
+            name='exerciseTime'
             placeholder='exercise time'
+            onChange={handleInputChange}
+            value={exerciseTime}
           />
-          <StyledButton type='submit' quatenary>
+          <StyledButton onClick={addExercise} quatenary>
             Add
           </StyledButton>
-          <StyledButton tertiary>Clear</StyledButton>
+          <StyledButton onClick={clearTraining} tertiary>Clear</StyledButton>
+          <StyledButton type='submit' big secondary>
+            create
+          </StyledButton>
         </StyledForm>
         <StyledGridTemplate>
-          <p>Push up's - 60 seconds</p>
-          <p>Pull up's - 60 seconds</p>
-          <p>Burpees - 60 seconds</p>
-          <p>Sprawls - 45 seconds</p>
-          <p>Jumps - 60 seconds</p>
-          <p>Dip's - 60 seconds</p>
-          <p>Dip's - 60 seconds</p>
-          <p>Dip's - 60 seconds</p>
-          <p>Dip's - 60 seconds</p>
-          <p>Dip's - 60 seconds</p>
+          {exercises.length > 0 &&
+            exercises.map((exercise) => (
+              <StyledExercise
+                key={exercise.exerciseId}
+                id={exercise.exerciseId}
+              >
+                {exercise.exerciseName.toLowerCase()} - {exercise.exerciseTime}{' '}
+                seconds {/* <span> */}
+                <i
+                  className='fa fa-times'
+                  aria-hidden='true'
+                  onClick={(e) => removeExercise(e)}
+                ></i>
+              </StyledExercise>
+            ))}
         </StyledGridTemplate>
         <StyledHr></StyledHr>
         <StyledSummaryWrapper>
-          <SummaryTraining />
+          <SummaryTraining totalTime={totalTime} reps={reps} exercises={exercises.length} repsRestTime={repsRestTime} exerciseRestTime={exerciseRestTime} />
         </StyledSummaryWrapper>
       </StyledWrapper>
     </UserPanelTemplate>
   );
 };
 
-export default CreateTrainingsPage;
+CreateTrainingsPage.propTypes = {
+  createTraining: PropTypes.func.isRequired,
+};
+
+export default connect(null, { createTraining })(CreateTrainingsPage);

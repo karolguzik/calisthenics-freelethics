@@ -1,62 +1,44 @@
 import React from 'react';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux'
 import UserPanelTemplate from '../templates/UserPanelTemplate';
 import GridTemplate from '../templates/GridTemplate';
 import CardTraining from '../components/CardTraining/CardTraining';
-import { connect } from 'react-redux';
 
-const TrainingsPage = ({ trainings, authUser }) => {
-  const calcTrainingTotalTime = (exercises, repsNumber) => {
-    let total = 0;
-    exercises.reduce((counter, exercise) => {
-      return total = counter + exercise.time;
-    }, 0);
-    return parseInt((total * repsNumber) / 60);
-  };
 
-  const trainingsList = trainings.map(
-    ({ id, title, repsNumber, repsRestTime, exerciseRestTime, exercises }) => {
-      let trainingTotalTime = calcTrainingTotalTime(exercises, repsNumber);
+const StyledParagraph = styled.p`
+  color: ${({theme}) => theme.fontColorLight};
+  font-size: ${({theme}) => theme.fontSize.m};
+  text-align:center;
+  margin-top: 3rem;
+`;
 
-      return (
-        <CardTraining
-          id={id}
-          key={id}
-          title={title}
-          totalTime={trainingTotalTime}
-          repsNumber={repsNumber}
-          exercisesNumber={exercises.length}
-          repsRestTime={repsRestTime}
-          exerciseRestTime={exerciseRestTime}
-        />
-      );
-    }
-  );
+
+const TrainingsPage = ({trainings: { trainings }}) => {
+  const renderTrainings = trainings.length > 0 && trainings.map(training => (
+    <CardTraining key={training._id} {...training} />
+  )
+)
 
   return (
     <UserPanelTemplate activeTopNav>
-      <GridTemplate>{trainingsList}</GridTemplate>
+      {trainings.length > 0 ? (
+        <GridTemplate>{renderTrainings}</GridTemplate>
+      ) : (
+        <StyledParagraph>Create your training</StyledParagraph>
+      )}
     </UserPanelTemplate>
   );
 };
 
-CardTraining.propTypes = {
-  trainings: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    repsNumber: PropTypes.number.isRequired,
-    repsRestTime: PropTypes.number.isRequired,
-    exerciseRestTime: PropTypes.number.isRequired,
-    exercises: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      time: PropTypes.number.isRequired,
-    }))
-  }))
+
+TrainingsPage.propTypes = {
+  trainings: PropTypes.object.isRequired,
 }
 
-// const mapStateToProps = ({training: { trainings }}) => ({ trainings });
-const mapStateToProps = (state) => ({
-  trainings: state.training.trainings
-})
+const mapStateToProps = state => ({
+  trainings: state.training,
+});
 
 export default connect(mapStateToProps)(TrainingsPage);

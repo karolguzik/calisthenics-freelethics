@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { device } from '../mediaQueries/mediaQueries';
 import UserPanelTemplate from '../templates/UserPanelTemplate';
 import GridTemplate from '../templates/GridTemplate';
 import Button from '../components/Button/Button';
 import SummaryTraining from '../components/SummaryTraining/SummaryTraining';
-
+import { connect } from 'react-redux';
+import { getTraining, deleteTraining } from '../actions/training';
 
 const StyledGridTemplate = styled(GridTemplate)`
   grid-auto-rows: auto;
@@ -51,7 +53,7 @@ const StyledButtonWrapper = styled.div`
   @media ${device.laptopL} {
     align-self: flex-start;
     flex-basis: 100%;
-    text-align:center;
+    text-align: center;
   }
 `;
 
@@ -63,33 +65,61 @@ const StyledHr = styled.hr`
   border: 1px solid ${({ theme }) => theme.bgcDarkSecondary};
 `;
 
-const TrainingDetailsPage = () => {
-  return (
-    <UserPanelTemplate pageTitle='example training'>
-      <>
-        <StyledInnerWrapper>
-          <SummaryTraining />
-          <StyledButtonWrapper>
-            <StyledButton quatenary>Start in app</StyledButton>
-            <StyledButton tertiary>Delete</StyledButton>
-          </StyledButtonWrapper>
-        </StyledInnerWrapper>
-        <StyledHr></StyledHr>
-        <StyledGridTemplate>
-          <p>Push up's - 60 seconds</p>
-          <p>Pull up's - 60 seconds</p>
-          <p>Burpees - 60 seconds</p>
-          <p>Sprawls - 45 seconds</p>
-          <p>Jumps - 60 seconds</p>
-          <p>Dip's - 60 seconds</p>
-          <p>Dip's - 60 seconds</p>
-          <p>Dip's - 60 seconds</p>
-          <p>Dip's - 60 seconds</p>
-          <p>Dip's - 60 seconds</p>
-        </StyledGridTemplate>
-      </>
-    </UserPanelTemplate>  
-  )
+const TrainingDetailsPage = ({
+  getTraining,
+  deleteTraining,
+  activeTraining,
+  match,
+  history
+}) => {
+  const id = match.params.id;
+
+  useEffect(() => {
+    getTraining(id);
+  }, []);
+
+  console.log(id);
+
+  if (activeTraining) {
+    const { name, totalTime, exercises, exerciseRestTime, reps, repsRestTime } = activeTraining;
+
+    const renderExercises =
+      exercises !== null &&
+      exercises.length > 0 &&
+      exercises.map(({ exerciseId, exerciseName, exerciseTime }) => (
+        <p key={exerciseId}>
+          {exerciseName} - {exerciseTime} seconds
+        </p>
+      ));
+
+    return (
+      <UserPanelTemplate pageTitle={name}>
+        <>
+          <StyledInnerWrapper>
+            <SummaryTraining totalTime={totalTime} reps={reps} exercises={exercises.length} repsRestTime={repsRestTime} exerciseRestTime={exerciseRestTime} />
+            <StyledButtonWrapper>
+              <StyledButton quatenary>Start in app</StyledButton>
+              <StyledButton tertiary onClick={() => deleteTraining(id, history)}>Delete</StyledButton>
+            </StyledButtonWrapper>
+          </StyledInnerWrapper>
+          <StyledHr></StyledHr>
+          <StyledGridTemplate>{renderExercises}</StyledGridTemplate>
+        </>
+      </UserPanelTemplate>
+    );
+  } return null;
 };
 
-export default TrainingDetailsPage;
+TrainingDetailsPage.propTypes = {
+  getTraining: PropTypes.func.isRequired,
+  deleteTraining: PropTypes.func.isRequired,
+  activeTraining: PropTypes.object,
+};
+
+const mapStateToProps = (state) => ({
+  activeTraining: state.training.activeTraining,
+});
+
+export default connect(mapStateToProps, { getTraining, deleteTraining })(
+  TrainingDetailsPage
+);

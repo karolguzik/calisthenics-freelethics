@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import SummaryTraining from '../SummaryTraining/SummaryTraining';
+// import { connect } from 'react-redux';
 
 const StyledWrapper = styled.div`
   position: relative;
@@ -13,6 +15,7 @@ const StyledWrapper = styled.div`
   border-radius: 20px;
   overflow: hidden;
   cursor: pointer;
+  animation: slideIn 0.3s ease-in-out;
 `;
 
 const StyledViewTraining = styled.div`
@@ -73,7 +76,6 @@ const StyledInnerWrapper = styled.div`
   justify-content: center;
 `;
 
-
 const StyledTrainingTitle = styled.span`
   color: ${({ theme }) => theme.colorExtraSecondary};
   font-size: ${({ theme }) => theme.fontSize.xxs};
@@ -83,13 +85,21 @@ const StyledTrainingTitle = styled.span`
 
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
-  color:${({theme}) => theme.fontColorLight};
+  color: ${({ theme }) => theme.fontColorLight};
 `;
 
 
-const CardTraining = ({id ,title, totalTime, repsNumber, exercisesNumber, repsRestTime, exerciseRestTime}) => (
+const CardTraining = ({
+  _id,
+  name,
+  reps,
+  repsRestTime,
+  exercises,
+  exerciseRestTime,
+  totalTime,
+}) => (
   <StyledWrapper>
-    <StyledViewTraining as={StyledNavLink} to={`/trainings/details/${id}`} >
+    <StyledViewTraining as={StyledNavLink} to={`/trainings/details/${_id}`}>
       Watch
     </StyledViewTraining>
     <StyledStartTraining as={StyledNavLink} to='/app'>
@@ -97,17 +107,27 @@ const CardTraining = ({id ,title, totalTime, repsNumber, exercisesNumber, repsRe
     </StyledStartTraining>
     <StyledCategoryTag>CaF</StyledCategoryTag>
     <StyledInnerWrapper>
-      <SummaryTraining 
+      <SummaryTraining
         totalTime={totalTime}
-        repsNumber={repsNumber}
-        exercisesNumber={exercisesNumber}
+        reps={reps}
+        exercises={exercises.length}
         repsRestTime={repsRestTime}
         exerciseRestTime={exerciseRestTime}
       />
     </StyledInnerWrapper>
-    <StyledTrainingTitle>{title}</StyledTrainingTitle>
+    <StyledTrainingTitle>{name}</StyledTrainingTitle>
   </StyledWrapper>
 );
+
+CardTraining.propTypes = {
+  _id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  reps: PropTypes.number.isRequired,
+  repsRestTime: PropTypes.number.isRequired,
+  exerciseRestTime: PropTypes.number.isRequired,
+  exercises: PropTypes.array.isRequired,
+  totalTime: PropTypes.number.isRequired,
+};
 
 
 export default CardTraining;

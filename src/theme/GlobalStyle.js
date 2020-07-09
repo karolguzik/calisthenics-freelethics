@@ -30,6 +30,11 @@ const GlobalStyle = createGlobalStyle`
     background: hsl(240, 1%, 26%);
     color: hsl(222, 17%, 89%);
   }
+
+  @keyframes slideIn {
+    0% {transform: translateX(-20px); opacity:0}
+    100% {transform: translateX(0); opacity: 1}
+  }
 `;
 
 export default GlobalStyle;
