@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { device } from '../mediaQueries/mediaQueries';
 import UserPanelTemplate from '../templates/UserPanelTemplate';
 import SummaryTraining from '../components/SummaryTraining/SummaryTraining';
-import { connect } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import { getTraining } from '../actions/training';
 
 const StyledWrapper = styled.div`
@@ -94,12 +94,25 @@ const StyledSummaryTrainingTitle = styled.h3`
   margin-bottom: 1rem;
 `;
 
-const AppPanelPage = ({ getTraining, activeTraining, match }) => {
+const StyledDoneTrainingMessage = styled.div`
+  width: 100%;
+  height: 100%;
+  background: black;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100000;
+`;
+
+const AppPanelPage = ({ match }) => {
   const id = match.params.id;
 
+  const activeTraining = useSelector((state) => state.training.activeTraining);
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    getTraining(id);
-  }, []);
+    dispatch(getTraining(id));
+  }, [id]);
 
   const [trainingData, setTrainingData] = useState({
     activeExerciseName: '',
@@ -115,93 +128,81 @@ const AppPanelPage = ({ getTraining, activeTraining, match }) => {
     nextExerciseTime,
   } = trainingData;
 
+  if (!activeTraining) {
+    return null;
+  }
 
-  // setTrainingData({
-  //   activeExerciseName: activeTraining.exercises[0].exerciseName,
-  //   activeExerciseTime: activeTraining.exercises[0].exerciseTime,
-  //   nextExerciseName: activeTraining.exercises[1].exerciseName,
-  //   nextExerciseTime: activeTraining.exercises[1].exerciseTime,
-  // });
+  const {
+    name,
+    totalTime,
+    reps,
+    exercises,
+    repsRestTime,
+    exerciseRestTime,
+  } = activeTraining;
 
-    console.log(trainingData)
-  // if (activeTraining !== null) {
+  const startTraining = () => {
+    let repsLength = parseInt(reps);
+    let exercisesLength = exercises.length;
+    let i = 0;
+    let j = 0;
+    let idInterval;
 
+    while (i < repsLength) {
+      while (j < exercisesLength) {
+        let exerciseTime = exercises[j].exerciseTime;
 
-  // console.log(trainingData);
+        setTrainingData({
+          activeExerciseName: exercises[j].exerciseName,
+          activeExerciseTime: exercises[j].exerciseTime,
+          nextExerciseName: exercises[j].exerciseName,
+          nextExerciseTime: exercises[j].exerciseTime,
+        });
+        
+        exerciseTime = exerciseTime - 1;
+        while(exerciseTime > 0){
+          idInterval = setInterval(() => {
+            setTrainingData({
+              ...trainingData,
+              activeExerciseTime: exerciseTime,
+            });
+          }, 1000);
+        } 
 
-  // const startTraining = () => {
-  //   const time = exercises[0].exerciseTime;
+        clearInterval(idInterval);
+        j++;
+      }
+      i++;
+    }
+  };
 
-  //   // while(time > 0) {
-  //   //   setTrainingData({...trainingData, activeExerciseTime: time})
-  //   //   time--;
-  //   // }
-
-  //   // for(let i = 0; i < reps; i++) {
-  //   //   for(let j = 0; j < exercises.length; j++) {
-  //   //     let activeExerciseName = exercises[j].exerciseName;
-  //   //     let activeExerciseTime = exercises[j].exerciseTime;
-  //   //     let nextExerciseName = exercises[j+1].exerciseName;
-
-  //       // const count = setInterval(() => {
-  //       //   activeExerciseTime--;
-  //       //   if(activeExerciseTime === 0) {
-  //       //     clearInterval(count);
-  //       //   }
-  //       // }, 1000);
-
-  //       // setTrainingData({
-  //       //   activeExerciseName: activeExerciseName,
-  //       //   activeExerciseTime: parseInt(activeExerciseTime) - 1,
-  //       //   nextExerciseName: nextExerciseName,
-  //       // })
-
-  //     // }
-  //   }
-
-  // if (activeTraining) {
-    const {
-      name,
-      totalTime,
-      reps,
-      exercises,
-      repsRestTime,
-      exerciseRestTime,
-    } = activeTraining;
-
-    return (
-      <UserPanelTemplate pageTitle={name} activeAppPanelNav>
-        <StyledWrapper>
-          <StyledActiveExerciseTitle>
-            {exercises[0].exerciseName}
-          </StyledActiveExerciseTitle>
-          <StyledTimeWrapper>{exercises[0].exerciseTime}</StyledTimeWrapper>
-          <StyledNextExerciseTitle>
-            {/* {nextExerciseName} - {nextExerciseTime} */}
-          </StyledNextExerciseTitle>
-          <StyledSummaryTrainingWrapper>
-            <StyledSummaryTrainingTitle>Left :</StyledSummaryTrainingTitle>
-            <SummaryTraining
-              totalTime={totalTime}
-              reps={reps}
-              exercises={exercises.length}
-              repsRestTime={repsRestTime}
-              exerciseRestTime={exerciseRestTime}
-            />
-          </StyledSummaryTrainingWrapper>
-        </StyledWrapper>
-      </UserPanelTemplate>
-    );
-  // } else return null;
+  return (
+    <UserPanelTemplate
+      pageTitle={name}
+      activeAppPanelNav
+      startTraining={() => startTraining()}
+    >
+      <StyledWrapper>
+        <StyledActiveExerciseTitle>
+          {activeExerciseName}
+        </StyledActiveExerciseTitle>
+        <StyledTimeWrapper>{activeExerciseTime}</StyledTimeWrapper>
+        <StyledNextExerciseTitle>
+          Next: {nextExerciseName} - {nextExerciseTime}
+        </StyledNextExerciseTitle>
+        <StyledSummaryTrainingWrapper>
+          <StyledSummaryTrainingTitle>Left :</StyledSummaryTrainingTitle>
+          <SummaryTraining
+            totalTime={totalTime}
+            reps={reps}
+            exercises={exercises.length}
+            repsRestTime={repsRestTime}
+            exerciseRestTime={exerciseRestTime}
+          />
+        </StyledSummaryTrainingWrapper>
+      </StyledWrapper>
+    </UserPanelTemplate>
+  );
 };
 
-AppPanelPage.propTypes = {
-  getTraining: PropTypes.func.isRequired,
-  activeTraining: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  activeTraining: state.training.activeTraining,
-});
-
-export default connect(mapStateToProps, { getTraining })(AppPanelPage);
+export default AppPanelPage;
