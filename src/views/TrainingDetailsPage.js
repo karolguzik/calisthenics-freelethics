@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { device } from '../mediaQueries/mediaQueries';
@@ -98,7 +99,7 @@ const TrainingDetailsPage = ({
           <StyledInnerWrapper>
             <SummaryTraining totalTime={totalTime} reps={reps} exercises={exercises.length} repsRestTime={repsRestTime} exerciseRestTime={exerciseRestTime} />
             <StyledButtonWrapper>
-              <StyledButton quatenary>Start in app</StyledButton>
+              <StyledButton as={Link} to={`/app/${id}`} quatenary>Start in app</StyledButton>
               <StyledButton tertiary onClick={() => deleteTraining(id, history)}>Delete</StyledButton>
             </StyledButtonWrapper>
           </StyledInnerWrapper>

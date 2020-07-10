@@ -102,7 +102,7 @@ const CardTraining = ({
     <StyledViewTraining as={StyledNavLink} to={`/trainings/details/${_id}`}>
       Watch
     </StyledViewTraining>
-    <StyledStartTraining as={StyledNavLink} to='/app'>
+    <StyledStartTraining as={StyledNavLink} to={`/app/${_id}`}>
       Start now
     </StyledStartTraining>
     <StyledCategoryTag>CaF</StyledCategoryTag>

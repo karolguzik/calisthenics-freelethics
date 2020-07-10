@@ -17,8 +17,16 @@ export const createTraining = (formData, history) => async dispatch => {
       payload: res.data,
     })
 
+    dispatch(showAlert('Training created', 'success'));
+
     history.push('/mytrainings');
   } catch (err) {
+    const errors = err.response.data.errors;
+
+    if(errors) {
+      errors.forEach(error => dispatch(showAlert(error.msg, 'failure')))
+    }
+
     dispatch({
       type: TRAINING_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status}
@@ -35,7 +43,7 @@ export const deleteTraining = (id, history) => async dispatch => {
       payload: id
     })
 
-    dispatch(showAlert('Training deleted'));
+    dispatch(showAlert('Training deleted', 'success'));
     history.push('/mytrainings');
   } catch (err) {
     dispatch({
@@ -71,9 +79,9 @@ export const getTraining = (id) => async dispatch => {
     })
   } catch (err) {
     console.log(err)
-    dispatch({
-      type: TRAINING_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status}
-    })
+    // dispatch({
+    //   type: TRAINING_ERROR,
+    //   payload: { msg: err.response.statusText, status: err.response.status}
+    // })
   }
 }

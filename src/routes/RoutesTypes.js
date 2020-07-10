@@ -6,7 +6,7 @@ export const RoutesTypes = {
   createTrainings: '/createtraining',
   progress: '/progress',
   statistics: '/statistics',
-  appPanel: '/app',
+  appPanel: '/app/:id',
   login: '/login',
   registration: '/registration'
 }

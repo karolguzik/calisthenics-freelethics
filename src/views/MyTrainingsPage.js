@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import UserPanelTemplate from '../templates/UserPanelTemplate';
 import GridTemplate from '../templates/GridTemplate';
 import CardTraining from '../components/CardTraining/CardTraining';
+import Alert from '../components/Alert/Alert';
 import { getTrainings } from '../actions/training';
 
 const StyledParagraph = styled.p`
@@ -27,11 +28,14 @@ const MyTrainingsPage = ({ myTrainings: { myTrainings }, getTrainings }) => {
 
   return (
     <UserPanelTemplate activeTopNav>
+    <>
+      <Alert />
       {myTrainings.length > 0 ? (
         <GridTemplate>{renderTrainings}</GridTemplate>
       ) : (
         <StyledParagraph>Create your training</StyledParagraph>
       )}
+    </>
     </UserPanelTemplate>
   );
 };

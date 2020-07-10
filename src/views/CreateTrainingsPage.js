@@ -178,11 +178,17 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
         setExerciseValidationError({ textError: '' });
       }, 3000);
     } else {
-      setTraining({ ...training, exercises: [...exercises, exercise]});
+      setTraining({ ...training, exercises: [...exercises, exercise], totalTime: totalTime + parseInt(exerciseTime) * parseInt(reps)});
       setExercise({ exerciseName: '', exerciseTime: '', exerciseId: uuidv4() });
     }
   };
 
+  const calcTotalTime = (exercisesList) => {
+    const newExercisesTime = exercisesList.length > 0 ? exercisesList.map(exercise => exercise.exerciseTime).reduce((a,b) => a + b) : 0; 
+
+    const newTotalTime = parseInt(newExercisesTime) * parseInt(reps);
+    return newTotalTime;
+  }
 
   const removeExercise = (e) => {
     const targetExercise = e.target.parentNode;
@@ -191,7 +197,8 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
       (exercise) => exercise.exerciseId !== targetExercise.id
     );
 
-    setTraining({ ...training, exercises: [...newExercises] });
+
+    setTraining({ ...training, exercises: [...newExercises], totalTime: calcTotalTime(newExercises)});
   };
 
   const clearTraining = e => {
@@ -202,6 +209,7 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
       repsRestTime: '',
       exerciseRestTime: '',
       exercises: [],
+      totalTime: 0,
     });
 
     setExercise({ exerciseName: '', exerciseTime: '', exerciseId: uuidv4() });

@@ -44,7 +44,7 @@ const StyledPageTitle = styled.p`
   font-size: ${({theme}) => theme.fontSize.xs};
 `;
 
-const UserPanelTemplate = ({children, activeTopNav, pageTitle, activeAppPanelNav, logout}) => {
+const UserPanelTemplate = ({children, activeTopNav, pageTitle, activeAppPanelNav, logout, startTraining}) => {
   const renderTopNav = activeTopNav ? (
     <>
       <NavItem as={StyledActiveNavLink} to="/trainings">Trainings</NavItem>
@@ -56,7 +56,7 @@ const UserPanelTemplate = ({children, activeTopNav, pageTitle, activeAppPanelNav
 
   const renderBottomNav = activeAppPanelNav ? (
     <>
-      <NavItem icon={IconStart} />
+      <NavItem icon={IconStart} onClick={startTraining}/>
       <NavItem icon={IconStop} />
       <NavItem icon={IconPause} />
       <NavItem as={StyledActiveNavLink} exact to="/trainings" icon={IconGoBack} />

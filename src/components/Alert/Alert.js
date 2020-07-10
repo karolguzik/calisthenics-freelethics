@@ -4,14 +4,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 const StyledAlert = styled.p`
-  color: ${({ theme }) => theme.colorExtraSecondary};
-  margin: .5rem;
+  color: ${({ theme, type }) => type === 'failure' ? theme.colorExtraSecondary : theme.colorExtraTertiary};
+  margin: ${({type}) => type === 'failure' ? '.5rem' : '0 0 2rem'};
+  text-align: ${({type}) => type !== 'failure' && 'center'}
 `;
 
 const Alert = ({ alerts }) => 
   alerts !== null &&
   alerts.length > 0 &&
-  alerts.map((alert) => <StyledAlert key={alert.id}>{alert.msg}</StyledAlert>);
+  alerts.map((alert) => <StyledAlert key={alert.alertId} type={alert.alertType}>{alert.msg}</StyledAlert>);
 
 Alert.propTypes = {
   alerts: PropTypes.array.isRequired,

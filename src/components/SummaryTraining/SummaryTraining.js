@@ -41,11 +41,11 @@ const StyledRepsRest = styled.p`
 
 const SummaryTraining = ({totalTime, reps, exercises, repsRestTime, exerciseRestTime }) => (
   <>
-    <StyledTotalTime>Time: {totalTime} minutes</StyledTotalTime>
-    <StyledReps>Reps: {reps}</StyledReps>
+    <StyledTotalTime>Time: {totalTime ? `${totalTime} minutes` : 0}</StyledTotalTime>
+    <StyledReps>Reps: {reps ? `${reps}` : 0}</StyledReps>
     <StyledExercises>Exercises: {exercises}</StyledExercises>
-    <StyledExercisesRest>Exercise rest: {exerciseRestTime} seconds</StyledExercisesRest>
-    <StyledRepsRest>Reps rest: {repsRestTime} seconds</StyledRepsRest>
+    <StyledExercisesRest>Exercise rest: {exerciseRestTime  ? ` ${exerciseRestTime} seconds` : 0}</StyledExercisesRest>
+    <StyledRepsRest>Reps rest: {repsRestTime ? `${repsRestTime} seconds` : 0}</StyledRepsRest>
   </>
 )
 
