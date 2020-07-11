@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { device } from '../mediaQueries/mediaQueries';
 import UserPanelTemplate from '../templates/UserPanelTemplate';
+import Button from '../components/Button/Button';
 import SummaryTraining from '../components/SummaryTraining/SummaryTraining';
+import MuscleIcon from '../assets/icons/muscle.png';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { getTraining } from '../actions/training';
 
@@ -40,7 +43,7 @@ const StyledActiveExerciseTitle = styled.div`
 `;
 
 const StyledTimeWrapper = styled.div`
-  margin-top: 2rem;
+  margin: 5rem 0;
   font-size: ${({ theme }) => theme.fontSize.xxxl};
   font-weight: ${({ theme }) => theme.fontWeight.extraBold};
   text-transform: uppercase;
@@ -51,13 +54,31 @@ const StyledTimeWrapper = styled.div`
     margin-top: 5rem;
     margin-bottom: 2rem;
   }
+
+  i {
+    font-size: 8rem;
+    color: ${({ theme }) => theme.colorExtraSecondary};
+    opacity: 0.6;
+    transition: 0.3s ease-in-out;
+
+    :hover {
+      opacity: 0.8;
+      transform: scale(1.05);
+      cursor: pointer;
+    }
+  }
 `;
 
 const StyledNextExerciseTitle = styled.p`
   margin-top: 2rem;
-  color: ${({ theme }) => theme.colorExtraTertiary};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-  text-align: right;
+  color: ${({ theme }) => theme.fontColorLight};
+  font-weight: ${({ theme }) => theme.fontWeight.light};
+  text-align: center;
+
+  p {
+    margin: 1rem;
+    color: ${({ theme }) => theme.colorExtraQuatenary};
+  }
 `;
 
 const StyledSummaryTrainingWrapper = styled.div`
@@ -95,6 +116,10 @@ const StyledSummaryTrainingTitle = styled.h3`
 `;
 
 const StyledDoneTrainingMessage = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
   background: black;
@@ -102,6 +127,28 @@ const StyledDoneTrainingMessage = styled.div`
   top: 0;
   left: 0;
   z-index: 100000;
+
+  h2 {
+    font-size: 3.5rem;
+  }
+
+  p {
+    color: ${({ theme }) => theme.fontColorGray};
+    margin: 1rem 0;
+  }
+`;
+
+const StyledIconBiceps = styled.div`
+  margin: 2rem 0;
+  width: 70px;
+  height: 70px;
+  background-image: url(${() => MuscleIcon});
+  background-repeat: no-repeat;
+  background-size: 100%;
+`;
+
+const StyledButton = styled(Button)`
+  display: inline-block;
 `;
 
 const AppPanelPage = ({ match }) => {
@@ -115,10 +162,13 @@ const AppPanelPage = ({ match }) => {
   }, [id]);
 
   const [trainingData, setTrainingData] = useState({
-    activeExerciseName: '',
+    activeExerciseName: 'Start',
     activeExerciseTime: '',
     nextExerciseName: '',
     nextExerciseTime: '',
+    finishTraining: false,
+    startedTraining: false,
+    lastExercise: false,
   });
 
   const {
@@ -126,6 +176,9 @@ const AppPanelPage = ({ match }) => {
     activeExerciseTime,
     nextExerciseName,
     nextExerciseTime,
+    finishTraining,
+    startedTraining,
+    lastExercise,
   } = trainingData;
 
   if (!activeTraining) {
@@ -134,75 +187,166 @@ const AppPanelPage = ({ match }) => {
 
   const {
     name,
-    totalTime,
-    reps,
     exercises,
-    repsRestTime,
-    exerciseRestTime,
   } = activeTraining;
 
-  const startTraining = () => {
-    let repsLength = parseInt(reps);
-    let exercisesLength = exercises.length;
-    let i = 0;
-    let j = 0;
+  const exerciseIteration = (exerciseIterator, repsIterator) => {
+    let activeExercise;
+    let activeExerciseTime = exercises[exerciseIterator].exerciseTime;
+    let exerciseRestTime = activeTraining.exerciseRestTime;
+    let repsRestTime = activeTraining.repsRestTime;
+    let nextExercise;
+    let nextExerciseTime;
     let idInterval;
 
-    while (i < repsLength) {
-      while (j < exercisesLength) {
-        let exerciseTime = exercises[j].exerciseTime;
-
-        setTrainingData({
-          activeExerciseName: exercises[j].exerciseName,
-          activeExerciseTime: exercises[j].exerciseTime,
-          nextExerciseName: exercises[j].exerciseName,
-          nextExerciseTime: exercises[j].exerciseTime,
-        });
-        
-        exerciseTime = exerciseTime - 1;
-        while(exerciseTime > 0){
-          idInterval = setInterval(() => {
-            setTrainingData({
-              ...trainingData,
-              activeExerciseTime: exerciseTime,
-            });
-          }, 1000);
-        } 
-
-        clearInterval(idInterval);
-        j++;
-      }
-      i++;
+    if (exerciseIterator !== exercises.length - 1) {
+      activeExercise = exercises[exerciseIterator].exerciseName;
+      nextExercise = exercises[exerciseIterator + 1].exerciseName;
+      nextExerciseTime = exercises[exerciseIterator + 1].exerciseTime;
+    } else {
+      activeExercise = exercises[exercises.length - 1].exerciseName;
+      nextExercise = exercises[0].exerciseName;
+      nextExerciseTime = exercises[0].exerciseTime;
+      activeExerciseTime = exercises[exercises.length - 1].exerciseTime;
+      exerciseIterator = -1;
+      repsIterator++;
     }
+
+    idInterval = setInterval(() => {
+      setTrainingData({
+        activeExerciseName: activeExercise,
+        activeExerciseTime: activeExerciseTime--,
+        nextExerciseName: nextExercise,
+        nextExerciseTime: nextExerciseTime,
+        startedTraining: true,
+      });
+
+      if (exerciseIterator === -1 && repsIterator === activeTraining.reps) {
+        setTrainingData({
+          activeExerciseName: activeExercise,
+          activeExerciseTime: activeExerciseTime,
+          startedTraining: true,
+          lastExercise: true,
+        });
+
+        if (activeExerciseTime === -1) {
+          clearInterval(idInterval);
+          setTrainingData({
+            startedTraining: true,
+            finishTraining: true,
+          });
+        }
+      } else if (activeExerciseTime === -1 && exerciseIterator !== -1) {
+        clearInterval(idInterval);
+
+        idInterval = setInterval(() => {
+          setTrainingData({
+            activeExerciseName: 'rest',
+            activeExerciseTime: exerciseRestTime--,
+            nextExerciseName: nextExercise,
+            nextExerciseTime: nextExerciseTime,
+            startedTraining: true,
+          });
+
+          if (exerciseRestTime === -1) {
+            clearInterval(idInterval);
+            exerciseIterator++;
+            exerciseIteration(exerciseIterator, repsIterator);
+          }
+        }, 1000);
+      } else if (activeExerciseTime === -1 && exerciseIterator === -1) {
+        clearInterval(idInterval);
+
+        idInterval = setInterval(() => {
+          setTrainingData({
+            activeExerciseName: 'rest',
+            activeExerciseTime: repsRestTime--,
+            nextExerciseName: nextExercise,
+            nextExerciseTime: nextExerciseTime,
+            startedTraining: true,
+          });
+
+          if (repsRestTime === -1) {
+            clearInterval(idInterval);
+            exerciseIterator++;
+            exerciseIteration(exerciseIterator, repsIterator);
+          }
+        }, 1000);
+      }
+    }, 1000);
+    console.log(`exerciseIterator: ${exerciseIterator}
+        exercisesLength: ${exercises.length}
+        repsIterator: ${repsIterator}
+      `);
   };
 
-  return (
-    <UserPanelTemplate
-      pageTitle={name}
-      activeAppPanelNav
-      startTraining={() => startTraining()}
-    >
-      <StyledWrapper>
-        <StyledActiveExerciseTitle>
-          {activeExerciseName}
-        </StyledActiveExerciseTitle>
-        <StyledTimeWrapper>{activeExerciseTime}</StyledTimeWrapper>
-        <StyledNextExerciseTitle>
-          Next: {nextExerciseName} - {nextExerciseTime}
-        </StyledNextExerciseTitle>
-        <StyledSummaryTrainingWrapper>
-          <StyledSummaryTrainingTitle>Left :</StyledSummaryTrainingTitle>
-          <SummaryTraining
-            totalTime={totalTime}
-            reps={reps}
-            exercises={exercises.length}
-            repsRestTime={repsRestTime}
-            exerciseRestTime={exerciseRestTime}
-          />
-        </StyledSummaryTrainingWrapper>
-      </StyledWrapper>
-    </UserPanelTemplate>
-  );
+  const startTraining = () => {
+    let repsIterator = 0;
+    let exerciseIterator = 0;
+    exerciseIteration(exerciseIterator, repsIterator);
+  };
+  console.log(trainingData);
+
+  if (finishTraining) {
+    return (
+      <StyledDoneTrainingMessage>
+        <h2>Training done!</h2>
+        <StyledIconBiceps />
+        <p>Training will be save in your progress.</p>
+        <div>
+          <StyledButton as={Link} to='/progress' quatenary>
+            Check
+          </StyledButton>
+          <StyledButton as={Link} to='/mytrainings' tertiary>
+            Go back
+          </StyledButton>
+        </div>
+      </StyledDoneTrainingMessage>
+    );
+  } else {
+    return (
+      <UserPanelTemplate
+        pageTitle={name}
+        activeAppPanelNav
+        startTraining={() => startTraining()}
+      >
+        <StyledWrapper>
+          <StyledActiveExerciseTitle>
+            {activeExerciseName}
+          </StyledActiveExerciseTitle>
+          <StyledTimeWrapper>
+            {startedTraining ? (
+              activeExerciseTime
+            ) : (
+              <i
+                onClick={() => startTraining()}
+                className='fa fa-play'
+                aria-hidden='true'
+              ></i>
+            )}
+          </StyledTimeWrapper>
+          {startedTraining && !lastExercise && (
+            <StyledNextExerciseTitle>
+              <h2>Next:</h2>
+              <p>
+                {nextExerciseName} - {nextExerciseTime} seconds
+              </p>
+            </StyledNextExerciseTitle>
+          )}
+          {/* <StyledSummaryTrainingWrapper> */}
+          {/* <StyledSummaryTrainingTitle>Left :</StyledSummaryTrainingTitle> */}
+          {/* <SummaryTraining
+              totalTime={totalTime}
+              reps={reps}
+              exercises={exercises.length}
+              repsRestTime={repsRestTime}
+              exerciseRestTime={exerciseRestTime}
+            /> */}
+          {/* </StyledSummaryTrainingWrapper> */}
+        </StyledWrapper>
+      </UserPanelTemplate>
+    );
+  }
 };
 
 export default AppPanelPage;

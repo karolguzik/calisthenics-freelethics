@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { device } from '../mediaQueries/mediaQueries';
 import UserPanelTemplate from '../templates/UserPanelTemplate';
 import GridTemplate from '../templates/GridTemplate';
@@ -30,7 +30,7 @@ const StyledGridTemplate = styled(GridTemplate)`
 
   @media ${device.laptopL} {
     grid-template-columns: 40% 40%;
-    grid-gap:2rem;
+    grid-gap: 2rem;
   }
 `;
 
@@ -46,7 +46,7 @@ const StyledProgressWrapper = styled.div`
   border-radius: 20px;
 
   @media ${device.tablet} {
-    border-radius:30px;    
+    border-radius: 30px;
   }
 
   & > * {
@@ -62,11 +62,11 @@ const StyledDate = styled.p`
   font-size: ${({ theme }) => theme.fontSize.xxs};
 
   @media ${device.laptop} {
-    font-size: ${({ theme }) => theme.fontSize.xs};  
+    font-size: ${({ theme }) => theme.fontSize.xs};
   }
 
   @media ${device.laptopL} {
-    font-size: ${({ theme }) => theme.fontSize.xxs}; 
+    font-size: ${({ theme }) => theme.fontSize.xxs};
   }
 `;
 
@@ -75,22 +75,40 @@ const StyledHr = styled.hr`
   border: 1px solid ${({ theme }) => theme.colorExtraQuatenary};
 `;
 
-const StyledTraining = styled.div`
+const StyledTrainingContainer = styled.div`
   position: relative;
+  align-self: stretch;
+  overflow: hidden;
+  cursor: pointer;
+`;
+
+const StyledTraining = styled.div`
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  align-self: stretch;
-  padding: .5rem;
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
-  color: ${({ theme }) => theme.fontColorDark};
-  background: ${({ theme, done }) =>
+  padding: .5rem; 
+  color: ${({ theme, done }) =>
     done ? theme.colorExtraTertiary : theme.colorExtraSecondary};
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
   border-radius: 20px;
   text-transform: uppercase;
-  overflow: hidden;
-  cursor: pointer;
+  transition: 0.2s ease-in-out;
 
+
+${({ done }) =>
+  done &&
+  css`
+    ${StyledTrainingContainer}:hover & {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+  `}
+  
   @media ${device.tablet} {
     border-radius:30px;
   }
@@ -114,13 +132,13 @@ const StyledCheck = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${({ theme }) => theme.colorExtraTertiary};
+  color: ${({ theme }) => theme.colorExtraTertiary};
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   transform: translateY(100%);
   transition: 0.2s ease-in-out;
 
-  ${StyledTraining}:hover & {
+  ${StyledTrainingContainer}:hover & {
     transform: translateY(0);
   }
 `;
@@ -137,44 +155,25 @@ const ProgressPage = () => (
         <StyledProgressWrapper>
           <StyledDate>Monday 28/06/2020</StyledDate>
           <StyledHr></StyledHr>
-          <StyledTraining done as={StyledLink} to='/trainings/details/5'>
-            full body workout
+          <StyledTrainingContainer as={StyledLink} to='/trainings/details/5'>
+            <StyledTraining done>full body workout</StyledTraining>
             <StyledCheck>Check</StyledCheck>
-          </StyledTraining>
+          </StyledTrainingContainer>
         </StyledProgressWrapper>
         <StyledProgressWrapper>
           <StyledDate>Monday 28/06/2020</StyledDate>
           <StyledHr></StyledHr>
-          <StyledTraining>rest</StyledTraining>
+          <StyledTrainingContainer>
+            <StyledTraining>rest</StyledTraining>
+          </StyledTrainingContainer>
         </StyledProgressWrapper>
         <StyledProgressWrapper>
           <StyledDate>Monday 28/06/2020</StyledDate>
           <StyledHr></StyledHr>
-          <StyledTraining done>
-            full body workout
+          <StyledTrainingContainer>
+            <StyledTraining done>full body workout</StyledTraining>
             <StyledCheck>Check</StyledCheck>
-          </StyledTraining>
-        </StyledProgressWrapper>
-        <StyledProgressWrapper>
-          <StyledDate>Monday 28/06/2020</StyledDate>
-          <StyledHr></StyledHr>
-          <StyledTraining>rest</StyledTraining>
-        </StyledProgressWrapper>
-        <StyledProgressWrapper>
-          <StyledDate>Monday 28/06/2020</StyledDate>
-          <StyledHr></StyledHr>
-          <StyledTraining done>
-            full body workout
-            <StyledCheck>Check</StyledCheck>
-          </StyledTraining>
-        </StyledProgressWrapper>
-        <StyledProgressWrapper>
-          <StyledDate>Monday 28/06/2020</StyledDate>
-          <StyledHr></StyledHr>
-          <StyledTraining done>
-            full body workout
-            <StyledCheck>Check</StyledCheck>
-          </StyledTraining>
+          </StyledTrainingContainer>
         </StyledProgressWrapper>
       </StyledGridTemplate>
     </StyledWrapper>

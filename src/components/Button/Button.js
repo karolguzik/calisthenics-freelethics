@@ -3,6 +3,7 @@ import { device } from '../../mediaQueries/mediaQueries';
 
 const Button = styled.button`
   width: 100px;
+  margin: 0 .5rem;
   padding: .7rem;
   background: ${({theme}) => theme.bgcLightPrimary};
   color: ${({theme}) => theme.fontColorDark};
