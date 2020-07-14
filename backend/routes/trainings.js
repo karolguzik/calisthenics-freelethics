@@ -5,6 +5,7 @@ const auth = require('../middleware/auth');
 
 const User = require('../models/User');
 const Training = require('../models/Training');
+const Progress = require('../models/Progress');
 
 // @route   GET api/trainings
 // @desc    get user trainings
@@ -32,13 +33,23 @@ router.get('/', auth, async (req, res) => {
 // @access  PRIVATE
 router.get('/:id', auth, async (req, res) => {
   try {
-    const training = await Training.findById(req.params.id)
+    const training = await Training.findById(req.params.id);
 
-    if (!training) {
-      res.status(400).json({ msg: 'Training not found' });
+    // if (!training) {
+    //   res.status(400).json({ msg: 'Training not found' });
+    // }
+
+    const progress = await Progress.findById(req.params.id);
+
+    // if(!progress) {
+    //   res.status(400).json({ msg: 'Training not found in your progress'})
+    // }
+
+    if(training) {
+      res.json(training);
+    } else if(progress){
+      res.json(progress);
     }
-
-    res.json(training);
   } catch (err) {
     res.status(500).send('Server error');
   }

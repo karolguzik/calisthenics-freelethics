@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { device } from '../mediaQueries/mediaQueries';
 import { Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
@@ -7,8 +8,8 @@ import AuthTemplate from '../templates/AuthTemplate';
 import Form from '../components/Form/Form';
 import Input from '../components/Input/Input';
 import Button from '../components/Button/Button';
+import RangeIcon from '../assets/images/calisthenics-range.png';
 import { register } from '../actions/auth';
-
 
 const StyledButtonContainer = styled.div`
   margin-top: auto;
@@ -28,20 +29,76 @@ const TextError = styled.p`
 
 const LoadingInitializeAccount = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: White;
-  font-weight: 2rem;
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  background: black;
+  background: ${({ theme }) => theme.bgcDarkSecondary};
   z-index: 10000;
 `;
 
-const RegistrationPage = ({ register, alert, initializeAccount, isAuthenticated, history }) => {
+const StyledInitializeText = styled.p`
+  margin-top: 1rem;
+  font-size: ${({theme}) => theme.fontSize.m}
+`;
+
+const StyledConfirmText = styled.p`
+  margin-top: 1rem;
+  color: ${({ theme }) => theme.colorExtraQuatenary};
+  font-size: ${({theme}) => theme.fontSize.m};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+`;
+
+const StyledRangeIcon = styled.div`
+  position: relative;
+  margin: 2rem 0;
+  width: 212px;
+  height: 80px;
+  background-image: url(${() => RangeIcon});
+  background-repeat: no-repeat;
+  background-size: 100%;
+  overflow: hidden;
+
+  /* @media ${device.laptopL} {
+    width: 350px;
+  height: 150px;
+  } */
+`;
+
+const StyledRangeInnerBgc = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: ${({ theme }) => theme.fontColorGray};
+  z-index: -1;
+`;
+
+const StyledRangeCoverBgc = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: ${({ theme }) => theme.colorExtraQuatenary};
+  transform: translateY(100%);
+  animation: loadingRegisterIcon 4s ease-in-out forwards;
+  z-index: -1;
+`;
+
+const RegistrationPage = ({
+  register,
+  alert,
+  initializeAccount,
+  initializeConfirm,
+  isAuthenticated,
+  history,
+}) => {
   const onSubmit = (username, email, password) => {
     register(username, email, password, history);
   };
@@ -50,14 +107,22 @@ const RegistrationPage = ({ register, alert, initializeAccount, isAuthenticated,
     ? alert.map((alert) => <TextError>{alert.msg}</TextError>)
     : null;
 
-  if(isAuthenticated) {
-    return <Redirect to='/trainings' />
+  if (isAuthenticated) {
+    return <Redirect to='/trainings' />;
   }
 
   if (initializeAccount) {
     return (
       <LoadingInitializeAccount>
-        Initialized account...
+        <StyledRangeIcon>
+          <StyledRangeInnerBgc />
+          <StyledRangeCoverBgc />
+        </StyledRangeIcon>
+        {initializeConfirm ? (
+          <StyledConfirmText>Account registered!</StyledConfirmText>
+        ) : (
+          <StyledInitializeText>Initialize account...</StyledInitializeText>
+        )}
       </LoadingInitializeAccount>
     );
   }
@@ -160,7 +225,10 @@ const RegistrationPage = ({ register, alert, initializeAccount, isAuthenticated,
 const mapStateToProps = (state) => ({
   alert: state.alert,
   initializeAccount: state.auth.initializeAccount,
-  isAuthenticated: state.auth.isAuthenticated
+  initializeConfirm: state.auth.initializeConfirm,
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
-export default connect(mapStateToProps, { register })(withRouter(RegistrationPage));
+export default connect(mapStateToProps, { register })(
+  withRouter(RegistrationPage)
+);

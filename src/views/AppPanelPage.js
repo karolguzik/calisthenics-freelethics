@@ -7,8 +7,10 @@ import UserPanelTemplate from '../templates/UserPanelTemplate';
 import Button from '../components/Button/Button';
 import SummaryTraining from '../components/SummaryTraining/SummaryTraining';
 import MuscleIcon from '../assets/icons/muscle.png';
+import RangeIcon from '../assets/images/calisthenics-range.png';
 import { connect, useSelector, useDispatch } from 'react-redux';
-import { getTraining } from '../actions/training';
+import { getTraining, doneTraining } from '../actions/training';
+
 
 const StyledWrapper = styled.div`
   width: 90%;
@@ -123,6 +125,7 @@ const StyledDoneTrainingMessage = styled.div`
   width: 100%;
   height: 100%;
   background: black;
+  background: ${({theme}) => theme.bgcDarkSecondary};
   position: fixed;
   top: 0;
   left: 0;
@@ -138,13 +141,47 @@ const StyledDoneTrainingMessage = styled.div`
   }
 `;
 
-const StyledIconBiceps = styled.div`
+// const StyledIconBiceps = styled.div`
+//   margin: 2rem 0;
+//   width: 70px;
+//   height: 70px;
+//   background-image: url(${() => MuscleIcon});
+//   background-repeat: no-repeat;
+//   background-size: 100%;
+// `;
+
+const StyledRangeIcon = styled.div`
+  position:relative;
   margin: 2rem 0;
-  width: 70px;
-  height: 70px;
-  background-image: url(${() => MuscleIcon});
+  width: 212px;
+  height: 80px;
+  background-image: url(${() => RangeIcon});
   background-repeat: no-repeat;
   background-size: 100%;
+  /* background-position:cover; */
+  overflow: hidden;
+`;
+
+const StyledRangeInnerBgc = styled.div`
+  position: absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: ${({theme}) => theme.fontColorGray};
+  z-index: -1;
+`;
+
+const StyledRangeCoverBgc = styled.div`
+  position: absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: ${({theme}) => theme.colorExtraQuatenary};
+  transform: translateY(100%);
+  animation: loadingRegisterIcon 4s ease-in-out forwards;
+  z-index: -1;
 `;
 
 const StyledButton = styled(Button)`
@@ -162,7 +199,7 @@ const AppPanelPage = ({ match }) => {
   }, [id]);
 
   const [trainingData, setTrainingData] = useState({
-    activeExerciseName: 'Start',
+    activeExerciseName: 'caf',
     activeExerciseTime: '',
     nextExerciseName: '',
     nextExerciseTime: '',
@@ -189,15 +226,15 @@ const AppPanelPage = ({ match }) => {
     name,
     exercises,
   } = activeTraining;
-
+  
   const exerciseIteration = (exerciseIterator, repsIterator) => {
+    let idInterval;
     let activeExercise;
     let activeExerciseTime = exercises[exerciseIterator].exerciseTime;
     let exerciseRestTime = activeTraining.exerciseRestTime;
     let repsRestTime = activeTraining.repsRestTime;
     let nextExercise;
     let nextExerciseTime;
-    let idInterval;
 
     if (exerciseIterator !== exercises.length - 1) {
       activeExercise = exercises[exerciseIterator].exerciseName;
@@ -235,6 +272,7 @@ const AppPanelPage = ({ match }) => {
             startedTraining: true,
             finishTraining: true,
           });
+          dispatch(doneTraining(activeTraining));
         }
       } else if (activeExerciseTime === -1 && exerciseIterator !== -1) {
         clearInterval(idInterval);
@@ -285,19 +323,24 @@ const AppPanelPage = ({ match }) => {
     let exerciseIterator = 0;
     exerciseIteration(exerciseIterator, repsIterator);
   };
+
   console.log(trainingData);
 
   if (finishTraining) {
     return (
       <StyledDoneTrainingMessage>
         <h2>Training done!</h2>
-        <StyledIconBiceps />
+        {/* <StyledIconBiceps /> */}
+        <StyledRangeIcon>
+          <StyledRangeInnerBgc />
+          <StyledRangeCoverBgc />
+        </StyledRangeIcon>
         <p>Training will be save in your progress.</p>
         <div>
           <StyledButton as={Link} to='/progress' quatenary>
             Check
           </StyledButton>
-          <StyledButton as={Link} to='/mytrainings' tertiary>
+          <StyledButton as={Link} to='/trainings' tertiary>
             Go back
           </StyledButton>
         </div>

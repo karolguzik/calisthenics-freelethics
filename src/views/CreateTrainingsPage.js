@@ -126,6 +126,32 @@ const TextError = styled.p`
   margin: 0.5rem;
 `;
 
+const StyledSelect = styled.select`
+  width: 100%;
+  padding: 0.5rem;
+  margin: 1rem 0;
+  color: ${({ theme }) => theme.fontColorGray};
+  background: ${({ theme }) => theme.bgcDarkSecondary};
+  border: 1px solid ${({ theme }) => theme.bgcDarkTertiary};
+  border-radius: 20px;
+
+  @media ${device.tablet} {
+    padding: 0.8rem;
+    font-size: ${({ theme }) => theme.fontSize.xs};
+    border-radius: 30px;
+  }
+
+  @media ${device.laptop} {
+    padding: 1.2rem;
+    font-size: ${({ theme }) => theme.fontSize.xxs};
+  }
+
+  @media ${device.laptopL} {
+    padding: 0.6rem;
+    font-size: ${({ theme }) => theme.fontSize.xxs};
+  }
+`;
+
 const CreateTrainingsPage = ({ createTraining, history }) => {
   const [training, setTraining] = useState({
     name: '',
@@ -135,33 +161,56 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
     exercises: [],
     totalTime: 0,
   });
-  
-  console.log(training)
+
+  console.log(training);
   const [exercise, setExercise] = useState({
     exerciseName: '',
     exerciseTime: '',
     exerciseId: uuidv4(),
   });
-  
+
   const [exerciseValidationError, setExerciseValidationError] = useState({
     msgError: '',
   });
-  
-  const { name, reps, repsRestTime, exerciseRestTime, exercises, totalTime } = training;
-  
+
+  const {
+    name,
+    reps,
+    repsRestTime,
+    exerciseRestTime,
+    exercises,
+    totalTime,
+  } = training;
+
   const { exerciseName, exerciseTime } = exercise;
-  
+
   const { textError } = exerciseValidationError;
 
+  const exercisesTotalTime =
+    exercises.length > 0
+      ? exercises
+          .map((el) => parseInt(el.exerciseTime))
+          .reduce((el1, el2) => el1 + el2)
+      : 0;
+
+  console.log(exercisesTotalTime);
 
   const handleInputChange = (e) => {
     if (e.target.name === 'exerciseName' || e.target.name === 'exerciseTime') {
       setExercise({ ...exercise, [e.target.name]: e.target.value });
+      // TODO: putted extra if with reps
+    } else if (e.target.name === 'reps') {
+      setTraining({
+        ...training,
+        [e.target.name]: e.target.value,
+        totalTime:
+          totalTime + parseInt(exercisesTotalTime) * parseInt(e.target.value),
+      });
     } else {
-      setTraining({ ...training, [e.target.name]: e.target.value});
+      setTraining({ ...training, [e.target.name]: e.target.value });
     }
   };
-  
+
   const handleOnSubmit = (e) => {
     e.preventDefault();
     createTraining(training, history);
@@ -178,17 +227,26 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
         setExerciseValidationError({ textError: '' });
       }, 3000);
     } else {
-      setTraining({ ...training, exercises: [...exercises, exercise], totalTime: totalTime + parseInt(exerciseTime) * parseInt(reps)});
+      setTraining({
+        ...training,
+        exercises: [...exercises, exercise],
+        totalTime: totalTime + parseInt(exerciseTime) * parseInt(reps),
+      });
       setExercise({ exerciseName: '', exerciseTime: '', exerciseId: uuidv4() });
     }
   };
 
   const calcTotalTime = (exercisesList) => {
-    const newExercisesTime = exercisesList.length > 0 ? exercisesList.map(exercise => exercise.exerciseTime).reduce((a,b) => a + b) : 0; 
+    const newExercisesTime =
+      exercisesList.length > 0
+        ? exercisesList
+            .map((exercise) => parseInt(exercise.exerciseTime))
+            .reduce((a, b) => a + b)
+        : 0;
 
     const newTotalTime = parseInt(newExercisesTime) * parseInt(reps);
     return newTotalTime;
-  }
+  };
 
   const removeExercise = (e) => {
     const targetExercise = e.target.parentNode;
@@ -197,11 +255,14 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
       (exercise) => exercise.exerciseId !== targetExercise.id
     );
 
-
-    setTraining({ ...training, exercises: [...newExercises], totalTime: calcTotalTime(newExercises)});
+    setTraining({
+      ...training,
+      exercises: [...newExercises],
+      totalTime: calcTotalTime(newExercises),
+    });
   };
 
-  const clearTraining = e => {
+  const clearTraining = (e) => {
     e.preventDefault();
     setTraining({
       name: '',
@@ -215,7 +276,7 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
     setExercise({ exerciseName: '', exerciseTime: '', exerciseId: uuidv4() });
   };
 
-  console.log(totalTime)
+  console.log(totalTime);
 
   return (
     <UserPanelTemplate pageTitle='create your training'>
@@ -251,13 +312,29 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
             onChange={handleInputChange}
             value={exerciseRestTime}
           />
-          <StyledInput
+          {/* <StyledInput
             type='text'
             name='exerciseName'
             placeholder='exercise name'
             onChange={handleInputChange}
             value={exerciseName}
-          />
+          /> */}
+          <StyledSelect
+            name='exerciseName'
+            placeholder='exercise name'
+            onChange={handleInputChange}
+            value={exerciseName}
+          >
+            <option value="" selected disabled hidden>exercise name</option>
+            <option>push up's</option>
+            <option>pull up's</option>
+            <option>burbees</option>
+            <option>dips</option>
+            <option>squats</option>
+            <option>jumps</option>
+            <option>running</option>
+            <option>starjumps</option>
+          </StyledSelect>
           <StyledInput
             type='number'
             name='exerciseTime'
@@ -268,7 +345,9 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
           <StyledButton onClick={addExercise} quatenary>
             Add
           </StyledButton>
-          <StyledButton onClick={clearTraining} tertiary>Clear</StyledButton>
+          <StyledButton onClick={clearTraining} tertiary>
+            Clear
+          </StyledButton>
           <StyledButton type='submit' big secondary>
             create
           </StyledButton>
@@ -292,7 +371,13 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
         </StyledGridTemplate>
         <StyledHr></StyledHr>
         <StyledSummaryWrapper>
-          <SummaryTraining totalTime={totalTime} reps={reps} exercises={exercises.length} repsRestTime={repsRestTime} exerciseRestTime={exerciseRestTime} />
+          <SummaryTraining
+            totalTime={totalTime}
+            reps={reps}
+            exercises={exercises.length}
+            repsRestTime={repsRestTime}
+            exerciseRestTime={exerciseRestTime}
+          />
         </StyledSummaryWrapper>
       </StyledWrapper>
     </UserPanelTemplate>

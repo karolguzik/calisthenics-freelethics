@@ -35,6 +35,17 @@ const GlobalStyle = createGlobalStyle`
     0% {transform: translateX(-20px); opacity:0}
     100% {transform: translateX(0); opacity: 1}
   }
+
+  @keyframes loadingRegisterIcon {
+    0% {transform: translateY(100%)}
+    25% {transform: translateY(60%)}
+    80% {transform: translateY(30%)}
+    100% {transform: translateY(0)}
+  }
+
+  @keyframes loadingDescription {
+
+  }
 `;
 
 export default GlobalStyle;

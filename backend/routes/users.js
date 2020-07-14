@@ -118,17 +118,17 @@ router.post(
 
 
 
-// @route    DELETE api/users/:id
+// @route    DELETE api/users
 // @desc     delete user
 // @access   PRIVATE
 router.delete('/', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
- 
+
     if(!user) {
       res.status(404).json({msg: 'No user exists'})
     }
- 
+
     await Training.deleteMany({user: req.user.id})
     await Progress.deleteMany({user: req.user.id})
     await User.findOneAndRemove({_id: req.user.id})

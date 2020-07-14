@@ -6,9 +6,9 @@ import {
   LOGOUT_USER,
   AUTH_SUCCESS,
   AUTH_FAILURE,
+  CONFIRM_INITIALIZE_ACCOUNT,
   FINISH_INITIALIZE_ACCOUNT,
-  // DELETE_ACCOUNT_SUCCESS,
-  // DELETE_ACCOUNT_FAILURE,
+  DELETE_ACCOUNT
 } from '../actions/types';
 
 const initialState = {
@@ -16,6 +16,7 @@ const initialState = {
   isAuthenticated: false,
   user: null,
   initializeAccount: false,
+  initializeConfirm: false,
 };
 
 const auth = (state = initialState, action) => {
@@ -45,6 +46,7 @@ const auth = (state = initialState, action) => {
     case AUTH_FAILURE:
     case LOGIN_FAILURE:
     case LOGOUT_USER:
+    case DELETE_ACCOUNT:
       localStorage.removeItem('token');
       return {
         token: null,
@@ -52,10 +54,16 @@ const auth = (state = initialState, action) => {
         user: null,
         initializeAccount: false,
       };
+    case CONFIRM_INITIALIZE_ACCOUNT:
+      return {
+        ...state,
+        initializeConfirm: true,
+      }
     case FINISH_INITIALIZE_ACCOUNT:
       return {
         ...state,
         initializeAccount: false,
+        initializeConfirm: false,
       };
     default:
       return state;

@@ -28,6 +28,10 @@ const TrainingSchema = new mongoose.Schema({
   totalTime: {
     type: Number,
     required: true,
+  },
+  date: {
+    type: Date,
+    default: Date.now
   }
 });
 

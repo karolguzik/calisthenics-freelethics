@@ -1,9 +1,9 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom'; 
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Nav from '../components/Nav/Nav';
-import NavItem from '../components/Nav/NavItem'
+import NavItem from '../components/Nav/NavItem';
 import IconTraining from '../assets/icons/training.png';
 import IconAdd from '../assets/icons/add.png';
 import IconProgress from '../assets/icons/progress.png';
@@ -16,10 +16,8 @@ import IconGoBack from '../assets/icons/goback.png';
 import { connect } from 'react-redux';
 import { logout } from '../actions/auth';
 
-
-
 const StyledWrapper = styled.div`
-  margin:7.5vh 7.5% 10vh;
+  margin: 7.5vh 7.5% 10vh;
   padding: 2rem 0;
   min-height: calc(100vh - (7.5vh + 10vh));
 `;
@@ -28,63 +26,81 @@ const activeClassName = 'active';
 
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
-  color: ${({theme}) => theme.fontColorLight};
+  color: ${({ theme }) => theme.fontColorLight};
 `;
 
-const StyledActiveNavLink = styled(StyledNavLink).attrs({activeClassName: activeClassName})`
+const StyledActiveNavLink = styled(StyledNavLink).attrs({
+  activeClassName: activeClassName,
+})`
   &.${activeClassName} {
-    border-color: ${({theme}) => theme.colorExtraQuatenary};
+    border-color: ${({ theme }) => theme.colorExtraQuatenary};
   }
 `;
 
 const StyledPageTitle = styled.p`
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
   text-transform: uppercase;
-  font-size: ${({theme}) => theme.fontSize.xs};
+  font-size: ${({ theme }) => theme.fontSize.xs};
 `;
 
-const UserPanelTemplate = ({children, activeTopNav, pageTitle, activeAppPanelNav, logout, startTraining}) => {
-  const renderTopNav = activeTopNav ? (
-    <>
-      <NavItem as={StyledActiveNavLink} to="/trainings">Trainings</NavItem>
-      <NavItem as={StyledActiveNavLink} to="/mytrainings">My trainings</NavItem>
-    </>
-  ) : (
-    <StyledPageTitle>{pageTitle}</StyledPageTitle>  
-  );
+const UserPanelTemplate = ({
+  children,
+  activeTopNav,
+  pageTitle,
+  activeAppPanelNav,
+  logout,
+}) => {
+  // const renderTopNav = activeTopNav ? (
+  //   <>
+  //     <NavItem as={StyledActiveNavLink} to="/trainings">Trainings</NavItem>
+  //     <NavItem as={StyledActiveNavLink} to="/mytrainings">My trainings</NavItem>
+  //   </>
+  // ) : (
+  //   <StyledPageTitle>{pageTitle}</StyledPageTitle>
+  // );
 
   const renderBottomNav = activeAppPanelNav ? (
     <>
-      <NavItem icon={IconStart} onClick={startTraining}/>
-      <NavItem icon={IconStop} />
-      <NavItem icon={IconPause} />
-      <NavItem as={StyledActiveNavLink} exact to="/trainings" icon={IconGoBack} />
+      <NavItem
+        as={StyledActiveNavLink}
+        exact
+        to='/trainings'
+        icon={IconGoBack}
+      />
     </>
   ) : (
     <>
-      <NavItem as={StyledActiveNavLink} to="/trainings"  icon={IconTraining} />
-      <NavItem as={StyledActiveNavLink} to="/createTraining" icon={IconAdd} />
-      <NavItem as={StyledActiveNavLink} to="/progress" icon={IconProgress} />
-      <NavItem as={StyledActiveNavLink} to="/statistics" icon={IconStatistics} />
-      <NavItem as={StyledActiveNavLink} exact to="/" icon={IconLogout} onClick={logout} />
+      <NavItem as={StyledActiveNavLink} to='/trainings' icon={IconTraining} />
+      <NavItem as={StyledActiveNavLink} to='/createTraining' icon={IconAdd} />
+      <NavItem as={StyledActiveNavLink} to='/progress' icon={IconProgress} />
+      <NavItem
+        as={StyledActiveNavLink}
+        to='/statistics'
+        icon={IconStatistics}
+      />
+      <NavItem
+        as={StyledActiveNavLink}
+        exact
+        to='/'
+        icon={IconLogout}
+        onClick={logout}
+      />
     </>
-  )
-  return(
+  );
+  return (
     <StyledWrapper>
       <Nav navTop>
-        {renderTopNav}
+        <StyledPageTitle>{pageTitle}</StyledPageTitle>
       </Nav>
       {children}
-      <Nav>
-        {renderBottomNav}
-      </Nav>
+      <Nav>{renderBottomNav}</Nav>
     </StyledWrapper>
-  )
-}
+  );
+};
 
 UserPanelTemplate.propTypes = {
   children: PropTypes.element.isRequired,
-}
+};
 
 export default connect(null, { logout })(UserPanelTemplate);

@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { device } from '../mediaQueries/mediaQueries';
+import Moment from 'react-moment';
 import UserPanelTemplate from '../templates/UserPanelTemplate';
 import GridTemplate from '../templates/GridTemplate';
+import { useSelector, useDispatch } from 'react-redux';
+import { getDoneTrainings } from '../actions/training';
 
 const StyledWrapper = styled.div`
   width: 90%;
@@ -44,6 +47,7 @@ const StyledProgressWrapper = styled.div`
   align-items: center;
   background: rgba(0, 0, 0, 0.3);
   border-radius: 20px;
+  animation: slideIn 0.3s ease-in-out;
 
   @media ${device.tablet} {
     border-radius: 30px;
@@ -147,37 +151,47 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `;
 
-const ProgressPage = () => (
-  <UserPanelTemplate pageTitle='progress'>
-    <StyledWrapper>
-      <StyledMonthName>JUNE 2020</StyledMonthName>
-      <StyledGridTemplate>
-        <StyledProgressWrapper>
-          <StyledDate>Monday 28/06/2020</StyledDate>
-          <StyledHr></StyledHr>
-          <StyledTrainingContainer as={StyledLink} to='/trainings/details/5'>
-            <StyledTraining done>full body workout</StyledTraining>
-            <StyledCheck>Check</StyledCheck>
-          </StyledTrainingContainer>
-        </StyledProgressWrapper>
-        <StyledProgressWrapper>
-          <StyledDate>Monday 28/06/2020</StyledDate>
-          <StyledHr></StyledHr>
-          <StyledTrainingContainer>
-            <StyledTraining>rest</StyledTraining>
-          </StyledTrainingContainer>
-        </StyledProgressWrapper>
-        <StyledProgressWrapper>
-          <StyledDate>Monday 28/06/2020</StyledDate>
-          <StyledHr></StyledHr>
-          <StyledTrainingContainer>
-            <StyledTraining done>full body workout</StyledTraining>
-            <StyledCheck>Check</StyledCheck>
-          </StyledTrainingContainer>
-        </StyledProgressWrapper>
-      </StyledGridTemplate>
-    </StyledWrapper>
-  </UserPanelTemplate>
-);
+const StyledParagraph = styled.p`
+  color: ${({ theme }) => theme.fontColorGray};
+  font-size: ${({ theme }) => theme.fontSize.m};
+  text-align: center;
+  margin-top: 3rem;
+`;
 
+const ProgressPage = () => {
+  const dispatch = useDispatch();
+  const doneTrainings = useSelector((state) => state.training.doneTrainings);
+
+  useEffect(() => {
+    dispatch(getDoneTrainings());
+  }, []);
+
+  const renderDoneTrainings =
+    doneTrainings.length > 0 &&
+    doneTrainings.map((training) => (
+      <StyledProgressWrapper key={training._id}>
+        <StyledDate><Moment format="dddd YYYY-MM-DD" date={training.date} /></StyledDate>
+        <StyledHr></StyledHr>
+        <StyledTrainingContainer as={StyledLink} to={`/trainings/details/${training._id}`}>
+          <StyledTraining done>{training.name}</StyledTraining>
+          <StyledCheck>Check</StyledCheck>
+        </StyledTrainingContainer>
+      </StyledProgressWrapper>
+    ));
+
+  return (
+    <UserPanelTemplate pageTitle='progress'>
+      <StyledWrapper>
+        {/* <StyledMonthName>JUNE 2020</StyledMonthName> */}
+          {doneTrainings.length > 0 ? (
+          <StyledGridTemplate>
+            <>{renderDoneTrainings}</>
+          </StyledGridTemplate>
+          ) : (
+            <StyledParagraph>You dont have done trainings yet</StyledParagraph>
+          )}
+      </StyledWrapper>
+    </UserPanelTemplate>
+  );
+};
 export default ProgressPage;

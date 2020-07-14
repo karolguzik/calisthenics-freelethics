@@ -6,11 +6,13 @@ import {
   LOGOUT_USER,
   AUTH_SUCCESS,
   AUTH_FAILURE,
-  // DELETE_ACCOUNT_SCCESS,
-  // DELETE_ACCOUNT_FAILURE,
+  DELETE_ACCOUNT,
+  CONFIRM_INITIALIZE_ACCOUNT,
   FINISH_INITIALIZE_ACCOUNT,
+  CLEAR_TRAININGS_STORE,
 } from './types';
 import { showAlert } from './alert';
+import { clearTrainingsStore } from './training';
 import axios from 'axios';
 import setAuthToken from '../setAuthToken/setAuthToken';
 
@@ -32,6 +34,11 @@ export const register = (email, username, password, history) => async (dispatch)
       payload: res.data,
     });
     
+
+    setTimeout(() => {
+      dispatch({type: CONFIRM_INITIALIZE_ACCOUNT});
+    }, 4000);
+
     setTimeout(() => {
       dispatch({ type: FINISH_INITIALIZE_ACCOUNT });
       history.push('/login');
@@ -103,4 +110,27 @@ export const logout = () => dispatch => {
   dispatch({
     type: LOGOUT_USER
   });
+
+  dispatch({
+    type: CLEAR_TRAININGS_STORE,
+  })
+}
+
+
+export const deleteAccount = () => async dispatch => {
+  try {
+    await axios.delete('/api/users');
+
+    dispatch({
+      type: DELETE_ACCOUNT
+    })
+    
+    dispatch({
+      type: CLEAR_TRAININGS_STORE,
+    })
+
+    dispatch(showAlert('Account deleted', 'success'));
+  } catch (error) {
+    console.log(error);
+  }
 }

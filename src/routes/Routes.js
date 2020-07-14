@@ -5,7 +5,6 @@ import PrivateRoute from './PrivateRoute';
 import LoginPage from '../views/LoginPage';
 import RegistrationPage from '../views/RegistrationPage';
 import TrainingsPage from '../views/TrainingsPage';
-import MyTrainingsPage from '../views/MyTrainingsPage';
 import CreateTrainingsPage from '../views/CreateTrainingsPage';
 import TrainingDetailsPage from '../views/TrainingDetailsPage';
 import AppPanelPage from '../views/AppPanelPage';
@@ -23,7 +22,6 @@ const Routes = () => (
       component={TrainingsPage}
     />
     <PrivateRoute path={RoutesTypes.training} component={TrainingDetailsPage} />
-    <PrivateRoute path={RoutesTypes.myTrainings} component={MyTrainingsPage} />
     <PrivateRoute
       path={RoutesTypes.createTrainings}
       component={CreateTrainingsPage}

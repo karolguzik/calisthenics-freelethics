@@ -9,9 +9,25 @@ const Progress = require('../models/Progress');
 // @access   Private
 router.post('/', auth, async (req, res) => {
   try {
+    const {
+      name,
+      reps,
+      repsRestTime,
+      exerciseRestTime,
+      exercises,
+      totalTime
+    } = req.body;
+
     const progress = new Progress({
       user: req.user.id,
-      idTraining: req.body.activeTrainingId
+      // trainingId: req.body.activeTrainingId,
+      name,
+      reps,
+      repsRestTime,
+      exerciseRestTime,
+      exercises,
+      totalTime,
+      // idTraining: req.training.id,
     });
 
     await progress.save();
