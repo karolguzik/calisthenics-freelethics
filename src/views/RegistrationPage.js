@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { device } from '../mediaQueries/mediaQueries';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import AuthTemplate from '../templates/AuthTemplate';
 import Form from '../components/Form/Form';
 import Input from '../components/Input/Input';
 import Button from '../components/Button/Button';
-import RangeIcon from '../assets/images/calisthenics-range.png';
+import RangeProgress from '../components/RangeProgress/RangeProgress';
 import { register } from '../actions/auth';
 
 const StyledButtonContainer = styled.div`
@@ -43,64 +43,29 @@ const LoadingInitializeAccount = styled.div`
 
 const StyledInitializeText = styled.p`
   margin-top: 1rem;
-  font-size: ${({theme}) => theme.fontSize.m}
+  font-size: ${({ theme }) => theme.fontSize.m};
 `;
 
 const StyledConfirmText = styled.p`
   margin-top: 1rem;
   color: ${({ theme }) => theme.colorExtraQuatenary};
-  font-size: ${({theme}) => theme.fontSize.m};
+  font-size: ${({ theme }) => theme.fontSize.m};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
-const StyledRangeIcon = styled.div`
-  position: relative;
-  margin: 2rem 0;
-  width: 212px;
-  height: 80px;
-  background-image: url(${() => RangeIcon});
-  background-repeat: no-repeat;
-  background-size: 100%;
-  overflow: hidden;
+const RegistrationPage = ({ history }) => {
+  const alert = useSelector((state) => state.alert);
+  const initializeAccount = useSelector(
+    (state) => state.auth.initializeAccount
+  );
+  const initializeConfirm = useSelector(
+    (state) => state.auth.initializeConfirm
+  );
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const dispatch = useDispatch();
 
-  /* @media ${device.laptopL} {
-    width: 350px;
-  height: 150px;
-  } */
-`;
-
-const StyledRangeInnerBgc = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: ${({ theme }) => theme.fontColorGray};
-  z-index: -1;
-`;
-
-const StyledRangeCoverBgc = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: ${({ theme }) => theme.colorExtraQuatenary};
-  transform: translateY(100%);
-  animation: loadingRegisterIcon 4s ease-in-out forwards;
-  z-index: -1;
-`;
-
-const RegistrationPage = ({
-  register,
-  alert,
-  initializeAccount,
-  initializeConfirm,
-  isAuthenticated,
-  history,
-}) => {
   const onSubmit = (username, email, password) => {
-    register(username, email, password, history);
+    dispatch(register(username, email, password, history));
   };
 
   const alertMsg = alert
@@ -114,14 +79,11 @@ const RegistrationPage = ({
   if (initializeAccount) {
     return (
       <LoadingInitializeAccount>
-        <StyledRangeIcon>
-          <StyledRangeInnerBgc />
-          <StyledRangeCoverBgc />
-        </StyledRangeIcon>
+        <RangeProgress />
         {initializeConfirm ? (
           <StyledConfirmText>Account registered!</StyledConfirmText>
         ) : (
-          <StyledInitializeText>Initialize account...</StyledInitializeText>
+          <StyledInitializeText>Creating account...</StyledInitializeText>
         )}
       </LoadingInitializeAccount>
     );
@@ -137,19 +99,18 @@ const RegistrationPage = ({
         initialValues={{ email: '', username: '', password: '' }}
         validate={(values) => {
           let errors = {};
+          let regex = /\S+@\S+\.\S+/;
 
-          // let regex = !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-
-          // if (!values.email) {
-          //   errors.email = 'Email is required';
-          // } else if (regex.test(values.email)) {
-          //   errors.email = 'Invalid email address';
-          // }
+          if (!values.email) {
+            errors.email = 'Email is required';
+          } else if (!regex.test(values.email)) {
+            errors.email = 'Invalid email address';
+          }
 
           if (!values.username) {
-            errors.username = 'username is required';
+            errors.username = 'Username is required';
           } else if (values.username.length < 5) {
-            errors.username = 'username must not be shorter then 5 letters';
+            errors.username = 'Username must not be shorter then 5 letters';
           }
 
           if (!values.password) {
@@ -171,7 +132,7 @@ const RegistrationPage = ({
           handleBlur,
           handleSubmit,
         }) => (
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit} noValidate>
             {touched.email && errors.email && (
               <TextError>{errors.email}</TextError>
             )}
@@ -184,7 +145,7 @@ const RegistrationPage = ({
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.email}
-              autoComplete='off'
+              autoComplete='none'
             />
             {touched.username && errors.username && (
               <TextError>{errors.username}</TextError>
@@ -197,6 +158,7 @@ const RegistrationPage = ({
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.username}
+              autoComplete='none'
             />
             {touched.password && errors.password && (
               <TextError>{errors.password}</TextError>
@@ -222,13 +184,8 @@ const RegistrationPage = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  alert: state.alert,
-  initializeAccount: state.auth.initializeAccount,
-  initializeConfirm: state.auth.initializeConfirm,
-  isAuthenticated: state.auth.isAuthenticated,
-});
+RegistrationPage.propTypes = {
+  history: PropTypes.object.isRequired,
+};
 
-export default connect(mapStateToProps, { register })(
-  withRouter(RegistrationPage)
-);
+export default withRouter(RegistrationPage);

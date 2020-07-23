@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { device } from '../mediaQueries/mediaQueries';
-import Moment from 'react-moment';
 import UserPanelTemplate from '../templates/UserPanelTemplate';
 import GridTemplate from '../templates/GridTemplate';
 import { useSelector, useDispatch } from 'react-redux';
-import { getDoneTrainings } from '../actions/training';
+import { getDoneTrainings } from '../actions/progress';
+import Moment from 'react-moment';
 
 const StyledWrapper = styled.div`
   width: 90%;
   margin: 0 auto;
+  animation: slideIn 0.3s ease-in-out;
 
   @media ${device.mobileL} {
     width: 80%;
@@ -20,7 +21,6 @@ const StyledWrapper = styled.div`
 const StyledGridTemplate = styled(GridTemplate)`
   grid-auto-rows: auto;
   grid-template-columns: 100%;
-  margin: 3rem 0;
 
   @media ${device.mobileL} {
     grid-template-columns: 100%;
@@ -37,24 +37,19 @@ const StyledGridTemplate = styled(GridTemplate)`
   }
 `;
 
-const StyledMonthName = styled.p`
-  text-align: center;
-`;
-
 const StyledProgressWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: rgba(0, 0, 0, 0.3);
   border-radius: 20px;
-  animation: slideIn 0.3s ease-in-out;
 
   @media ${device.tablet} {
     border-radius: 30px;
   }
 
   & > * {
-    flex-basis: 45%;
+    flex-basis: 49%;
   }
 `;
 
@@ -75,7 +70,7 @@ const StyledDate = styled.p`
 `;
 
 const StyledHr = styled.hr`
-  flex-basis: 5%;
+  flex-basis: 2%;
   border: 1px solid ${({ theme }) => theme.colorExtraQuatenary};
 `;
 
@@ -96,22 +91,12 @@ const StyledTraining = styled.div`
   align-items: center;
   justify-content: center;
   padding: .5rem; 
-  color: ${({ theme, done }) =>
-    done ? theme.colorExtraTertiary : theme.colorExtraSecondary};
+  color: ${({theme}) => theme.colorExtraSecondary};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   border-radius: 20px;
   text-transform: uppercase;
   transition: 0.2s ease-in-out;
-
-
-${({ done }) =>
-  done &&
-  css`
-    ${StyledTrainingContainer}:hover & {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
-  `}
+  text-align: center;
   
   @media ${device.tablet} {
     border-radius:30px;
@@ -125,6 +110,10 @@ ${({ done }) =>
   @media ${device.laptopL} {
     font-size: ${({ theme }) => theme.fontSize.xxxs}; 
   }
+
+  ${StyledTrainingContainer}:hover & {
+    transform: translateY(-100%);
+  }
 `;
 
 const StyledCheck = styled.div`
@@ -136,7 +125,7 @@ const StyledCheck = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${({ theme }) => theme.colorExtraTertiary};
+  color: ${({ theme }) => theme.colorExtraSecondary};
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   transform: translateY(100%);
@@ -160,11 +149,11 @@ const StyledParagraph = styled.p`
 
 const ProgressPage = () => {
   const dispatch = useDispatch();
-  const doneTrainings = useSelector((state) => state.training.doneTrainings);
+  const doneTrainings = useSelector((state) => state.progress.doneTrainings);
 
   useEffect(() => {
     dispatch(getDoneTrainings());
-  }, []);
+  }, [dispatch]);
 
   const renderDoneTrainings =
     doneTrainings.length > 0 &&
@@ -173,7 +162,7 @@ const ProgressPage = () => {
         <StyledDate><Moment format="dddd YYYY-MM-DD" date={training.date} /></StyledDate>
         <StyledHr></StyledHr>
         <StyledTrainingContainer as={StyledLink} to={`/trainings/details/${training._id}`}>
-          <StyledTraining done>{training.name}</StyledTraining>
+          <StyledTraining>{training.name}</StyledTraining>
           <StyledCheck>Check</StyledCheck>
         </StyledTrainingContainer>
       </StyledProgressWrapper>
@@ -182,13 +171,12 @@ const ProgressPage = () => {
   return (
     <UserPanelTemplate pageTitle='progress'>
       <StyledWrapper>
-        {/* <StyledMonthName>JUNE 2020</StyledMonthName> */}
           {doneTrainings.length > 0 ? (
           <StyledGridTemplate>
             <>{renderDoneTrainings}</>
           </StyledGridTemplate>
           ) : (
-            <StyledParagraph>You dont have done trainings yet</StyledParagraph>
+            <StyledParagraph>No trainings done</StyledParagraph>
           )}
       </StyledWrapper>
     </UserPanelTemplate>

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import UserPanelTemplate from '../templates/UserPanelTemplate';
 import GridTemplate from '../templates/GridTemplate';
 import CardTraining from '../components/CardTraining/CardTraining';
@@ -13,12 +12,20 @@ const StyledParagraph = styled.p`
   font-size: ${({ theme }) => theme.fontSize.m};
   text-align: center;
   margin-top: 3rem;
+  animation: slideIn 0.3s ease-in-out;
 `;
 
-const TrainingsPage = ({ trainings: { trainings }, getTrainings }) => {
+const StyledGridTemplate = styled(GridTemplate)`
+  margin-top: 1rem;
+`;
+
+const TrainingsPage = () => {
+  const trainings = useSelector(state => state.training.trainings);
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    getTrainings();
-  }, []);
+    dispatch(getTrainings());
+  }, [dispatch]);
 
   const renderTrainings =
     trainings.length > 0 &&
@@ -31,7 +38,7 @@ const TrainingsPage = ({ trainings: { trainings }, getTrainings }) => {
       <>
         <Alert />
         {trainings.length > 0 ? (
-          <GridTemplate>{renderTrainings}</GridTemplate>
+          <StyledGridTemplate>{renderTrainings}</StyledGridTemplate>
         ) : (
           <StyledParagraph>Create your training</StyledParagraph>
         )}
@@ -40,13 +47,5 @@ const TrainingsPage = ({ trainings: { trainings }, getTrainings }) => {
   );
 };
 
-TrainingsPage.propTypes = {
-  trainings: PropTypes.object.isRequired,
-  getTrainings: PropTypes.func.isRequired,
-};
 
-const mapStateToProps = (state) => ({
-  trainings: state.training,
-});
-
-export default connect(mapStateToProps, { getTrainings })(TrainingsPage);
+export default TrainingsPage;

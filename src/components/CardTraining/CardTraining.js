@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
-import SummaryTraining from '../SummaryTraining/SummaryTraining';
-// import { connect } from 'react-redux';
+import { device } from '../../mediaQueries/mediaQueries';
 
 const StyledWrapper = styled.div`
   position: relative;
@@ -68,15 +67,28 @@ const StyledCategoryTag = styled.span`
 `;
 
 const StyledInnerWrapper = styled.div`
+  padding: 0 2rem 0 5rem;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-
   justify-content: center;
 `;
 
-const StyledTrainingTitle = styled.span`
+const StyledTrainingName = styled.h2`
+  text-transform: uppercase;
+  font-size: 2.1rem;
+
+  @media ${device.laptopL} {
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
+`;
+
+const StyledTrainingExercises = styled.p`
+  color: ${({ theme }) => theme.fontColorGray};
+  font-size: ${({ theme }) => theme.fontSize.xs};
+`;
+
+const StyledTrainingTime = styled.span`
   color: ${({ theme }) => theme.colorExtraSecondary};
   font-size: ${({ theme }) => theme.fontSize.xxs};
   text-transform: uppercase;
@@ -88,46 +100,84 @@ const StyledNavLink = styled(NavLink)`
   color: ${({ theme }) => theme.fontColorLight};
 `;
 
+const CardTraining = ({ _id, name, exercises, totalTime }) => {
+  const formattedTrainingTotalTime = () => {
+    let hours = 0;
+    let minutes = 0;
+    let seconds = 0;
+    let result = '';
 
-const CardTraining = ({
-  _id,
-  name,
-  reps,
-  repsRestTime,
-  exercises,
-  exerciseRestTime,
-  totalTime,
-}) => (
-  <StyledWrapper>
-    <StyledViewTraining as={StyledNavLink} to={`/trainings/details/${_id}`}>
-      Watch
-    </StyledViewTraining>
-    <StyledStartTraining as={StyledNavLink} to={`/app/${_id}`}>
-      Start now
-    </StyledStartTraining>
-    <StyledCategoryTag>CaF</StyledCategoryTag>
-    <StyledInnerWrapper>
-      <SummaryTraining
-        totalTime={totalTime}
-        reps={reps}
-        exercises={exercises.length}
-        repsRestTime={repsRestTime}
-        exerciseRestTime={exerciseRestTime}
-      />
-    </StyledInnerWrapper>
-    <StyledTrainingTitle>{name}</StyledTrainingTitle>
-  </StyledWrapper>
-);
+    const formatToMinutes = () => {
+      hours = 0;
+      minutes = Math.floor(totalTime / 60);
+      seconds = totalTime % 60;
+    };
+
+    const formatToHours = () => {
+      hours = Math.floor(totalTime / 3600);
+      minutes = Math.floor((totalTime % 3600) / 60);
+      seconds = (totalTime % 3600) % 60;
+    };
+
+    if (totalTime >= 60 && totalTime < 3600) {
+      formatToMinutes();
+      if (seconds === 0) {
+        result = `${minutes}m`;
+      } else {
+        result = `${minutes}m ${seconds}s`;
+      }
+    } else if (totalTime >= 3600) {
+      formatToHours();
+      if (minutes === 0 && seconds === 0) {
+        result = `${hours}h`;
+      } else if (minutes === 0) {
+        result = `${hours}h ${seconds}s`;
+      } else if (seconds === 0) {
+        result = `${hours}h ${minutes}m`;
+      } else {
+        result = `${hours}h ${minutes}m ${seconds}s`;
+      }
+    } else {
+      seconds = totalTime;
+      result = `${seconds}s`;
+    }
+
+    return result;
+  };
+
+  return (
+    <StyledWrapper>
+      <StyledViewTraining as={StyledNavLink} to={`/trainings/details/${_id}`}>
+        Look at it
+      </StyledViewTraining>
+      <StyledStartTraining as={StyledNavLink} to={`/app/${_id}`}>
+        Start now
+      </StyledStartTraining>
+      <StyledCategoryTag>CaF</StyledCategoryTag>
+      <StyledInnerWrapper>
+        <StyledTrainingName>{name}</StyledTrainingName>
+        {exercises.length > 1 ? (
+          <StyledTrainingExercises>
+            {exercises.length} workouts
+          </StyledTrainingExercises>
+        ) : (
+          <StyledTrainingExercises>
+            {exercises.length} workout
+          </StyledTrainingExercises>
+        )}
+      </StyledInnerWrapper>
+      <StyledTrainingTime>
+        Duration: {formattedTrainingTotalTime()}
+      </StyledTrainingTime>
+    </StyledWrapper>
+  );
+};
 
 CardTraining.propTypes = {
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  reps: PropTypes.number.isRequired,
-  repsRestTime: PropTypes.number.isRequired,
-  exerciseRestTime: PropTypes.number.isRequired,
   exercises: PropTypes.array.isRequired,
   totalTime: PropTypes.number.isRequired,
 };
-
 
 export default CardTraining;

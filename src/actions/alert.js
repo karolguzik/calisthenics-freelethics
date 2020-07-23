@@ -4,7 +4,7 @@ import {
 } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
-export const showAlert = (msg, alertType, time = 3000) => dispatch => {
+export const showAlert = (msg, alertType, time = 2000) => dispatch => {
   const alertId = uuidv4();
 
   dispatch({

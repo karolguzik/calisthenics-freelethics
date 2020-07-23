@@ -34,16 +34,7 @@ router.get('/', auth, async (req, res) => {
 router.get('/:id', auth, async (req, res) => {
   try {
     const training = await Training.findById(req.params.id);
-
-    // if (!training) {
-    //   res.status(400).json({ msg: 'Training not found' });
-    // }
-
     const progress = await Progress.findById(req.params.id);
-
-    // if(!progress) {
-    //   res.status(400).json({ msg: 'Training not found in your progress'})
-    // }
 
     if(training) {
       res.json(training);
@@ -68,12 +59,10 @@ router.post(
       check('name', 'Training name is required').not().isEmpty(),
       check('reps', 'Number of reps is required').not().isEmpty(),
       check('repsRestTime', 'Reps rest time is required').not().isEmpty(),
-      check('exerciseRestTime', 'Exerciste rest time is required')
+      check('exerciseRestTime', 'Exercise rest time is required')
         .not()
         .isEmpty(),
       check('exercises', 'Exercises are required').not().isEmpty(),
-      // check('exerciseName', 'Exercise name is required').not().isEmpty(),
-      // check('exerciseTime', 'Exercise time is required').not().isEmpty(),
     ],
   ],
   async (req, res) => {

@@ -7,6 +7,7 @@ const GridTemplate = styled.div`
   grid-auto-rows: 150px;
   justify-content: center;
   gap: 2rem;
+  margin-top: 2rem;
 
   @media ${device.mobileL} {
     grid-template-columns: 80%;

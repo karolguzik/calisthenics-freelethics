@@ -1,6 +1,6 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Nav from '../components/Nav/Nav';
 import NavItem from '../components/Nav/NavItem';
@@ -9,17 +9,15 @@ import IconAdd from '../assets/icons/add.png';
 import IconProgress from '../assets/icons/progress.png';
 import IconStatistics from '../assets/icons/statistics.png';
 import IconLogout from '../assets/icons/logout.png';
-import IconStart from '../assets/icons/start.png';
-import IconStop from '../assets/icons/stop.png';
-import IconPause from '../assets/icons/pause.png';
 import IconGoBack from '../assets/icons/goback.png';
-import { connect } from 'react-redux';
 import { logout } from '../actions/auth';
+import { connect } from 'react-redux';
 
 const StyledWrapper = styled.div`
   margin: 7.5vh 7.5% 10vh;
   padding: 2rem 0;
   min-height: calc(100vh - (7.5vh + 10vh));
+  overflow-x: hidden;
 `;
 
 const activeClassName = 'active';
@@ -46,20 +44,11 @@ const StyledPageTitle = styled.p`
 
 const UserPanelTemplate = ({
   children,
-  activeTopNav,
   pageTitle,
   activeAppPanelNav,
+  stopTraining,
   logout,
 }) => {
-  // const renderTopNav = activeTopNav ? (
-  //   <>
-  //     <NavItem as={StyledActiveNavLink} to="/trainings">Trainings</NavItem>
-  //     <NavItem as={StyledActiveNavLink} to="/mytrainings">My trainings</NavItem>
-  //   </>
-  // ) : (
-  //   <StyledPageTitle>{pageTitle}</StyledPageTitle>
-  // );
-
   const renderBottomNav = activeAppPanelNav ? (
     <>
       <NavItem
@@ -67,6 +56,7 @@ const UserPanelTemplate = ({
         exact
         to='/trainings'
         icon={IconGoBack}
+        onClick={stopTraining}
       />
     </>
   ) : (
@@ -101,6 +91,9 @@ const UserPanelTemplate = ({
 
 UserPanelTemplate.propTypes = {
   children: PropTypes.element.isRequired,
+  pageTitle: PropTypes.string.isRequired,
+  activeAppPanelNav: PropTypes.bool,
+  stopTraining: PropTypes.func,
 };
 
 export default connect(null, { logout })(UserPanelTemplate);

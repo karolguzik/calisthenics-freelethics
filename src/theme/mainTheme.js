@@ -7,10 +7,10 @@ export const theme = {
   bgcLightTertiary: 'hsl(240, 2%, 26%)',
   fontColorDark: 'hsl(0, 0%, 25%)',
   fontColorLight: 'hsl(222, 17%, 89%)',
-  fontColorGray: '#898989;',
+  fontColorGray: 'hsl(0,0%,53.7%)',
   colorExtraPrimary: 'hsl(47, 92%, 74%)',
   colorExtraSecondary: 'hsl(0, 85%, 58%)',
-  colorExtraTertiary: '#A6C184',
+  colorExtraTertiary: 'hsl(86.6,33%,63.7%)',
   colorExtraQuatenary: 'hsl(194, 54%, 42%)',
   fontSize: {
     xxxs: '.8rem',

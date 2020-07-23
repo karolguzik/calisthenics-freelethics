@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { device } from '../mediaQueries/mediaQueries';
 import UserPanelTemplate from '../templates/UserPanelTemplate';
 import Button from '../components/Button/Button';
-import SummaryTraining from '../components/SummaryTraining/SummaryTraining';
-import MuscleIcon from '../assets/icons/muscle.png';
-import RangeIcon from '../assets/images/calisthenics-range.png';
-import { connect, useSelector, useDispatch } from 'react-redux';
-import { getTraining, doneTraining } from '../actions/training';
-
+import RangeProgress from '../components/RangeProgress/RangeProgress';
+import { useSelector, useDispatch } from 'react-redux';
+import { getTraining } from '../actions/training';
+import { doneTraining } from '../actions/progress';
 
 const StyledWrapper = styled.div`
   width: 90%;
@@ -18,6 +16,7 @@ const StyledWrapper = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  animation: slideIn 0.3s ease-in-out;
 
   @media ${device.laptopL} {
     width: 70%;
@@ -71,50 +70,21 @@ const StyledTimeWrapper = styled.div`
   }
 `;
 
-const StyledNextExerciseTitle = styled.p`
+const StyledNextExerciseTitle = styled.div`
   margin-top: 2rem;
   color: ${({ theme }) => theme.fontColorLight};
-  font-weight: ${({ theme }) => theme.fontWeight.light};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   text-align: center;
 
   p {
     margin: 1rem;
     color: ${({ theme }) => theme.colorExtraQuatenary};
   }
-`;
 
-const StyledSummaryTrainingWrapper = styled.div`
-  margin: 7rem 0 0 auto;
-
-  @media ${device.mobileS} {
-    margin: 12rem 0 0 auto;
+  span {
+    color: ${({ theme }) => theme.fontColorGray};
+    font-weight: ${({ theme }) => theme.fontWeight.light};
   }
-
-  @media ${device.mobileL} {
-    margin: 20rem 0 0 auto;
-  }
-
-  @media ${device.tablet} {
-    margin: 6rem 0 0 auto;
-  }
-
-  @media ${device.laptopL} {
-    margin-top: 10rem;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    width: 100%;
-  }
-
-  @media ${device.desktop} {
-    margin: 10rem 0 0 auto;
-  }
-`;
-
-const StyledSummaryTrainingTitle = styled.h3`
-  flex-basis: 100%;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
 `;
 
 const StyledDoneTrainingMessage = styled.div`
@@ -125,11 +95,12 @@ const StyledDoneTrainingMessage = styled.div`
   width: 100%;
   height: 100%;
   background: black;
-  background: ${({theme}) => theme.bgcDarkSecondary};
+  background: ${({ theme }) => theme.bgcDarkSecondary};
   position: fixed;
   top: 0;
   left: 0;
   z-index: 100000;
+  animation: slideIn 0.3s ease-in-out;
 
   h2 {
     font-size: 3.5rem;
@@ -141,51 +112,54 @@ const StyledDoneTrainingMessage = styled.div`
   }
 `;
 
-// const StyledIconBiceps = styled.div`
-//   margin: 2rem 0;
-//   width: 70px;
-//   height: 70px;
-//   background-image: url(${() => MuscleIcon});
-//   background-repeat: no-repeat;
-//   background-size: 100%;
-// `;
-
-const StyledRangeIcon = styled.div`
-  position:relative;
-  margin: 2rem 0;
-  width: 212px;
-  height: 80px;
-  background-image: url(${() => RangeIcon});
-  background-repeat: no-repeat;
-  background-size: 100%;
-  /* background-position:cover; */
-  overflow: hidden;
-`;
-
-const StyledRangeInnerBgc = styled.div`
-  position: absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background: ${({theme}) => theme.fontColorGray};
-  z-index: -1;
-`;
-
-const StyledRangeCoverBgc = styled.div`
-  position: absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background: ${({theme}) => theme.colorExtraQuatenary};
-  transform: translateY(100%);
-  animation: loadingRegisterIcon 4s ease-in-out forwards;
-  z-index: -1;
+const StyledRangePoints = styled.div`
+  margin-bottom: 2rem;
+  font-size: ${({ theme }) => theme.fontSize.xl};
+  color: ${({ theme }) => theme.colorExtraQuatenary};
 `;
 
 const StyledButton = styled(Button)`
   display: inline-block;
+
+  :nth-child(1) {
+    background: none;
+    color: ${({ theme }) => theme.colorExtraQuatenary};
+    border: 1px solid ${({ theme }) => theme.colorExtraQuatenary};
+    border-radius: 15px;
+
+    @media ${device.tablet} {
+      border-radius: 30px;
+    }
+
+    @media ${device.laptop} {
+      border-radius: 50px;
+    }
+
+    :hover {
+      color: ${({ theme }) => theme.fontColorDark};
+      background: ${({ theme }) => theme.colorExtraQuatenary};
+    }
+  }
+
+  :nth-child(2) {
+    background: none;
+    color: ${({ theme }) => theme.colorExtraSecondary};
+    border: 1px solid ${({ theme }) => theme.colorExtraSecondary};
+    border-radius: 15px;
+
+    @media ${device.tablet} {
+      border-radius: 30px;
+    }
+
+    @media ${device.laptop} {
+      border-radius: 50px;
+    }
+
+    :hover {
+      color: ${({ theme }) => theme.fontColorDark};
+      background: ${({ theme }) => theme.colorExtraSecondary};
+    }
+  }
 `;
 
 const AppPanelPage = ({ match }) => {
@@ -196,7 +170,26 @@ const AppPanelPage = ({ match }) => {
 
   useEffect(() => {
     dispatch(getTraining(id));
-  }, [id]);
+  }, [dispatch, id]);
+
+  const [counterPoints, setCounterPoints] = useState({ points: 0 });
+  let counter = 0;
+
+  const countRangePoints = () => {
+    const pointsTarget = parseInt(activeTraining.totalTime / 60);
+    let speed = 4000 / pointsTarget;
+    let inc = 1;
+
+    if (counter < pointsTarget) {
+      setCounterPoints({ points: counter });
+      counter += inc;
+      setTimeout(countRangePoints, speed);
+    } else {
+      setCounterPoints({ points: pointsTarget });
+    }
+  };
+
+  const [isAppStarted, setIsAppStarted] = useState(false);
 
   const [trainingData, setTrainingData] = useState({
     activeExerciseName: 'caf',
@@ -222,11 +215,8 @@ const AppPanelPage = ({ match }) => {
     return null;
   }
 
-  const {
-    name,
-    exercises,
-  } = activeTraining;
-  
+  const { name, exercises } = activeTraining;
+
   const exerciseIteration = (exerciseIterator, repsIterator) => {
     let idInterval;
     let activeExercise;
@@ -273,6 +263,7 @@ const AppPanelPage = ({ match }) => {
             finishTraining: true,
           });
           dispatch(doneTraining(activeTraining));
+          countRangePoints();
         }
       } else if (activeExerciseTime === -1 && exerciseIterator !== -1) {
         clearInterval(idInterval);
@@ -312,35 +303,33 @@ const AppPanelPage = ({ match }) => {
         }, 1000);
       }
     }, 1000);
-    console.log(`exerciseIterator: ${exerciseIterator}
-        exercisesLength: ${exercises.length}
-        repsIterator: ${repsIterator}
-      `);
   };
 
   const startTraining = () => {
+    setIsAppStarted(true);
     let repsIterator = 0;
     let exerciseIterator = 0;
     exerciseIteration(exerciseIterator, repsIterator);
   };
 
-  console.log(trainingData);
+  const stopTraining = () => {
+    isAppStarted && window.location.reload(false);
+  };
 
   if (finishTraining) {
     return (
       <StyledDoneTrainingMessage>
         <h2>Training done!</h2>
-        {/* <StyledIconBiceps /> */}
-        <StyledRangeIcon>
-          <StyledRangeInnerBgc />
-          <StyledRangeCoverBgc />
-        </StyledRangeIcon>
-        <p>Training will be save in your progress.</p>
+        <RangeProgress />
+        <StyledRangePoints>
+          CaF points +{counterPoints.points}
+        </StyledRangePoints>
+        <p>Training will be saved in your progress.</p>
         <div>
-          <StyledButton as={Link} to='/progress' quatenary>
+          <StyledButton as={Link} to='/progress'>
             Check
           </StyledButton>
-          <StyledButton as={Link} to='/trainings' tertiary>
+          <StyledButton as={Link} to='/trainings'>
             Go back
           </StyledButton>
         </div>
@@ -352,6 +341,7 @@ const AppPanelPage = ({ match }) => {
         pageTitle={name}
         activeAppPanelNav
         startTraining={() => startTraining()}
+        stopTraining={stopTraining}
       >
         <StyledWrapper>
           <StyledActiveExerciseTitle>
@@ -372,24 +362,18 @@ const AppPanelPage = ({ match }) => {
             <StyledNextExerciseTitle>
               <h2>Next:</h2>
               <p>
-                {nextExerciseName} - {nextExerciseTime} seconds
+                {nextExerciseName} <span> - {nextExerciseTime} seconds</span>
               </p>
             </StyledNextExerciseTitle>
           )}
-          {/* <StyledSummaryTrainingWrapper> */}
-          {/* <StyledSummaryTrainingTitle>Left :</StyledSummaryTrainingTitle> */}
-          {/* <SummaryTraining
-              totalTime={totalTime}
-              reps={reps}
-              exercises={exercises.length}
-              repsRestTime={repsRestTime}
-              exerciseRestTime={exerciseRestTime}
-            /> */}
-          {/* </StyledSummaryTrainingWrapper> */}
         </StyledWrapper>
       </UserPanelTemplate>
     );
   }
+};
+
+AppPanelPage.propTypes = {
+  match: PropTypes.object.isRequired,
 };
 
 export default AppPanelPage;

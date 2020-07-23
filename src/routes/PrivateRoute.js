@@ -1,9 +1,11 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const PrivateRoute = ({component: Component, isAuthenticated, ...rest}) => {
+const PrivateRoute = ({component: Component, ...rest}) => {
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
   return(
     <Route {...rest} render={props => (
       isAuthenticated ? <Component {...props} /> : <Redirect to='/registration' />
@@ -13,11 +15,7 @@ const PrivateRoute = ({component: Component, isAuthenticated, ...rest}) => {
 };
 
 PrivateRoute.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
+  component: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-})
-
-export default connect(mapStateToProps)(PrivateRoute);
+export default PrivateRoute;

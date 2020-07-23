@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
+import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import { device } from '../mediaQueries/mediaQueries';
@@ -9,13 +10,12 @@ import SummaryTraining from '../components/SummaryTraining/SummaryTraining';
 import Alert from '../components/Alert/Alert';
 import Input from '../components/Input/Input';
 import Button from '../components/Button/Button';
-
-import { connect } from 'react-redux';
 import { createTraining } from '../actions/training';
 
 const StyledWrapper = styled.div`
   width: 90%;
   margin: 0 auto;
+  animation: slideIn 0.3s ease-in-out;
 
   @media ${device.mobileL} {
     width: 80%;
@@ -73,7 +73,7 @@ const StyledButton = styled(Button)`
 const StyledGridTemplate = styled(GridTemplate)`
   grid-auto-rows: auto;
   grid-template-columns: 100%;
-  margin: 2rem 0;
+  margin-bottom: 2rem;
 
   @media ${device.mobileL} {
     grid-template-columns: 100%;
@@ -90,12 +90,22 @@ const StyledGridTemplate = styled(GridTemplate)`
   }
 `;
 
-const StyledExercise = styled.p`
+const StyledExercise = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: ${({ theme }) => theme.fontSize.s};
   animation: slideIn 0.3s ease-in-out;
+
+  span {
+    color: ${({theme}) => theme.fontColorGray};
+    font-size: ${({theme}) => theme.fontSize.xs};
+  }
+
+  p {
+    display: flex;
+    flex-direction: column;
+  }
 
   i:hover {
     transition: 0.2s;
@@ -124,6 +134,7 @@ const StyledHr = styled.hr`
 const TextError = styled.p`
   color: ${({ theme }) => theme.colorExtraSecondary};
   margin: 0.5rem;
+  text-align: center;
 `;
 
 const StyledSelect = styled.select`
@@ -134,6 +145,14 @@ const StyledSelect = styled.select`
   background: ${({ theme }) => theme.bgcDarkSecondary};
   border: 1px solid ${({ theme }) => theme.bgcDarkTertiary};
   border-radius: 20px;
+
+  optgroup {
+    color: ${({ theme }) => theme.colorExtraSecondary};
+  }
+
+  option {
+    color: ${({ theme }) => theme.fontColorGray};
+  }
 
   @media ${device.tablet} {
     padding: 0.8rem;
@@ -152,7 +171,9 @@ const StyledSelect = styled.select`
   }
 `;
 
-const CreateTrainingsPage = ({ createTraining, history }) => {
+const CreateTrainingsPage = ({ history }) => {
+  const dispatch = useDispatch();
+
   const [training, setTraining] = useState({
     name: '',
     reps: '',
@@ -162,7 +183,6 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
     totalTime: 0,
   });
 
-  console.log(training);
   const [exercise, setExercise] = useState({
     exerciseName: '',
     exerciseTime: '',
@@ -170,7 +190,7 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
   });
 
   const [exerciseValidationError, setExerciseValidationError] = useState({
-    msgError: '',
+    textError: '',
   });
 
   const {
@@ -190,21 +210,44 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
     exercises.length > 0
       ? exercises
           .map((el) => parseInt(el.exerciseTime))
-          .reduce((el1, el2) => el1 + el2)
+          .reduce((el1, el2) => el1 + el2, 0)
       : 0;
 
-  console.log(exercisesTotalTime);
+  const handleInputKeydown = (e) => {
+    const invalidChars = ['-', '+', 'e'];
+
+    if (invalidChars.includes(e.key)) {
+      e.preventDefault();
+    }
+  };
+
+  const handleOnMouseWheel = (e) => {
+    e.target.blur();
+  };
 
   const handleInputChange = (e) => {
+    if (e.target.type === 'number' && e.target.value === '0') {
+      setExerciseValidationError({
+        textError: 'You cannot add training with 0 time or reps',
+      });
+
+      setTimeout(() => {
+        setExerciseValidationError({ textError: '' });
+      }, 3000);
+      e.target.value = '';
+    }
+
+    if (e.target.value === ' ') {
+      e.target.value = '';
+    }
+
     if (e.target.name === 'exerciseName' || e.target.name === 'exerciseTime') {
       setExercise({ ...exercise, [e.target.name]: e.target.value });
-      // TODO: putted extra if with reps
     } else if (e.target.name === 'reps') {
       setTraining({
         ...training,
         [e.target.name]: e.target.value,
-        totalTime:
-          totalTime + parseInt(exercisesTotalTime) * parseInt(e.target.value),
+        totalTime: exercisesTotalTime * e.target.value,
       });
     } else {
       setTraining({ ...training, [e.target.name]: e.target.value });
@@ -213,7 +256,7 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    createTraining(training, history);
+    dispatch(createTraining(training, history));
   };
 
   const addExercise = (e) => {
@@ -245,6 +288,7 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
         : 0;
 
     const newTotalTime = parseInt(newExercisesTime) * parseInt(reps);
+
     return newTotalTime;
   };
 
@@ -276,14 +320,12 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
     setExercise({ exerciseName: '', exerciseTime: '', exerciseId: uuidv4() });
   };
 
-  console.log(totalTime);
-
   return (
     <UserPanelTemplate pageTitle='create your training'>
       <StyledWrapper>
         <Alert />
         <TextError>{textError}</TextError>
-        <StyledForm onSubmit={(e) => handleOnSubmit(e)}>
+        <StyledForm onSubmit={(e) => handleOnSubmit(e)} autoComplete='off'>
           <StyledInput
             type='text'
             name='name'
@@ -296,6 +338,8 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
             name='reps'
             placeholder='reps number'
             onChange={handleInputChange}
+            onKeyDown={handleInputKeydown}
+            onWheel={handleOnMouseWheel}
             value={reps}
           />
           <StyledInput
@@ -303,6 +347,8 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
             name='repsRestTime'
             placeholder='reps rest time'
             onChange={handleInputChange}
+            onKeyDown={handleInputKeydown}
+            onWheel={handleOnMouseWheel}
             value={repsRestTime}
           />
           <StyledInput
@@ -310,36 +356,97 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
             name='exerciseRestTime'
             placeholder='exercise rest time'
             onChange={handleInputChange}
+            onKeyDown={handleInputKeydown}
+            onWheel={handleOnMouseWheel}
             value={exerciseRestTime}
           />
-          {/* <StyledInput
-            type='text'
-            name='exerciseName'
-            placeholder='exercise name'
-            onChange={handleInputChange}
-            value={exerciseName}
-          /> */}
           <StyledSelect
             name='exerciseName'
             placeholder='exercise name'
             onChange={handleInputChange}
             value={exerciseName}
           >
-            <option value="" selected disabled hidden>exercise name</option>
-            <option>push up's</option>
-            <option>pull up's</option>
-            <option>burbees</option>
-            <option>dips</option>
-            <option>squats</option>
-            <option>jumps</option>
-            <option>running</option>
-            <option>starjumps</option>
+            <option value='' disabled hidden>
+              exercise name
+            </option>
+            <optgroup label='Chest'>
+              <option>push-up's</option>
+              <option>incline push-up's</option>
+              <option>decline push-up's</option>
+              <option>diamond push-up's</option>
+              <option>wide-hands push-up's</option>
+              <option>chest dips</option>
+            </optgroup>
+            <optgroup label='Back'>
+              <option>pull-up's</option>
+              <option>close-hands pull-up's</option>
+              <option>wide-hands pull-up's</option>
+              <option>chin-up's</option>
+              <option>inverted rows</option>
+            </optgroup>
+            <optgroup label='Shoulder'>
+              <option>pike push-up's</option>
+              <option>hand-stand push-up's</option>
+              <option>hand-stand holds</option>
+              <option>div bomber push-up's</option>
+              <option>dips</option>
+              <option>plank</option>
+              <option>move side plank</option>
+            </optgroup>
+            <optgroup label='Arm'>
+              <option>dips</option>
+              <option>dip holds</option>
+              <option>inverted rows</option>
+              <option>close grip chin up</option>
+              <option>hold chin up</option>
+              <option>bench dip</option>
+            </optgroup>
+            <optgroup label='Abs'>
+              <option>plank</option>
+              <option>side plank</option>
+              <option>hanging knee raises</option>
+              <option>hanging leg raises</option>
+              <option>front levers</option>
+              <option>bicycles</option>
+              <option>flutter kick's</option>
+              <option>full front lever</option>
+              <option>dragon flags</option>
+              <option>hanging windshield wiper</option>
+              <option>leg hold</option>
+              <option>l-sit</option>
+            </optgroup>
+            <optgroup label='Leg'>
+              <option>squats</option>
+              <option>pistol squats</option>
+              <option>squats jumps</option>
+              <option>lunges</option>
+              <option>box jumps</option>
+              <option>calf raises</option>
+              <option>wall sits</option>
+            </optgroup>
+            <optgroup label='Pro'>
+              <option>muscle up's</option>
+              <option>hand-stand push-up's</option>
+              <option>one handed hand-stand</option>
+              <option>one handed push-up's</option>
+              <option>clapping push-up's</option>
+              <option>planches</option>
+              <option>type writer pull-up's</option>
+            </optgroup>
+            <optgroup label='Extra'>
+              <option>burpees</option>
+              <option>rompers</option>
+              <option>running in place</option>
+              <option>touched knee</option>
+            </optgroup>
           </StyledSelect>
           <StyledInput
             type='number'
             name='exerciseTime'
             placeholder='exercise time'
             onChange={handleInputChange}
+            onKeyDown={handleInputKeydown}
+            onWheel={handleOnMouseWheel}
             value={exerciseTime}
           />
           <StyledButton onClick={addExercise} quatenary>
@@ -359,8 +466,8 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
                 key={exercise.exerciseId}
                 id={exercise.exerciseId}
               >
-                {exercise.exerciseName.toLowerCase()} - {exercise.exerciseTime}{' '}
-                seconds {/* <span> */}
+                <p>{exercise.exerciseName.toLowerCase()}<span>{exercise.exerciseTime}{' '}
+                seconds</span></p>
                 <i
                   className='fa fa-times'
                   aria-hidden='true'
@@ -385,7 +492,7 @@ const CreateTrainingsPage = ({ createTraining, history }) => {
 };
 
 CreateTrainingsPage.propTypes = {
-  createTraining: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
-export default connect(null, { createTraining })(CreateTrainingsPage);
+export default CreateTrainingsPage;

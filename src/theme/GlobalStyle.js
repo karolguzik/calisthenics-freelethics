@@ -43,8 +43,8 @@ const GlobalStyle = createGlobalStyle`
     100% {transform: translateY(0)}
   }
 
-  @keyframes loadingDescription {
-
+  @keyframes loadingRegisterDescription {
+    
   }
 `;
 

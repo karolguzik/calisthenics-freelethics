@@ -1,7 +1,7 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { Formik } from 'formik';
 import AuthTemplate from '../templates/AuthTemplate';
 import Form from '../components/Form/Form';
@@ -25,7 +25,11 @@ const TextError = styled.p`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
 `;
 
-const LoginPage = ({ login, alert, isAuthenticated, authUser }) => {
+const LoginPage = () => {
+  const alert = useSelector(state => state.alert);
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const dispatch = useDispatch();
+
   const alertMsg = alert
     ? alert.map((alert) => <TextError>{alert.msg}</TextError>)
     : null;
@@ -46,9 +50,7 @@ const LoginPage = ({ login, alert, isAuthenticated, authUser }) => {
           let errors = {};
 
           if (!values.email) {
-            errors.email = 'email is required';
-          } else if (values.email.length < 5) {
-            errors.email = 'Invalid email';
+            errors.email = 'Email is required';
           }
 
           if (!values.password) {
@@ -60,7 +62,7 @@ const LoginPage = ({ login, alert, isAuthenticated, authUser }) => {
           return errors;
         }}
         onSubmit={({email, password}) => {
-          login(email, password);
+          dispatch(login(email, password));
         }}
         render={({
           touched,
@@ -70,7 +72,7 @@ const LoginPage = ({ login, alert, isAuthenticated, authUser }) => {
           handleBlur,
           handleSubmit,
         }) => (
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit} noValidate>
             {touched.email && errors.email && (
               <TextError>{errors.email}</TextError>
             )}
@@ -83,7 +85,7 @@ const LoginPage = ({ login, alert, isAuthenticated, authUser }) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.email}
-              autoComplete='off'
+              autoComplete='none'
             />
             {touched.password && errors.password && (
               <TextError>{errors.password}</TextError>
@@ -99,7 +101,7 @@ const LoginPage = ({ login, alert, isAuthenticated, authUser }) => {
             />
             <StyledButtonContainer>
               <Button type='submit' secondary>
-                Login
+                Log in
               </Button>
             </StyledButtonContainer>
           </Form>
@@ -109,9 +111,5 @@ const LoginPage = ({ login, alert, isAuthenticated, authUser }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  alert: state.alert,
-  isAuthenticated: state.auth.isAuthenticated,
-});
 
-export default connect(mapStateToProps, { login })(LoginPage);
+export default LoginPage;

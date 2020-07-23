@@ -33,6 +33,10 @@ const ProgressSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  status: {
+    type: String,
+    default: 'done',
+  }
 });
 
 const Progress = mongoose.model('progress', ProgressSchema);

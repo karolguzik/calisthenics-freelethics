@@ -16,7 +16,7 @@ router.post(
   '/registration',
   [
     check('username', 'Username is required').not().isEmpty(),
-    check('email', 'This email is invalid').isEmail(),
+    check('email', 'Invalid email address').isEmail(),
     check('password', 'Password must not be shorter then 5 letters').isLength({
       min: 5,
     }),
@@ -67,7 +67,6 @@ router.post(
         }
       );
     } catch (err) {
-      console.log(err.message);
       res.status(500).send('Server error');
     }
   }
@@ -79,7 +78,7 @@ router.post(
 router.post(
   '/login',
   [
-    check('email', 'This email is invalid').isEmail(),
+    check('email', 'Email is required').exists(),
     check('password', 'Password is required').exists()
   ],
   async (req, res) => {
@@ -106,7 +105,7 @@ router.post(
 
       const payload = { user : { id: user.id }}
 
-      jwt.sign(payload, config.get('TOKEN_SECRET'), {expiresIn: 86400}, (err, token) => {
+      jwt.sign(payload, config.get('TOKEN_SECRET'), {expiresIn: 3600}, (err, token) => {
         if(err) throw err;
         res.json({token});
       });

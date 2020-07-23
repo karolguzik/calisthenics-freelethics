@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { device } from '../../mediaQueries/mediaQueries';
 import Logo from '../Logo/Logo';
 import { H1, H2 } from '../Heading/Heading';
@@ -70,6 +70,7 @@ const StyledBottomAside = styled.aside`
   justify-content:center;
   height:10%;
   background: rgba(65,65,67, .5);
+  text-align: center;
 `;
 
 

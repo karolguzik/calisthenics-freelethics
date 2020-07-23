@@ -15,19 +15,17 @@ router.post('/', auth, async (req, res) => {
       repsRestTime,
       exerciseRestTime,
       exercises,
-      totalTime
+      totalTime,
     } = req.body;
 
     const progress = new Progress({
       user: req.user.id,
-      // trainingId: req.body.activeTrainingId,
       name,
       reps,
       repsRestTime,
       exerciseRestTime,
       exercises,
       totalTime,
-      // idTraining: req.training.id,
     });
 
     await progress.save();

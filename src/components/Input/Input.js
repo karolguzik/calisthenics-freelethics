@@ -8,6 +8,10 @@ const Input = styled.input`
   color: ${({theme}) => theme.fontColorDark};
   border: none;
 
+  ::-webkit-inner-spin-button,::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+
   @media ${device.tablet} {
     padding: .8rem;
     font-size: ${({theme}) => theme.fontSize.xs};

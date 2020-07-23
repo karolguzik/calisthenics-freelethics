@@ -7,9 +7,9 @@ const alert = (state = initialState, action) => {
 
   switch (type) {
     case SHOW_ALERT:
-      return [...state, payload]
+      return [...state, payload];
     case REMOVE_ALERT:
-      return []
+      return [];
     default:
       return state;
   }
