@@ -1,9 +1,9 @@
 # Calisthenics-freelethics
 Calisthenics application for creating own training session and check progress.
 
-Created in MERN stack. 
-Used redux, react hooks, styled components, formik.
-
+Created in MERN stack.\
+Used redux, react hooks, styled components, formik.\
+View website https://stormy-depths-66371.herokuapp.com/
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
